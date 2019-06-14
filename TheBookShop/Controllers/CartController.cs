@@ -9,10 +9,12 @@ namespace TheBookShop.Controllers
     public class CartController : Controller
     {
         private IProductRepository repository;
+        private Cart cart;
 
-        public CartController(IProductRepository repo)
+        public CartController(IProductRepository repo, Cart cartService)
         {
             repository = repo;
+            cart = cartService;
         }
 
         public ViewResult Index(string returnUrl)
@@ -30,7 +32,6 @@ namespace TheBookShop.Controllers
 
             if (product != null)
             {
-                Cart cart = GetCart();
                 cart.AddItem(product, 1);
                 SaveCart(cart);
             }
@@ -44,7 +45,6 @@ namespace TheBookShop.Controllers
 
             if (product != null)
             {
-                Cart cart = GetCart();
                 cart.RemoveLine(product);
                 SaveCart(cart);
             }
