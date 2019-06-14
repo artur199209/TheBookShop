@@ -32,7 +32,7 @@ namespace TheBookShop.Models
 
         public virtual decimal ComputeTotalValue() => lineCollection.Sum(e => e.Product.Price * e.Quantity);
 
-        public void Clear() => lineCollection.Clear();
+        public virtual void Clear() => lineCollection.Clear();
 
         public virtual IEnumerable<CartLine> Lines => lineCollection;
     }
