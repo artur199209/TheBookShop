@@ -25,6 +25,8 @@ namespace TheBookShop
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration["Data:TheBookShopProducts:ConnectionString"]));
             services.AddTransient<IProductRepository, EFProductRepository>();
+            services.AddScoped<Cart>(p => SessionCart.GetCart(p));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();
