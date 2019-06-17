@@ -27,6 +27,7 @@ namespace TheBookShop
             services.AddTransient<IProductRepository, EFProductRepository>();
             services.AddScoped<Cart>(p => SessionCart.GetCart(p));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IOrderRepository, EFOrderRepository>();
             services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();
