@@ -8,7 +8,6 @@ using TheBookShop.Models.ViewModel;
 
 namespace TheBookShop.Infrastructure
 {
-    // You may need to install the Microsoft.AspNetCore.Razor.Runtime package into your project
     [HtmlTargetElement("div", Attributes = "page-model")]
     public class PageLinkTagHelper : TagHelper
     {
@@ -28,7 +27,7 @@ namespace TheBookShop.Infrastructure
         public string PageAction { get; set; }
 
         [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
-        public Dictionary<string, object> PageUrlValues { get; set; } 
+        public Dictionary<string, object> PageUrlValues { get; set; }
             = new Dictionary<string, object>();
 
         public bool PageClassesEnabled { get; set; } = false;
@@ -46,8 +45,6 @@ namespace TheBookShop.Infrastructure
                 TagBuilder tag = new TagBuilder("a");
                 PageUrlValues["productPage"] = i;
                 tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
-                tag.Attributes["href"] = urlHelper.Action(PageAction,
-                    new { productPage = i });
                 if (PageClassesEnabled)
                 {
                     tag.AddCssClass(PageClass);
