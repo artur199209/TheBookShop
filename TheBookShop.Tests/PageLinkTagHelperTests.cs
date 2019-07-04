@@ -12,8 +12,7 @@ namespace TheBookShop.Tests
     public class PageLinkTagHelperTests
     {
         [Fact]
-        public void Can_Generate_Page_Links()
-        {
+        public void Can_Generate_Page_Links() {
             // Arrange
             var urlHelper = new Mock<IUrlHelper>();
             urlHelper.SetupSequence(x => x.Action(It.IsAny<UrlActionContext>()))
@@ -24,19 +23,17 @@ namespace TheBookShop.Tests
             var urlHelperFactory = new Mock<IUrlHelperFactory>();
             urlHelperFactory.Setup(f =>
                     f.GetUrlHelper(It.IsAny<ActionContext>()))
-                .Returns(urlHelper.Object);
+                        .Returns(urlHelper.Object);
 
             PageLinkTagHelper helper =
-                new PageLinkTagHelper(urlHelperFactory.Object)
-                {
-                    PageModel = new PagingInfo
-                    {
-                        CurrentPage = 2,
-                        TotalItems = 28,
-                        ItemsPerPage = 10
-                    },
-                    PageAction = "Test"
-                };
+                    new PageLinkTagHelper(urlHelperFactory.Object) {
+                        PageModel = new PagingInfo {
+                            CurrentPage = 2,
+                            TotalItems = 28,
+                            ItemsPerPage = 10
+                        },
+                        PageAction = "Test"
+                    };
 
             TagHelperContext ctx = new TagHelperContext(
                 new TagHelperAttributeList(),
@@ -52,9 +49,9 @@ namespace TheBookShop.Tests
 
             // Assert
             Assert.Equal(@"<a href=""Test/Page1"">1</a>"
-                         + @"<a href=""Test/Page2"">2</a>"
-                         + @"<a href=""Test/Page3"">3</a>",
-                output.Content.GetContent());
+                + @"<a href=""Test/Page2"">2</a>"
+                + @"<a href=""Test/Page3"">3</a>",
+                 output.Content.GetContent());
         }
     }
 }
