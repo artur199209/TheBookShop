@@ -1,49 +1,51 @@
 ﻿@model CartIndexViewModel
-
-<h2>Your cart</h2>
-<table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-        <th>Quantity</th>
-        <th>Item</th>
-        <th class="text-right">Price</th>
-        <th class="text-right">Subtotal</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var line in Model.Cart.Lines) {
-        <tr>
-            <td class="text-center">@line.Quantity</td>
-            <td class="text-left">@line.Product.Name</td>
-            <td class="text-right">@line.Product.Price.ToString("c")</td>
-            <td class="text-right">
-                @((line.Quantity * line.Product.Price).ToString("c"))
-            </td>
-            <td>
-                <form asp-action="RemoveFromCart", method="post">
-                    <input type="hidden" name="ProductId"
-                           value="@line.Product.ProductId"/>
-                    <input type="hidden" name="returnUrl"
-                           value="@Model.ReturnUrl"/>
-                    <button type="submit" class="btn btn-sm btn-danger">
-                        Usuń
-                    </button>
-                </form>
-            </td>
-        </tr>
-    }
-    </tbody>
-    <tfoot>
-    <tr>
-        <td colspan="3" class="text-right">Total:</td>
-        <td class="text-right">
-            @Model.Cart.ComputeTotalValue().ToString("c")
-        </td>
-    </tr>
-    </tfoot>
-</table>
+<br />
+<h3 style="text-align: center">Mój koszyk</h3>
+<br/>
 
 <div class="text-center">
-    <a class="btn btn-primary" href="@Model.ReturnUrl">Continue shopping</a>
+    <a class="btn btn-primary" asp-action="Checkout" asp-controller="Order">Złóż zamówienie</a>
+</div>
+
+<br />
+<br />
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-sm-4 text-center">Przedmiot</div>
+            <div class="col-sm-2 text-center">Cena jednostkowa</div>
+            <div class="col-sm-2 text-center">Ilość</div>
+            <div class="col-sm-3 text-center"><span class="float-right">Wartość</span></div>
+            <div class="col-sm-1 text-center"></div>
+        </div>
+    </div>
+    <div class="card-body">
+
+        @foreach (var item in @Model.Cart.Lines)
+        {
+            <partial name="CartLine" for="@item"/>
+        }
+
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-sm-10">
+                <span numero-items>
+                    Liczba: @Model.Cart.Lines.Sum(x => x.Quantity)
+                </span>
+            </div>
+            <div class="col-sm-2">
+                Wartość: <span class="pull-right" total>
+                     @Model.Cart.ComputeTotalValue().ToString("c")
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="text-center">
     <a class="btn btn-primary" asp-action="Checkout" asp-controller="Order">Złóż zamówienie</a>
 </div>
