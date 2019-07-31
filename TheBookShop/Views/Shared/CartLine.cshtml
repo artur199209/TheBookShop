@@ -1,0 +1,49 @@
+﻿@model CartLine
+
+<div class="row row-center" style="margin-top: 15px">
+    <input type="hidden" name="ProductID" />
+    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+    <div class="col-sm-4 text-center">@Model.Product.Name</div>
+    <div class="col-sm-2 text-center">@Model.Product.Price.ToString("C")</div>
+    <div class="col-sm-2 text-center">
+        <div class="input-group">
+            <a class="btn" 
+               asp-action="DecreaseProductCount" 
+               asp-controller="Cart" 
+               asp-route-productId="@Model.Product.ProductId"
+               asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
+                <span class="fa fa-minus"></span>
+            </a>
+            <input type="text" value="@Model.Quantity"
+                   class="form-control text-center" />
+            <a class="btn" 
+               asp-action="AddToCart" 
+               asp-controller="Cart" 
+               asp-route-productId="@Model.Product.ProductId"
+               asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
+                <span class="fa fa-plus"></span>
+            </a>
+        </div>
+    </div>
+    <div class="col-sm-3 text-center">
+        <div class="float-right">
+            <span class="pull-right" subtotal>
+                @((Model.Quantity * Model.Product.Price).ToString("c"))
+            </span>
+        </div>
+    </div>
+    <div class="col-sm-1">
+        <div class="float-right">
+            <form asp-action="RemoveFromCart" asp-controller="Cart" method="post">
+                <input type="hidden" name="ProductId"
+                       value="@Model.Product.ProductId" />
+                <input type="hidden" name="returnUrl"
+                       value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                <button type="submit" class="btn btn-sm btn-danger">
+                    Usuń
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<br />
