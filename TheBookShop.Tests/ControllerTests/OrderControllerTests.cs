@@ -4,7 +4,7 @@ using TheBookShop.Controllers;
 using TheBookShop.Models;
 using Xunit;
 
-namespace TheBookShop.Tests
+namespace TheBookShop.Tests.ControllerTests
 {
     public class OrderControllerTests
     {

@@ -6,7 +6,7 @@ using TheBookShop.Models;
 using TheBookShop.Models.ViewModel;
 using Xunit;
 
-namespace TheBookShop.Tests
+namespace TheBookShop.Tests.ControllerTests
 {
     public class ProductControllerTest
     {
