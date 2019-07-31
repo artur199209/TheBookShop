@@ -1,6 +1,6 @@
 ﻿@model Product
 
-<div class="card card-body m-1 p-1">
+<div class="card col-2 d-xl-inline-block m-1 p-1">
     <div class="bg-light p-1">
         <h4>
             @Model.Name
@@ -10,11 +10,12 @@
         </h4>
     </div>
     <form id="@Model.ProductId" asp-action="AddToCart" asp-controller="Cart" method="post">
-        <input type="hidden" asp-for="ProductId"/>
+        <input type="hidden" name="productId" asp-for="@Model.ProductId"/>
         <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()"/>
         <span class="card-text p-1">
             @Model.Description
-            <button type="submit" class="btn btn-success btn-sm pull-right" style="float: right">
+            <button class="btn btn-success" type="submit">
+                <span class="fa fa-shopping-cart"></span>
                 Dodaj do koszyka
             </button>
             </span>
