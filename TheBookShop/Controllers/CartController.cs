@@ -52,6 +52,19 @@ namespace TheBookShop.Controllers
             return RedirectToAction("Index", new { returnUrl });
         }
 
+        public RedirectToActionResult DecreaseProductCount(int productId, string returnUrl)
+        {
+            Product product = repository.Products.FirstOrDefault(p => p.ProductId == productId);
+
+            if (product != null)
+            {
+                cart.DecreaseProductCount(product);
+                SaveCart(cart);
+            }
+
+            return RedirectToAction("Index", new { returnUrl });
+        }
+
         private Cart GetCart()
         {
             Cart cart = HttpContext.Session.GetJson<Cart>("Cart") ?? new Cart();
