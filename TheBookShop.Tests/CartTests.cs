@@ -105,5 +105,28 @@ namespace TheBookShop.Tests
 
             Assert.Equal(229, result);
         }
+
+        [Fact]
+        public void Can_Decrease_Product_Counter()
+        {
+            Product p1 = new Product { ProductId = 1};
+            Product p2 = new Product { ProductId = 2};
+
+            Cart cart = new Cart();
+            cart.AddItem(p1, 10);
+            cart.AddItem(p2, 5);
+
+            cart.DecreaseProductCount(p1);
+            cart.DecreaseProductCount(p1);
+
+            cart.DecreaseProductCount(p2);
+            cart.DecreaseProductCount(p2);
+            cart.DecreaseProductCount(p2);
+
+            var results = cart.Lines.ToArray();
+
+            Assert.Equal(8, results[0].Quantity);
+            Assert.Equal(2, results[1].Quantity);
+        }
     }
 }
