@@ -25,6 +25,21 @@ namespace TheBookShop.Models
             }
         }
 
+        public virtual void DecreaseProductCount(Product product)
+        {
+            CartLine line = lineCollection.FirstOrDefault(p => p.Product.ProductId == product.ProductId);
+
+            if (line != null)
+            {
+                line.Quantity -= 1;
+
+                if (line.Quantity == 0)
+                {
+                    RemoveLine(product);
+                }
+            }
+        }
+
         public virtual void RemoveLine(Product product)
         {
             lineCollection.RemoveAll(l => l.Product.ProductId == product.ProductId);
