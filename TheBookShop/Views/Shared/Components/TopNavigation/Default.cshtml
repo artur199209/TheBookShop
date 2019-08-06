@@ -1,0 +1,10 @@
+﻿@model string[]
+
+@foreach (string item in Model)
+{
+    <li class="nav-item">
+        <a class="nav-link fa-lg" href="#">
+            @item
+        </a>
+    </li>
+}
