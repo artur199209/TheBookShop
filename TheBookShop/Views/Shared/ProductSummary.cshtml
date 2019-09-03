@@ -1,23 +1,30 @@
 ﻿@model Product
 
-<div class="card col-2 d-xl-inline-block m-1 p-1">
-    <div class="bg-light p-1">
+<div class="card d-inline-block m-3 p-2">
+    <div class="navbar-light p-1">
         <h4>
-            @Model.Name
-            <span class="badge badge-pill badge-primary" style="float:right">
-                <small>@Model.Price.ToString("c")</small>
-            </span>
+            @Model.Title
         </h4>
+        <a asp-action="ProductDetails" asp-controller="Product" asp-route-productId="@Model.ProductId">dasd</a>
+        <br/>
+        <span class="align-content-center">
+            <img src="d2c8258f43b9b6f1050b36767e7c.png"/>
+        </span>
+        <br/>
+        <span class="badge badge-pill badge-primary">
+            @Model.Price.ToString("c")
+        </span>
     </div>
     <form id="@Model.ProductId" asp-action="AddToCart" asp-controller="Cart" method="post">
         <input type="hidden" name="productId" asp-for="@Model.ProductId"/>
         <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()"/>
-        <span class="card-text p-1">
-            @Model.Description
-            <button class="btn btn-success" type="submit">
-                <span class="fa fa-shopping-cart"></span>
-                Dodaj do koszyka
-            </button>
+        <div class="text-center">
+            <span class="card-text">
+                <button class="btn btn-success" type="submit">
+                    <span class="fa fa-shopping-cart"></span>
+                    Dodaj do koszyka
+                </button>
             </span>
+        </div>
     </form>
 </div>
