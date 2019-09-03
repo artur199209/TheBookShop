@@ -18,7 +18,7 @@
         @foreach (Product p in Model)
         {
         <tr>
-            <td>@p.Name</td>
+            <td>@p.Title</td>
             <td>@p.Description</td>
             <td>@p.Price</td>
             <td>@p.Category</td>
@@ -41,4 +41,3 @@
 <div class="text-center">
     <a asp-action="Create" class="btn btn-primary">Dodaj produkt</a>
 </div>
-
