@@ -39,7 +39,7 @@ namespace TheBookShop.Controllers
             if (ModelState.IsValid)
             {
                 repository.SaveProduct(product);
-                TempData["message"] = $"{product.Name} has been saved";
+                TempData["message"] = $"{product.Title} has been saved";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -53,7 +53,7 @@ namespace TheBookShop.Controllers
 
             if (deletedProduct != null)
             {
-                TempData["message"] = $"{deletedProduct.Name} was deleted";
+                TempData["message"] = $"{deletedProduct.Title} was deleted";
             }
             return View(nameof(Index));
         }
