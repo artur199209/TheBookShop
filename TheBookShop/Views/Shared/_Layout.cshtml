@@ -7,11 +7,24 @@
           asp-href-exclude="**/*-reboot*,**/*-grid*" />
     <link rel="stylesheet" asp-href-include="/lib/fontawesome/css/*.css" />
     <link rel="stylesheet" asp-href-include="css/*.css" />
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src ="/css/tabs.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="/lib/jquery-validate/dist/jquery.validate.min.js"></script>
     <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js">
     </script>
-    <title>SportsStore</title>
+    <title>The Book Shop</title>
+    <style type="text/css">
+        .rcorners1 {
+            border-radius: 25px;
+            border: 1px solid #73AD21;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar navbar-inverse bg-inverse" role="navigation">
@@ -24,7 +37,7 @@
         </div>
     </div>
     <div>
-        <nav class="navbar navbar-toggleable-xl bg-faded navbar-inverse bg-inverse">
+        <nav class="navbar navbar-toggleable bg-faded navbar-inverse bg-inverse">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -35,65 +48,56 @@
                 <ul class="nav mr-auto navbar-inverse bg-inverse">
                     @await Component.InvokeAsync("TopNavigation")
                 </ul>
-                <form class="form-inline">
-                    <input class="form-control" type="search" placeholder="Szukaj" aria-label="Search">
-                    <a class="btn navbar" href="#"><i class="fas fa-search fa-lg"></i></a>
-                </form>
+                <partial name="Search"/>
             </div>
         </nav>
     </div>
     <div class="row m-1 p-1">
-        <div id="categories" class="col-2">
-            @await Component.InvokeAsync("NavigationMenu")
-        </div>
-        <div class="col-10">
+
+        <div class="col-xl-auto">
             @RenderBody()
         </div>
+
+        @await Component.InvokeAsync("Carousel", new {category = "PROMOCJE"});
+        @await Component.InvokeAsync("Carousel", new {category = "NOWOŚCI"});
+        @await Component.InvokeAsync("Carousel", new {category = "BESTSELLERY"});
+
     </div>
-    <br />
-    <br />
+
 <footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 p-1">
-                <h5>INFORMACJE</h5>
-                <div style="color: grey">Historia zamówień</div>
-                <div style="color: grey">Koszty dostawy</div>
-                <div style="color: grey">Formy płatności</div>
-                <div style="color: grey">O Firmie</div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 p-1">
+                        <h5>INFORMACJE</h5>
+                        <div style="color: grey">Historia zamówień</div>
+                        <div style="color: grey">Koszty dostawy</div>
+                        <div style="color: grey">Formy płatności</div>
+                        <div style="color: grey">O Firmie</div>
+                    </div>
+                    <div class="col-md-3 p-1">
+                        <h5>KONTAKT</h5>
+                        <div><i class="fas fa-phone"></i> 0 123 456 123</div>
+                        <br />
+                        <div><i class="fas fa-envelope"></i> email@email.com</div>
+                        <br />
+                        <div><i class="fas fa-map-marker-alt"></i> s201 Fake St. 425 Lala Saint ada das d asd as</div>
+
+                    </div>
+                    <div class="col-md-3 p-1">
+                        <h5>ŚLEDŹ NAS</h5>
+                        <ul class="nav">
+                            <li class="nav-item"><a href="http://www.facebook.com" class="nav-link pl-0"><i class="fa fa-facebook fa-lg"></i></a></li>
+                            <li class="nav-item"><a href="http://twitter.com" class="nav-link"><i class="fa fa-twitter fa-lg"></i></a></li>
+                            <li class="nav-item"><a href="http://github.com" class="nav-link"><i class="fa fa-github fa-lg"></i></a></li>
+                            <li class="nav-item"><a href="http://instagram.com" class="nav-link"><i class="fa fa-instagram fa-lg"></i></a></li>
+                        </ul>
+                        <br />
+                    </div>
+                    <div class="col-md-3">
+                        <partial name="Subscribe" />
+                    </div>
+                </div>
             </div>
-            <div class="col-md-3 p-1">
-                <h5>KONTAKT</h5>
-                <div><i class="fas fa-phone"></i> 0 123 456 123</div>
-                <br/>
-                <div><i class="fas fa-envelope"></i> email@email.com</div>
-                <br/>
-                <div><i class="fas fa-map-marker-alt"></i> s201 Fake St. 425 Lala Saint ada das d asd as</div>
-                
-            </div>
-            <div class="col-md-3 p-1">
-                <h5>ŚLEDŹ NAS</h5>
-                <ul class="nav">
-                    <li class="nav-item"><a href="" class="nav-link pl-0"><i class="fa fa-facebook fa-lg"></i></a></li>
-                    <li class="nav-item"><a href="" class="nav-link"><i class="fa fa-twitter fa-lg"></i></a></li>
-                    <li class="nav-item"><a href="" class="nav-link"><i class="fa fa-github fa-lg"></i></a></li>
-                    <li class="nav-item"><a href="" class="nav-link"><i class="fa fa-instagram fa-lg"></i></a></li>
-                </ul>
-                <br/>
-            </div>
-            <div class="col-md-3">
-                <h5>Newsletter</h5>
-                <form class="form-group">
-                    <fieldset class="form-group">
-                        <input type="email" class="form-control" placeholder="Podaj email"/>
-                    </fieldset>
-                    <fieldset class="form-group">
-                        <button type="button" class="btn btn-secondary btn-lg">Zapisz się</button>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-    </div>
-</footer>
+    </footer>
 </body>
 </html>
