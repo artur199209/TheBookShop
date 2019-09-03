@@ -2,8 +2,7 @@
 
 <div>
     <a class="btn navbar btn-success"
-       asp-controller="Cart" asp-action="Index" 
-       asp-route-returnurl="@ViewContext.HttpContext.Request.PathAndQuery()">
+       asp-controller="Cart" asp-action="Index">
         <i class="fas fa-shopping-cart user-count show-count" data-count="@Model.Lines.Sum(x => x.Quantity)"></i>
     </a>
 </div>
