@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Infrastructure;
 using TheBookShop.Models;
@@ -37,5 +33,11 @@ namespace TheBookShop.Controllers
                 },
                 CurrentCategory = category
             });
+
+        public ViewResult ProductDetails(int productId)
+        {
+            var product = repository.Products.FirstOrDefault(x => x.ProductId == productId);
+            return View(product);
+        }
     }
 }
