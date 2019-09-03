@@ -16,11 +16,11 @@ namespace TheBookShop.Tests.ControllerTests
             var mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns((new Product[]
             {
-                new Product {ProductId = 1, Name = "Product1"},
-                new Product {ProductId = 2, Name = "Product2"},
-                new Product {ProductId = 3, Name = "Product3"},
-                new Product {ProductId = 4, Name = "Product4"},
-                new Product {ProductId = 5, Name = "Product5"}
+                new Product {ProductId = 1, Title = "Product1"},
+                new Product {ProductId = 2, Title = "Product2"},
+                new Product {ProductId = 3, Title = "Product3"},
+                new Product {ProductId = 4, Title = "Product4"},
+                new Product {ProductId = 5, Title = "Product5"}
             }).AsQueryable());
 
             ProductController controller = new ProductController(mock.Object);
@@ -31,8 +31,8 @@ namespace TheBookShop.Tests.ControllerTests
             var products = result?.Products.ToArray();
             
             Assert.True(products?.Length == 2);
-            Assert.Equal("Product4", products[0].Name);
-            Assert.Equal("Product5", products[1].Name);
+            Assert.Equal("Product4", products[0].Title);
+            Assert.Equal("Product5", products[1].Title);
         }
 
         [Fact]
@@ -41,11 +41,11 @@ namespace TheBookShop.Tests.ControllerTests
             var mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns((new Product[]
             {
-                new Product {ProductId = 1, Name = "Product1"},
-                new Product {ProductId = 2, Name = "Product2"},
-                new Product {ProductId = 3, Name = "Product3"},
-                new Product {ProductId = 4, Name = "Product4"},
-                new Product {ProductId = 5, Name = "Product5"}
+                new Product {ProductId = 1, Title = "Product1"},
+                new Product {ProductId = 2, Title = "Product2"},
+                new Product {ProductId = 3, Title = "Product3"},
+                new Product {ProductId = 4, Title = "Product4"},
+                new Product {ProductId = 5, Title = "Product5"}
             }).AsQueryable());
 
             ProductController controller = new ProductController(mock.Object);

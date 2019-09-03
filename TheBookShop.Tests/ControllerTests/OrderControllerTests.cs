@@ -27,7 +27,7 @@ namespace TheBookShop.Tests.ControllerTests
         public void Cannot_Checkout_When_Shipping_Details_Invalid()
         {
             var mock = new Mock<IOrderRepository>();
-            Product p1 = new Product{ ProductId = 1, Name = "Product1"};
+            Product p1 = new Product{ ProductId = 1, Title = "Product1"};
             Cart cart = new Cart();
             cart.AddItem(p1, 1);
             
@@ -45,7 +45,7 @@ namespace TheBookShop.Tests.ControllerTests
         public void Can_Checkout_And_Submit_Order()
         {
             var mock = new Mock<IOrderRepository>();
-            Product p1 = new Product { ProductId = 1, Name = "Product1" };
+            Product p1 = new Product { ProductId = 1, Title = "Product1" };
             Cart cart = new Cart();
             cart.AddItem(p1, 1);
 
