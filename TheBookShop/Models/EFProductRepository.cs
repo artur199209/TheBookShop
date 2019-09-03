@@ -27,7 +27,7 @@ namespace TheBookShop.Models
 
                 if (productEntry != null)
                 {
-                    productEntry.Name = product.Name;
+                    productEntry.Title = product.Title;
                     productEntry.Category = product.Category;
                     productEntry.Description = product.Description;
                     productEntry.Price = product.Price;
