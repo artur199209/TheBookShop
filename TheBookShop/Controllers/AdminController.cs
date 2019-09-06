@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TheBookShop.Infrastructure;
 using TheBookShop.Models;
 
 namespace TheBookShop.Controllers
@@ -38,6 +39,9 @@ namespace TheBookShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                IFormFile file = HttpContext.Request.Form.Files.FirstOrDefault();
+                product.Image = "\\Images\\" + file?.FileName;
+                FileHelper.CopyImageFile(file);
                 repository.SaveProduct(product);
                 TempData["message"] = $"{product.Title} has been saved";
                 return RedirectToAction(nameof(Index));
