@@ -7,16 +7,18 @@
           asp-href-exclude="**/*-reboot*,**/*-grid*" />
     <link rel="stylesheet" asp-href-include="/lib/fontawesome/css/*.css" />
     <link rel="stylesheet" asp-href-include="css/*.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
     <script src="lib/jquery/dist/jquery.min.js"></script>
-    <script src ="/css/tabs.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="/lib/jquery-validate/dist/jquery.validate.min.js"></script>
-    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js">
-    </script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+
+    
     <title>The Book Shop</title>
     <style type="text/css">
         .rcorners1 {
@@ -44,24 +46,27 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="nav mr-auto navbar-inverse bg-inverse">
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mr-auto">
                     @await Component.InvokeAsync("TopNavigation")
                 </ul>
                 <partial name="Search"/>
             </div>
+          
         </nav>
     </div>
-    <div class="row m-1 p-1">
+    <div class="container col-xl-auto">
 
-        <div class="col-xl-auto">
-            @RenderBody()
+        <div class="row p-5 justify-content-center">
+            <div class="col-xl-auto">
+                @RenderBody()
+            </div>
         </div>
 
-        @await Component.InvokeAsync("Carousel", new {category = "PROMOCJE"});
-        @await Component.InvokeAsync("Carousel", new {category = "NOWOŚCI"});
-        @await Component.InvokeAsync("Carousel", new {category = "BESTSELLERY"});
-
+        @await Component.InvokeAsync("Carousel", new { category = "PROMOCJE" })
+        @await Component.InvokeAsync("Carousel", new { category = "NOWOŚCI" })
+        @await Component.InvokeAsync("Carousel", new { category = "BESTSELLERY" })
+       
     </div>
 
 <footer>
