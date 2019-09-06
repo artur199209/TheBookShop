@@ -5,6 +5,8 @@ namespace TheBookShop.Models
     public class Product
     {
         public int ProductId { get; set; }
+        
+        public string Image { get; set; }
 
         [Required(ErrorMessage = "Proszę podać nazwę")]
         public string Title { get; set; }
