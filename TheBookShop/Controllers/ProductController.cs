@@ -16,6 +16,11 @@ namespace TheBookShop.Controllers
             repository = repo;
         }
 
+        public ViewResult Index()
+        {
+            return View();
+        }
+
         public ViewResult List(string category, int productPage = 1)
             => View(new ProductsListViewModel
             {
