@@ -1,10 +1,28 @@
-﻿@model string[]
+﻿@model IEnumerable<TheBookShop.Components.NavbarItem>
 
-@foreach (string item in Model)
+@foreach (var item in Model)
 {
-    <li class="nav-item">
-        <a class="nav-link fa-lg" href="#">
-            @item
-        </a>
-    </li>
+    if (!item.IsParent && item.ParentId == -1)
+    {
+        <li class="nav-item active" >
+            <a class="nav-link text-white"  href="#">@item.NameOption</a>
+        </li>
+    }
+    else if (item.IsParent && item.ParentId == -1)
+    {
+        var childItems = Model.Where(p => p.ParentId == item.Id).ToList();
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="http://example.com" 
+               id="dropdown_unternehmen" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @item.NameOption
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdown_unternehmen">
+                @foreach (var children in childItems)
+                {
+                    <a class="dropdown-item" href="#">@children.NameOption</a>
+                }
+            </div>
+        </li>
+    }
 }
