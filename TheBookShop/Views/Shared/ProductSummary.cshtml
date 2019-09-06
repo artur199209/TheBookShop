@@ -1,11 +1,11 @@
 ﻿@model Product
 
-<div class="card d-inline-block m-3 p-2">
-    <div class="navbar-light p-1">
+<div class="card d-inline-block m-2 p-2">
+    <a asp-action="ProductDetails" asp-controller="Product" asp-route-productId="@Model.ProductId">
+    <div class="navbar-light">
         <h4>
             @Model.Title
         </h4>
-        <a asp-action="ProductDetails" asp-controller="Product" asp-route-productId="@Model.ProductId">dasd</a>
         <br/>
         <span class="align-content-center">
             <img src="d2c8258f43b9b6f1050b36767e7c.png"/>
@@ -15,6 +15,7 @@
             @Model.Price.ToString("c")
         </span>
     </div>
+    </a>
     <form id="@Model.ProductId" asp-action="AddToCart" asp-controller="Cart" method="post">
         <input type="hidden" name="productId" asp-for="@Model.ProductId"/>
         <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()"/>
