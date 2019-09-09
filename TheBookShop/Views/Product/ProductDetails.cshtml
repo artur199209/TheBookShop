@@ -1,25 +1,36 @@
 ﻿@model Product
 @{
     ViewData["Title"] = "ProductDetails";
-    Layout = "OrderLayout";
+    Layout = "_Layout";
 }
 
 <div class="container">
     <div class="row">
         <div class="col-5">
-            <img src="/d2c8258f43b9b6f1050b36767e7c.png" alt="Lenovo Desktop">
+            <img src="\Images\47c9a5c20405494f828ad8d0d97a9b00.png" alt="@Model.Title">
         </div>
         <div class="col-7">
             <h2>
-                Lenovo Desktop
+                @Model.Title - @Model.Author
             </h2>
             <h4>Thinner, Lighter, Faster. All in One Desktop</h4>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa.</p>
             <hr>
-            <h3>Price - <del>$699</del> $499</h3>
+            <h3>Price - <del>$699</del> @Model.Price</h3>
             <p>Inclusive of all taxes. Free home delivery.</p>
             <br>
-            <p><a href="#" class="btn btn-success">Buy Online Now</a></p>
+            <form id="@Model.ProductId" asp-action="AddToCart" asp-controller="Cart" method="post">
+                <input type="hidden" name="productId" asp-for="@Model.ProductId"/>
+                <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()"/>
+                <div class="text-center">
+                    <span class="card-text">
+                        <button class="btn btn-success" type="submit">
+                            <span class="fa fa-shopping-cart"></span>
+                            Dodaj do koszyka
+                        </button>
+                    </span>
+                </div>
+            </form>
         </div>
     </div>
     
