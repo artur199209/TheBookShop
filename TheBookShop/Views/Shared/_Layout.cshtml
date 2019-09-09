@@ -2,12 +2,14 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+  
     <link rel="stylesheet"
           asp-href-include="/lib/bootstrap/dist/**/*.min.css"
           asp-href-exclude="**/*-reboot*,**/*-grid*" />
     <link rel="stylesheet" asp-href-include="/lib/fontawesome/css/*.css" />
     <link rel="stylesheet" asp-href-include="css/*.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/NavBar.css"/>
     <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -15,9 +17,9 @@
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="/lib/jquery-validate/dist/jquery.validate.min.js"></script>
     <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    
+   
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-
+    
     
     <title>The Book Shop</title>
     <style type="text/css">
@@ -31,7 +33,7 @@
 <body>
     <div class="navbar navbar-inverse bg-inverse" role="navigation">
         <div class="row">
-            <a class="col navbar-brand" href="#">Księgarnia</a>
+            <a class="col navbar-brand" asp-controller="Product" asp-action="Index">Księgarnia</a>
             <div class="text-white">Zaloguj/Zarejestruj</div>
             <div class="col-1 text-right">
                 @await Component.InvokeAsync("CartSummary")
@@ -56,17 +58,11 @@
         </nav>
     </div>
     <div class="container col-xl-auto">
-
-        <div class="row p-5 justify-content-center">
+        <div class="row col-xl-auto p-5 justify-content-center">
             <div class="col-xl-auto">
                 @RenderBody()
             </div>
         </div>
-
-        @await Component.InvokeAsync("Carousel", new { category = "PROMOCJE" })
-        @await Component.InvokeAsync("Carousel", new { category = "NOWOŚCI" })
-        @await Component.InvokeAsync("Carousel", new { category = "BESTSELLERY" })
-       
     </div>
 
 <footer>
