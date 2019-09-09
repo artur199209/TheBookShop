@@ -1,27 +1,39 @@
-﻿@model IEnumerable<TheBookShop.Components.NavbarItem>
+﻿@model IEnumerable<NavbarItem>
 
 @foreach (var item in Model)
 {
     if (!item.IsParent && item.ParentId == -1)
     {
         <li class="nav-item active" >
-            <a class="nav-link text-white"  href="#">@item.NameOption</a>
+            <a class="nav-link text-white" asp-action="@item.Action" asp-controller="@item.Controller">@item.NameOption</a>
         </li>
     }
     else if (item.IsParent && item.ParentId == -1)
     {
         var childItems = Model.Where(p => p.ParentId == item.Id).ToList();
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-white" href="http://example.com" 
+            <a class="nav-link dropdown-toggle text-white"  asp-action="@item.Action" asp-controller="@item.Controller"
                id="dropdown_unternehmen" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 @item.NameOption
             </a>
-
+            
             <div class="dropdown-menu" aria-labelledby="dropdown_unternehmen">
-                @foreach (var children in childItems)
-                {
-                    <a class="dropdown-item" href="#">@children.NameOption</a>
-                }
+                <div class="row col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="multi-column-dropdown">
+                            @for (int i = 0; i < (childItems.Count + 1) / 2; i++)
+                            {
+                                <a class="dropdown-item" asp-action="@childItems[i].Action" asp-controller="@childItems[i].Controller">@childItems[i].NameOption</a>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        @for (int i = (childItems.Count + 1) / 2; i < childItems.Count; i++)
+                        {
+                            <a class="dropdown-item" asp-action="@childItems[i].Action" asp-controller="@childItems[i].Controller">@childItems[i].NameOption</a>
+                        }
+                    </div>
+                </div>
             </div>
         </li>
     }
