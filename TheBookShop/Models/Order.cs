@@ -6,31 +6,16 @@ namespace TheBookShop.Models
     public class Order
     {
         [BindNever]
-        public int OrderID { get; set; }
+        public int OrderId { get; set; }
         [BindNever]
         public ICollection<CartLine> Lines { get; set; }
         
-        public string Name { get; set; }
-        
-        public string Surname { get; set; }
+        public Customer Customer { get; set; }
 
         [BindNever]
         public bool Shipped { get; set; }
         
-        public string Line1 { get; set; }
-
-        public string Line2 { get; set; }
-
-        public string Line3 { get; set; }
-
-        public string City { get; set; }
-
-        public string State { get; set; }
-
-        public string Zip { get; set; }
-        
-        public string Country { get; set; }
-
+        public DeliveryAddress DeliveryAddress { get; set; }
         public bool GiftWrap { get; set; }
     }
 }
