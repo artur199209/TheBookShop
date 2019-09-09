@@ -1,8 +1,9 @@
 ﻿@model CartIndexViewModel
 @{
-    Layout = "OrderLayout";
+    Layout = "_Layout";
 }
 <br />
+<div class="container">
 <h3 style="text-align: center">Mój koszyk</h3>
 <br />
 
@@ -15,8 +16,8 @@
 <br />
 
 <div class="card col-xl-auto">
-    <div class="card-header">
-        <div class="row">
+    <div class="card-header col-xl-auto">
+        <div class="row col-xl-auto">
             <div class="col-xl-4 text-center">Przedmiot</div>
             <div class="col-xl-2 text-center">Cena jednostkowa</div>
             <div class="col-xl-2 text-center">Ilość</div>
@@ -53,4 +54,6 @@
 <div class="text-center">
     <a class="btn btn-primary" asp-action="Checkout" asp-controller="Order">Złóż zamówienie</a>
     <a class="btn btn-primary" asp-action="List" asp-controller="Product">Kontynuuj zakupy</a>
+</div>
+
 </div>
