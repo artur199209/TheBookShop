@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace TheBookShop.Models
 {
@@ -17,24 +15,38 @@ namespace TheBookShop.Models
         public IQueryable<Product> Products => context.Products;
         public void SaveProduct(Product product)
         {
-            if (product.ProductId == 0)
+            try
             {
-                context.Products.Add(product);
-            }
-            else
-            {
-                Product productEntry = context.Products.FirstOrDefault(p => p.ProductId == product.ProductId);
-
-                if (productEntry != null)
+                if (product.ProductId == 0)
                 {
-                    productEntry.Title = product.Title;
-                    productEntry.Category = product.Category;
-                    productEntry.Description = product.Description;
-                    productEntry.Price = product.Price;
+                    context.Products.Add(product);
                 }
-            }
+                else
+                {
+                    var productEntry = context.Products.FirstOrDefault(p => p.ProductId == product.ProductId);
 
-            context.SaveChanges();
+                    if (productEntry != null)
+                    {
+                        productEntry.Title = product.Title;
+                        productEntry.Category = product.Category;
+                        productEntry.Description = product.Description;
+                        productEntry.Price = product.Price;
+                        productEntry.Author = product.Author;
+                        productEntry.Cover = product.Cover;
+                        productEntry.Image = product.Image;
+                        productEntry.NumberOfPages = product.NumberOfPages;
+                        productEntry.PublishingHouse = product.PublishingHouse;
+                        productEntry.QuantityInStock = product.QuantityInStock;
+                        productEntry.Subcategory = product.Subcategory;
+                    }
+                }
+
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public Product DeleteProduct(int productId)
