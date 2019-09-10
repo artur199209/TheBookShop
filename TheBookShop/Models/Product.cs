@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TheBookShop.Models
 {
@@ -37,5 +38,7 @@ namespace TheBookShop.Models
 
         [Required(ErrorMessage = "Proszę podać liczbę dostępnych produktów")]
         public int QuantityInStock { get; set; }
+
+        public ICollection<Opinion> Opinions { get; set; }
     }
 }
