@@ -1,4 +1,6 @@
-﻿namespace TheBookShop.Models
+﻿using System.Collections.Generic;
+
+namespace TheBookShop.Models
 {
     public class Customer
     {
@@ -13,5 +15,7 @@
         public string Email { get; set; }
 
         public CustomerAddress CustomerAddress { get; set; }
+        
+        public ICollection<Order> Orders { get; set; }
     }
 }
