@@ -16,6 +16,7 @@ namespace TheBookShop.Models
         public bool Shipped { get; set; }
         
         public DeliveryAddress DeliveryAddress { get; set; }
+        public Payment Payment { get; set; }
         public bool GiftWrap { get; set; }
     }
 }
