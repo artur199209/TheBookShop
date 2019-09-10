@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.AspNetCore.Routing;
 using TheBookShop.Infrastructure;
 using TheBookShop.Models;
 using TheBookShop.Models.ViewModel;
 
 namespace TheBookShop.Controllers
 {
+    [Route("[controller]")]
     public class CartController : Controller
     {
         private IProductRepository repository;
@@ -17,6 +19,7 @@ namespace TheBookShop.Controllers
             cart = cartService;
         }
 
+        [Route("[action]")]
         public ViewResult Index(string returnUrl)
         {
             return View(new CartIndexViewModel()

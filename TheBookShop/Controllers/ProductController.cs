@@ -6,6 +6,8 @@ using TheBookShop.Models.ViewModel;
 
 namespace TheBookShop.Controllers
 {
+    [Route("")]
+    [Route("[controller]")]
     public class ProductController : Controller
     {
         private IProductRepository repository;
@@ -16,11 +18,14 @@ namespace TheBookShop.Controllers
             repository = repo;
         }
 
+        [Route("")]
+        [Route("[action]")]
         public ViewResult Index()
         {
             return View();
         }
 
+        [Route("[action]")]
         public ViewResult List(string category, int productPage = 1)
             => View(new ProductsListViewModel
             {
@@ -39,6 +44,7 @@ namespace TheBookShop.Controllers
                 CurrentCategory = category
             });
 
+        [Route("[action]")]
         public ViewResult ProductDetails(int productId)
         {
             var product = repository.Products.FirstOrDefault(x => x.ProductId == productId);
