@@ -1,0 +1,28 @@
+﻿.dropdown-menu li a {
+    padding: 5px 15px;
+    font-weight: 300;
+}
+.dropdown-menu > li  > a {
+    padding: 5px 15px;
+    font-weight: 300;
+}
+
+.multi-column-dropdown {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+.multi-column-dropdown li a {
+    display: block;
+    clear: both;
+    line-height: 1.428571429;
+    color: black;
+    white-space: normal;
+}
+ 
+/*@media (max-width: 767px) {
+    .dropdown-menu.multi-column {
+        min-width: 440px !important;
+        overflow-x: hidden;
+    }
+}*/
