@@ -29,6 +29,7 @@ namespace TheBookShop.Controllers
             });
         }
 
+        [Route("[action]")]
         public RedirectToActionResult AddToCart(int productId, string returnUrl)
         {
             Product product = repository.Products.FirstOrDefault(p => p.ProductId == productId);
@@ -42,6 +43,7 @@ namespace TheBookShop.Controllers
             return RedirectToAction("Index", new { returnUrl });
         }
 
+        [Route("[action]")]
         public RedirectToActionResult RemoveFromCart(int productId, string returnUrl)
         {
             Product product = repository.Products.FirstOrDefault(p => p.ProductId == productId);
@@ -55,6 +57,7 @@ namespace TheBookShop.Controllers
             return RedirectToAction("Index", new { returnUrl });
         }
 
+        [Route("[action]")]
         public RedirectToActionResult DecreaseProductCount(int productId, string returnUrl)
         {
             Product product = repository.Products.FirstOrDefault(p => p.ProductId == productId);
