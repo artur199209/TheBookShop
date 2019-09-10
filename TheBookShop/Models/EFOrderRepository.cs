@@ -22,7 +22,7 @@ namespace TheBookShop.Models
         public void SaveOrder(Order order)
         {
             context.AttachRange(order.Lines.Select(l => l.Product));
-            if (order.OrderID == 0)
+            if (order.OrderId == 0)
             {
                 context.Orders.Add(order);
             }
