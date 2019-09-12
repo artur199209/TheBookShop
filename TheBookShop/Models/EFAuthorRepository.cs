@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace TheBookShop.Models
 {
@@ -12,7 +13,7 @@ namespace TheBookShop.Models
             _applicationDbContext = applicationDbContext;
         }
 
-        public IQueryable<Author> Authors => _applicationDbContext.Authors;
+        public IQueryable<Author> Authors => _applicationDbContext.Authors.Include(x => x.Products);
 
         public void SaveAuthor(Author author)
         {
@@ -41,6 +42,24 @@ namespace TheBookShop.Models
                 Console.WriteLine(e);
                 throw;
             }
+        }
+
+        public Author DeleteAuthor(int authorId)
+        {
+            var author = _applicationDbContext.Authors.FirstOrDefault(x => x.AuthorId == authorId);
+
+            if (author != null)
+            {
+                _applicationDbContext.Authors.Remove(author);
+                _applicationDbContext.SaveChanges();
+            }
+
+            return author;
+        }
+
+        public Author GetAuthorById(int authorId)
+        {
+            return Authors.FirstOrDefault(x => x.AuthorId == authorId);
         }
     }
 }
