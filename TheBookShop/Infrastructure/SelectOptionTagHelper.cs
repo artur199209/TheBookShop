@@ -21,13 +21,18 @@ namespace TheBookShop.Infrastructure
         {
             output.Content.AppendHtml((await output.GetChildContentAsync(false)).GetContent());
 
-            string selected = ModelFor.Model as string;
+            var selected = ModelFor.Model as Author;
 
-            foreach (Author author in _authorRepository.Authors)
+            if (selected == null)
             {
-                output.Content.AppendHtml(selected != null
-                    ? $"<option selected value={author.AuthorId}>{author.Name} {author.Surname} </option>"
-                    : $"<option value={author.AuthorId}>{author.Name} {author.Surname} </option>");
+                output.Content.AppendHtml($"<option disabled selected>Wybierz autora</option>");
+            }
+
+            foreach (var author in _authorRepository.Authors)
+            {
+                output.Content.AppendHtml(selected?.AuthorId != author.AuthorId
+                    ? $"<option value={author.AuthorId}>{author.Name} {author.Surname} </option>"
+                    : $"<option selected value={author.AuthorId}>{author.Name} {author.Surname} </option>");
             }
 
             output.Attributes.SetAttribute("Name", ModelFor.Name);
