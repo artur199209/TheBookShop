@@ -14,7 +14,7 @@ namespace TheBookShop.Models
             context = ctx;
         }
 
-        public IQueryable<Product> Products => context.Products.Include(x => x.Author);
+        public IQueryable<Product> Products => context.Products;
         public void SaveProduct(Product product)
         {
             try
