@@ -6,7 +6,6 @@ namespace TheBookShop.Models
 {
     public class Author
     {
-        [BindNever]
         public int AuthorId { get; set; }
 
         [Required(ErrorMessage = "Proszę podać imię autora")]
