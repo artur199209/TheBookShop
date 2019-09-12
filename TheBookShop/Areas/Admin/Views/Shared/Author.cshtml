@@ -1,0 +1,31 @@
+﻿@model Author
+
+<div class="row text-center col-xl-auto" style="margin-top: 15px">
+    <input type="hidden" name="AuthorId" />
+    <div class="col-xl-2 text-center">@Model.Name</div>
+    <div class="col-xl-2 text-center">@Model.Surname</div>
+    <div class="col-xl-7 text-center">@Model.Notes</div>
+    <div class="col-xl-7 text-center">
+        <a asp-controller="Author" asp-action="Books"
+           asp-route-authorId="@Model.AuthorId">
+            Wyświetl książki
+        </a>
+    </div>
+    <div class="col-1">
+        <div class="float-md-none">
+            <form asp-action="Delete" asp-controller="Author" method="post">
+                <a asp-controller="Author" asp-action="Edit" asp-route-authorId="@Model.AuthorId">Edytuj
+                </a>
+                <input type="hidden" name="AuthorId"
+                       value="@Model.AuthorId"/>
+                <input type="hidden" name="returnUrl"
+                       value="@ViewContext.HttpContext.Request.PathAndQuery()"/>
+                <button type="submit" class="btn btn-sm btn-danger">
+                    <span class="fa fa-remove"></span>
+                    Usuń
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<br />
