@@ -1,0 +1,31 @@
+﻿@model Author
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_AdminLayout";
+}
+<h2>Książki @Model.Name @Model.Surname</h2>
+
+<div class="card col-xl-auto">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-xl-1 text-center">Imię</div>
+            <div class="col-xl-1 text-center">Nazwisko</div>
+            <div class="col-xl-1 text-center">Tytuł</div>
+            <div class="col-xl-1 text-center">Kategoria</div>
+            <div class="col-xl-1 text-center">Podkategoria</div>
+            <div class="col-xl-1 text-center">Wydawnictwo</div>
+            <div class="col-xl-1 text-center">Cena</div>
+            <div class="col-xl-5 text-center">Inne</div>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (Model != null)
+        {
+            foreach (var item in @Model.Products)
+            {
+                <partial name="Book" for="@item" />
+            }
+        }
+
+    </div>
+</div>
