@@ -23,8 +23,7 @@ namespace TheBookShop.Models
 
         [Required(ErrorMessage = "Proszę podać podkategorię")]
         public string Subcategory { get; set; }
-
-        [Required(ErrorMessage = "Proszę podać autora")]
+        
         public Author Author { get; set; }
 
         [Required(ErrorMessage = "Proszę podać liczbę stron")]
