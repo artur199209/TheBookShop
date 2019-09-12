@@ -28,6 +28,7 @@ namespace TheBookShop
             services.AddScoped<Cart>(p => SessionCart.GetCart(p));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IOrderRepository, EFOrderRepository>();
+            services.AddTransient<IAuthorRepository, EFAuthorRepository>();
             services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();
@@ -40,7 +41,9 @@ namespace TheBookShop
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseSession();
-            app.UseMvc(routes => {
+            // app.UseMvcWithDefaultRoute();
+            app.UseMvc(routes =>
+            {
                 routes.MapRoute(
                     name: null,
                     template: "{category}/Page{productPage:int}",
@@ -67,7 +70,7 @@ namespace TheBookShop
                 routes.MapRoute(name: null, template: "{controller}/{action}/{id?}");
             });
 
-            SeedData.EnsurePopulated(app);
+            //SeedData.EnsurePopulated(app);
         }
     }
 }
