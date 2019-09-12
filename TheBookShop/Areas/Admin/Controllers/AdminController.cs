@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Infrastructure;
@@ -10,11 +12,13 @@ namespace TheBookShop.Areas.Admin.Controllers
     [Route("[controller]")]
     public class AdminController : Controller
     {
-        private IProductRepository repository;
+        private readonly IProductRepository repository;
+        private readonly IAuthorRepository _authorRepository;
 
-        public AdminController(IProductRepository repo)
+        public AdminController(IProductRepository repo, IAuthorRepository authorRepository)
         {
             repository = repo;
+            _authorRepository = authorRepository;
         }
 
         [Route("")]
@@ -39,13 +43,29 @@ namespace TheBookShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Product product)
+        [Route("[action]")]
+        public IActionResult Edit(Product product, IFormCollection formValues)
         {
             if (ModelState.IsValid)
             {
-                IFormFile file = HttpContext.Request.Form.Files.FirstOrDefault();
-                product.Image = "\\Images\\" + file?.FileName;
-                FileHelper.CopyImageFile(file);
+                if (formValues != null)
+                {
+                    var authorId = Convert.ToInt32(formValues["Author"]);
+                    var author = _authorRepository.GetAuthorById(authorId);
+                    IFormFile file = formValues.Files.FirstOrDefault();
+
+                    if (author != null)
+                    {
+                        product.Author = author;
+                    }
+
+                    if (file != null)
+                    {
+                        product.Image = "\\Images\\" + file?.FileName;
+                        FileHelper.CopyImageFile(file);
+                    }
+                }
+
                 repository.SaveProduct(product);
                 TempData["message"] = $"{product.Title} has been saved";
                 return RedirectToAction(nameof(Index));
@@ -55,6 +75,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Route("[action]")]
         public IActionResult Delete(int productId)
         {
             var deletedProduct = repository.DeleteProduct(productId);
