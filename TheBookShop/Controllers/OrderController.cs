@@ -49,7 +49,7 @@ namespace TheBookShop.Controllers
         [HttpPost]
         public IActionResult MarkShipped(int orderId)
         {
-            Order order = repository.Orders.FirstOrDefault(o => o.OrderID == orderId);
+            Order order = repository.Orders.FirstOrDefault(o => o.OrderId == orderId);
 
             if (order != null)
             {
