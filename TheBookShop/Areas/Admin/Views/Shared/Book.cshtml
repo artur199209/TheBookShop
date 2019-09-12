@@ -1,0 +1,30 @@
+﻿@model Product
+
+<div class="row text-center col-xl-auto" style="margin-top: 15px">
+    <div class="col-xl-1 text-center">@Model.Author.Name</div>
+    <div class="col-xl-1 text-center">@Model.Author.Surname</div>
+    <div class="col-xl-1 text-center">@Model.Title</div>
+    <div class="col-xl-1 text-center">@Model.Category</div>
+    <div class="col-xl-1 text-center">@Model.Subcategory</div>
+    <div class="col-xl-1 text-center">@Model.PublishingHouse</div>
+    <div class="col-xl-1 text-center">@Model.Price</div>
+
+    <div class="col-1">
+        <div class="float-md-none">
+            <form asp-action="Delete" asp-controller="Admin" method="post">
+                <a asp-controller="Admin" asp-action="Edit" asp-route-productId="@Model.ProductId">
+                    Edytuj
+                </a>
+                <input type="hidden" name="ProductId"
+                       value="@Model.ProductId" />
+                <input type="hidden" name="returnUrl"
+                       value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                <button type="submit" class="btn btn-sm btn-danger">
+                    <span class="fa fa-remove"></span>
+                    Usuń
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<br />
