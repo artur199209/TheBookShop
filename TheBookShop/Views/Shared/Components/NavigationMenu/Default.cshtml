@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<string>
     
 <a class="btn btn-block btn-secondary"
+    asp-area=""
     asp-action="List"
     asp-controller="Product"
     asp-route-category="">
@@ -11,6 +12,7 @@
 {
     <a class="btn btn-block
        @(category == ViewBag.SelectedCategory ? "btn-primary" : "btn-secondary")"
+       asp-area=""
        asp-action="List"
        asp-controller="Product"
        asp-route-category="@category"

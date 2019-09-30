@@ -1,7 +1,7 @@
 ﻿@model Product
 
 <div class="card d-inline-block m-1 p-2">
-    <a asp-action="ProductDetails" asp-controller="Product" asp-route-productId="@Model.ProductId">
+    <a asp-action="ProductDetails" asp-area="" asp-controller="Product" asp-route-productId="@Model.ProductId">
     <div class="navbar-light">
         <h4>
             @Model.Title
