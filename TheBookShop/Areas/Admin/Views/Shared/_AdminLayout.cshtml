@@ -84,7 +84,7 @@
 
                     <li class="treeview">
                         <a href="#">
-                            <i class="fa fa-files-o"></i>
+                            <i class="fa fa-dashboard"></i>
                             <span>Zarządzaj użytkownikami</span>
                         </a>
                         <ul class="treeview-menu">
@@ -93,21 +93,34 @@
                         </ul>
                     </li>
                     <li class="treeview">
-                    <li>
-                        <a asp-area="Admin" asp-action="Index" asp-controller="Author">
-                            <i class="fa fa-files-o"></i>
-                            Autorzy
+                        <a href="#">
+                            <i class="fa fa-dashboard"></i>
+                            <span>Autorzy</span>
                         </a>
-                    </li>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a asp-area="Admin" asp-action="Index" asp-controller="Author">
+                                    <i class="fa fa-circle-o"></i>
+                                    Autorzy
+                                </a>
+                            </li>
+                          </ul>
                     </li>
                     <li class="treeview">
-                    <li>
-                        <a asp-action="Index" asp-controller="Product" asp-area="Admin">
-                            <i class="fa fa-files-o"></i>
-                            Pozycje
+                        <a href="#">
+                            <i class="fa fa-dashboard"></i>
+                            <span>Pozycje</span>
                         </a>
+                        <ul class="treeview-menu">
+                            <li>
+                                <a asp-action="Index" asp-controller="Product" asp-area="Admin">
+                                    <i class="fa fa-circle-o"></i>
+                                    Pozycje
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    </li>
+                   
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-files-o"></i>
