@@ -1,11 +1,10 @@
-﻿using System.Runtime.InteropServices.WindowsRuntime;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Models;
 
 namespace TheBookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("[controller]")]
+    [Route("Admin/[controller]")]
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
