@@ -3,6 +3,7 @@
   "defaultProvider": "unpkg",
   "libraries": [
     {
+      "provider": "unpkg",
       "library": "bootstrap@4.0.0-alpha.6",
       "destination": "wwwroot/lib/bootstrap/"
     },
@@ -28,6 +29,17 @@
       "files": [
         "jquery.validate.min.js"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "admin-lte@2.4.18",
+      "destination": "wwwroot/lib/admin-lte/"
     }
-  ]
+  ,
+{
+  "provider": "cdnjs",
+  "library": "iCheck@1.0.2",
+  "destination": "wwwroot/lib/iCheck/"
+}
+]
 }
