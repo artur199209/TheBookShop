@@ -5,27 +5,49 @@
 }
 <h2>Książki @Model.Name @Model.Surname</h2>
 
-<div class="card col-xl-auto">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-xl-1 text-center">Imię</div>
-            <div class="col-xl-1 text-center">Nazwisko</div>
-            <div class="col-xl-1 text-center">Tytuł</div>
-            <div class="col-xl-1 text-center">Kategoria</div>
-            <div class="col-xl-1 text-center">Podkategoria</div>
-            <div class="col-xl-1 text-center">Wydawnictwo</div>
-            <div class="col-xl-1 text-center">Cena</div>
-            <div class="col-xl-5 text-center">Inne</div>
+@if (Model.Products.Any())
+{
+    <section>
+        <div class="box-body table-responsive">
+            <table class="table table-bordered table-hover" role="grid">
+                <tr>
+                    <th>Imię</th>
+                    <th>Nazwisko</th>
+                    <th>Tytuł</th>
+                    <th>Kategoria</th>
+                    <th>Podkategoria</th>
+                    <th>Wydawnictwo</th>
+                    <th>Cena</th>
+                    <th></th>
+                </tr>
+                @foreach (Product p in Model.Products)
+                {
+                    <tr>
+                        <td>@p.Title</td>
+                        <td>@p.Description</td>
+                        <td>@p.Price</td>
+                        <td>@p.Category</td>
+                        <td>@p.Subcategory</td>
+                        <td>@p.PublishingHouse</td>
+                        <td>@p.Price</td>
+                        <td>
+                            <form asp-action="Delete" asp-controller="Product" method="post">
+                                <a asp-controller="Product" asp-action="Edit" asp-route-productId="@p.ProductId">
+                                    Edytuj
+                                </a>
+                                <input type="hidden" name="ProductId"
+                                       value="@p.ProductId" />
+                                <input type="hidden" name="returnUrl"
+                                       value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <span class="fa fa-remove"></span>
+                                    Usuń
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
         </div>
-    </div>
-    <div class="card-body">
-        @if (Model != null)
-        {
-            foreach (var item in @Model.Products)
-            {
-                <partial name="Book" for="@item" />
-            }
-        }
-
-    </div>
-</div>
+    </section>
+}
