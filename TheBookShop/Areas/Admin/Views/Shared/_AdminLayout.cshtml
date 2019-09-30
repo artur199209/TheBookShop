@@ -7,7 +7,6 @@
     <style>
         .input-validation-error {
             border-color: red;
-            background-color: #fee;
         }
     </style>
     <link rel="stylesheet" asp-href-include="/lib/fontawesome/css/*.css" />
@@ -18,7 +17,6 @@
     <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
     <script src="~/lib/admin-lte/js/adminlte.js"></script>
-    <link rel="stylesheet" href="~/lib/iCheck/skins/flat/blue.css" />
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -87,25 +85,53 @@
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-files-o"></i>
-                            <span>Layout Options</span>
+                            <span>Zarządzaj użytkownikami</span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Boxed</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i>Użytkownicy</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i>Do zatwierdzenia</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                    <li>
+                        <a asp-area="Admin" asp-action="Index" asp-controller="Author">
+                            <i class="fa fa-files-o"></i>
+                            Autorzy
+                        </a>
+                    </li>
+                    </li>
+                    <li class="treeview">
+                    <li>
+                        <a asp-area="Admin" asp-action="Index" asp-controller="Book">
+                            <i class="fa fa-files-o"></i>
+                            Pozycje
+                        </a>
+                    </li>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-files-o"></i>
+                            <span>Zamówienia</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="#"><i class="fa fa-circle-o"></i>Wszystkie</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i>Ukończone</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o"></i>W trakcie</a></li>
                         </ul>
                     </li>
                 </ul>
             </section>
         </aside>
 
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="background-color: white">
             @RenderBody()
         </div>
 
         <footer class="main-footer">
-            <div class="pull-right hidden-xs">
+            <div class="pull-right">
                 <b>Version</b> 0.0.1
             </div>
             <strong>Copyright &copy; @DateTime.Now.Year  </strong> All rights reserved.
