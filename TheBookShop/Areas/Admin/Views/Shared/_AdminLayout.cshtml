@@ -102,7 +102,7 @@
                     </li>
                     <li class="treeview">
                     <li>
-                        <a asp-area="Admin" asp-action="Index" asp-controller="Book">
+                        <a asp-action="Index" asp-controller="Product" asp-area="Admin">
                             <i class="fa fa-files-o"></i>
                             Pozycje
                         </a>
@@ -117,7 +117,7 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i>Wszystkie</a></li>
+                            <li><a asp-area="Admin" asp-controller="Order" asp-action="Index"><i class="fa fa-circle-o"></i>Wszystkie</a></li>
                             <li><a href="#"><i class="fa fa-circle-o"></i>Ukończone</a></li>
                             <li><a href="#"><i class="fa fa-circle-o"></i>W trakcie</a></li>
                         </ul>
