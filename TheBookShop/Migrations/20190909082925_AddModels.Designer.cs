@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheBookShop.Models;
 
 namespace TheBookShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190909082925_AddModels")]
+    partial class AddModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,23 +27,20 @@ namespace TheBookShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
-                    b.Property<string>("Notes")
-                        .IsRequired();
+                    b.Property<string>("Notes");
 
-                    b.Property<string>("Surname")
-                        .IsRequired();
+                    b.Property<string>("Surname");
 
                     b.HasKey("AuthorId");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Author");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.CartLine", b =>
                 {
-                    b.Property<int>("CartLineId")
+                    b.Property<int>("CartLineID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -51,7 +50,7 @@ namespace TheBookShop.Migrations
 
                     b.Property<int>("Quantity");
 
-                    b.HasKey("CartLineId");
+                    b.HasKey("CartLineID");
 
                     b.HasIndex("OrderId");
 
@@ -99,7 +98,7 @@ namespace TheBookShop.Migrations
 
                     b.HasKey("CustomerAddressId");
 
-                    b.ToTable("CustomerAddresses");
+                    b.ToTable("CustomerAddress");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.DeliveryAddress", b =>
@@ -118,30 +117,7 @@ namespace TheBookShop.Migrations
 
                     b.HasKey("DeliveryAddressId");
 
-                    b.ToTable("DeliveryAddresses");
-                });
-
-            modelBuilder.Entity("TheBookShop.Models.Opinion", b =>
-                {
-                    b.Property<int>("OpinionId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CustomerId");
-
-                    b.Property<DateTime>("OpinionDate");
-
-                    b.Property<string>("OpinionDescription");
-
-                    b.Property<int?>("ProductId");
-
-                    b.HasKey("OpinionId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Opinions");
+                    b.ToTable("DeliveryAddress");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.Order", b =>
@@ -156,8 +132,6 @@ namespace TheBookShop.Migrations
 
                     b.Property<bool>("GiftWrap");
 
-                    b.Property<int?>("PaymentId");
-
                     b.Property<bool>("Shipped");
 
                     b.HasKey("OrderId");
@@ -166,28 +140,7 @@ namespace TheBookShop.Migrations
 
                     b.HasIndex("DeliveryAddressId");
 
-                    b.HasIndex("PaymentId");
-
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("TheBookShop.Models.Payment", b =>
-                {
-                    b.Property<int>("PaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Amount");
-
-                    b.Property<int?>("CustomerId");
-
-                    b.Property<DateTime>("PaymentDate");
-
-                    b.HasKey("PaymentId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.Product", b =>
@@ -196,7 +149,7 @@ namespace TheBookShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AuthorId");
+                    b.Property<int>("AuthorId");
 
                     b.Property<string>("Category")
                         .IsRequired();
@@ -249,44 +202,23 @@ namespace TheBookShop.Migrations
                         .HasForeignKey("CustomerAddressId");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.Opinion", b =>
-                {
-                    b.HasOne("TheBookShop.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId");
-
-                    b.HasOne("TheBookShop.Models.Product", "Product")
-                        .WithMany("Opinions")
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("TheBookShop.Models.Order", b =>
                 {
                     b.HasOne("TheBookShop.Models.Customer", "Customer")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("CustomerId");
 
                     b.HasOne("TheBookShop.Models.DeliveryAddress", "DeliveryAddress")
                         .WithMany()
                         .HasForeignKey("DeliveryAddressId");
-
-                    b.HasOne("TheBookShop.Models.Payment", "Payment")
-                        .WithMany()
-                        .HasForeignKey("PaymentId");
-                });
-
-            modelBuilder.Entity("TheBookShop.Models.Payment", b =>
-                {
-                    b.HasOne("TheBookShop.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.Product", b =>
                 {
                     b.HasOne("TheBookShop.Models.Author", "Author")
-                        .WithMany("Products")
-                        .HasForeignKey("AuthorId");
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

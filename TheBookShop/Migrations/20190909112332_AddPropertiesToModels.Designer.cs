@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheBookShop.Models;
 
 namespace TheBookShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190909112332_AddPropertiesToModels")]
+    partial class AddPropertiesToModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,18 +27,15 @@ namespace TheBookShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
-                    b.Property<string>("Notes")
-                        .IsRequired();
+                    b.Property<string>("Notes");
 
-                    b.Property<string>("Surname")
-                        .IsRequired();
+                    b.Property<string>("Surname");
 
                     b.HasKey("AuthorId");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Author");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.CartLine", b =>
@@ -99,7 +98,7 @@ namespace TheBookShop.Migrations
 
                     b.HasKey("CustomerAddressId");
 
-                    b.ToTable("CustomerAddresses");
+                    b.ToTable("CustomerAddress");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.DeliveryAddress", b =>
@@ -118,7 +117,7 @@ namespace TheBookShop.Migrations
 
                     b.HasKey("DeliveryAddressId");
 
-                    b.ToTable("DeliveryAddresses");
+                    b.ToTable("DeliveryAddress");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.Opinion", b =>
@@ -141,7 +140,7 @@ namespace TheBookShop.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Opinions");
+                    b.ToTable("Opinion");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.Order", b =>
@@ -187,7 +186,7 @@ namespace TheBookShop.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payment");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.Product", b =>
@@ -196,7 +195,7 @@ namespace TheBookShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AuthorId");
+                    b.Property<int>("AuthorId");
 
                     b.Property<string>("Category")
                         .IsRequired();
@@ -286,7 +285,8 @@ namespace TheBookShop.Migrations
                 {
                     b.HasOne("TheBookShop.Models.Author", "Author")
                         .WithMany("Products")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
