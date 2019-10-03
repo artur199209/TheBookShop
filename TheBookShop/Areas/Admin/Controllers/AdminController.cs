@@ -6,9 +6,15 @@ namespace TheBookShop.Areas.Admin.Controllers
     [Route("[controller]")]
     public class AdminController : Controller
     {
-        [Route("")]
         [Route("[action]")]
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [Route("")]
+        [Route("[action]")]
+        public IActionResult Login()
         {
             return View();
         }
