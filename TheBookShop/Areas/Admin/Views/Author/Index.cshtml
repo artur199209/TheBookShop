@@ -3,48 +3,49 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Lista autorów</h2>
+<h4>Lista autorów</h4>
 
-@if (Model.Any())
-{
-    <section>
-        <div class="box-body table-responsive">
-            <table class="table table-bordered table-hover" role="grid">
-                <tr>
-                    <th>Imię</th>
-                    <th>Nazwisko</th>
-                    <th>Biografia</th>
-                    <th>Liczba pozycji</th>
-                    <th></th>
-                </tr>
-                @foreach (Author p in Model)
-                {
-                    <tr>
-                        <td>@p.Name</td>
-                        <td>@p.Surname</td>
-                        <td>@p.Notes</td>
-                        <td>@p.Products.Count</td>
-                        <td>
-                            <form asp-action="Delete" method="post">
-                                <a asp-controller="Author" asp-action="Books" class="btn btn-sm btn-info"
-                                   asp-route-authorId="@p.AuthorId">
-                                    Wyświetl książki
-                                </a>
-                                <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-authorId="@p.AuthorId">
-                                    Edytuj
-                                </a>
-                                <input type="hidden" name="AuthorId" value="@p.AuthorId">
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    Usuń
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
-    </section>
-}
+<table class="table table-bordered table-hover table-sm" role="grid">
+    <tr>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Biografia</th>
+        <th>Liczba pozycji</th>
+        <th></th>
+    </tr>
+
+    @if (!Model.Any())
+    {
+        <tr><td colspan="5" class="text-center">Brak autorów</td></tr>
+    }
+    else
+    {
+        foreach (Author p in Model)
+         {
+             <tr>
+                 <td>@p.Name</td>
+                 <td>@p.Surname</td>
+                 <td>@p.Notes</td>
+                 <td>@p.Products.Count</td>
+                 <td>
+                     <form asp-action="Delete" method="post">
+                         <a asp-controller="Author" asp-action="Books" class="btn btn-sm btn-info"
+                            asp-route-authorId="@p.AuthorId">
+                             Wyświetl książki
+                         </a>
+                         <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-authorId="@p.AuthorId">
+                             Edytuj
+                         </a>
+                         <input type="hidden" name="AuthorId" value="@p.AuthorId">
+                         <button type="submit" class="btn btn-danger btn-sm">
+                             Usuń
+                         </button>
+                     </form>
+                 </td>
+             </tr>
+         }
+    }
+</table>
 
 <div class="text-center">
     <a asp-action="Create" class="btn btn-primary">Dodaj autora</a>
