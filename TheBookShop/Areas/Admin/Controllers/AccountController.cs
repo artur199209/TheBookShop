@@ -13,12 +13,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         private readonly IUserValidator<IdentityUser> _userValidator;
         private readonly IPasswordValidator<IdentityUser> _passwordValidator;
         private readonly IPasswordHasher<IdentityUser> _passwordHasher;
-
-        public AccountController(UserManager<IdentityUser> userManager)
-        {
-            _userManager = userManager;
-        }
-
+        
         public AccountController(UserManager<IdentityUser> userManager, IUserValidator<IdentityUser> userValidator,
             IPasswordValidator<IdentityUser> passwordValidator, IPasswordHasher<IdentityUser> passwordHasher)
         {
