@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Models;
 
 namespace TheBookShop.Areas.Admin.Controllers
@@ -17,7 +18,35 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public IActionResult Index()
         {
+            ViewData["Status"] = "Wszystkie";
             return View(_orderRepository.Orders);
+        }
+
+        [Route("[action]")]
+        public IActionResult Completed()
+        {
+            ViewData["Status"] = "Zakończone";
+            return View(nameof(Index), _orderRepository.Orders.Where(x => x.Shipped));
+        }
+
+        [Route("[action]")]
+        public IActionResult NotCompleted()
+        {
+            ViewData["Status"] = "Realizowane";
+            return View(nameof(Index), _orderRepository.Orders.Where(x => !x.Shipped));
+        }
+
+        [Route("[action]")]
+        public IActionResult Edit(int orderId)
+        {
+            var order = _orderRepository.Orders.FirstOrDefault(x => x.OrderId == orderId);
+
+            if (order != null)
+            {
+                
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
