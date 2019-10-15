@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Payment>
+
+<h4>Lista płatności</h4>
+
+<table class="table table-bordered table-sm">
+    <tr>
+        <th>ID</th>
+        <th>Klient</th>
+        <th>Kwota</th>
+        <th>Data płatności</th>
+    </tr>
+
+    @if (!Model.Any())
+    {
+        <tr><td colspan="4" class="text-center">Brak płatności</td></tr>
+    }
+    else
+    {
+        foreach (var payment in Model)
+        {
+            <tr>
+                <td>@payment.PaymentId</td>
+                <td>@payment.Customer.Name @payment.Customer.Surname</td>
+                <td>@payment.Amount</td>
+                <td>@payment.PaymentDate</td>
+            </tr>
+        }
+    }
+
+</table>
