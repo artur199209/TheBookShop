@@ -1,7 +1,4 @@
 ﻿@model IEnumerable<IdentityUser>
-@{
-    Layout = "_AdminLayout";
-}
 
 <h4>Konta użytkowników</h4>
 
@@ -11,7 +8,7 @@
     <tr><th>ID</th><th>Name</th><th>Email</th></tr>
     @if (!Model.Any())
     {
-        <tr><td colspan="3" class="text-center">No User Accounts</td></tr>
+        <tr><td colspan="3" class="text-center">Brak kont użytkowników</td></tr>
     }
     else
     {

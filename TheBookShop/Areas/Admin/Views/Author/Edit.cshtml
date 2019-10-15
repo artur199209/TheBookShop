@@ -1,9 +1,5 @@
 ﻿@model Author
 
-@{
-    Layout = "_AdminLayout";
-}
-
 <form asp-action="Edit" method="post">
     <input type="hidden" name="AuthorId"
            value="@Model.AuthorId"/>

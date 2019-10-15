@@ -1,6 +1,36 @@
 ﻿@model IEnumerable<Order>
-@{
-    Layout = "_AdminLayout";
-}
 
-dsadas
+<h4>@ViewData["status"] zamówienia</h4>
+
+<table class="table table-bordered table-sm">
+    <tr>
+        <th>ID</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Zrealizowane</th>
+        <th>Adres dostawy</th>
+        <th>Płatność</th>
+        <th>Zapakowane</th>
+    </tr>
+    
+    @if (!Model.Any())
+    {
+        <tr><td colspan="7" class="text-center">Brak zamówień</td></tr>
+    }
+    else
+    {
+        foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.Customer.Name</td>
+                <td>@order.Customer.Surname</td>
+                <td>@order.Shipped</td>
+                <td>@order.DeliveryAddress.DeliveryAddressId</td>
+                <td>@order.Payment.PaymentId</td>
+                <td>@order.GiftWrap</td>
+            </tr>
+        }
+    }
+
+</table>
