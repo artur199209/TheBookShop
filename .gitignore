@@ -334,3 +334,4 @@ ASALocalRun/
 .localhistory/
 **/wwwroot/lib
 **/wwwroot/dist
+**/Migrations/**
