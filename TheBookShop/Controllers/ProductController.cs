@@ -26,17 +26,17 @@ namespace TheBookShop.Controllers
         }
 
         [Route("[action]")]
-        public ViewResult List(string category, int productPage = 1)
+        public ViewResult List(string category, int page = 1)
             => View(new ProductsListViewModel
             {
                 Products = repository.Products
                     .Where(p => category == null || p.Category == category)
                     .OrderBy(p => p.ProductId)
-                    .Skip((productPage - 1) * PageSize)
+                    .Skip((page - 1) * PageSize)
                     .Take(PageSize),
                 PagingInfo = new PagingInfo
                 {
-                    CurrentPage = productPage,
+                    CurrentPage = page,
                     ItemsPerPage = PageSize,
                     TotalItems = category == null ? repository.Products.Count() 
                         : repository.Products.Count(x => x.Category == category)
