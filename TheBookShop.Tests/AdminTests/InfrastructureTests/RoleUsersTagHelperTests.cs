@@ -37,7 +37,7 @@ namespace TheBookShop.Tests.AdminTests.InfrastructureTests
         }
 
         [Fact]
-        public async Task Empty_List_Of_Users_When_Role_Does_Not_Contain_Any_Users()
+        public async Task Output_Does_Not_Contains_List_Of_Users()
         {
             var rolesUsersTagHelper = new RoleUsersTagHelper(_mockUserManager.Object, _mockRoleManager.Object);
             
