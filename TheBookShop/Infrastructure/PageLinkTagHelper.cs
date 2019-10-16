@@ -11,11 +11,11 @@ namespace TheBookShop.Infrastructure
     [HtmlTargetElement("div", Attributes = "page-model")]
     public class PageLinkTagHelper : TagHelper
     {
-        private IUrlHelperFactory urlHelperFactory;
+        private readonly IUrlHelperFactory _urlHelperFactory;
 
-        public PageLinkTagHelper(IUrlHelperFactory helperFactory)
+        public PageLinkTagHelper(IUrlHelperFactory urlHelperFactory)
         {
-            urlHelperFactory = helperFactory;
+            _urlHelperFactory = urlHelperFactory;
         }
 
         [ViewContext]
@@ -38,12 +38,12 @@ namespace TheBookShop.Infrastructure
         public override void Process(TagHelperContext context,
             TagHelperOutput output)
         {
-            IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
+            IUrlHelper urlHelper = _urlHelperFactory.GetUrlHelper(ViewContext);
             TagBuilder result = new TagBuilder("div");
             for (int i = 1; i <= PageModel.TotalPages; i++)
             {
                 TagBuilder tag = new TagBuilder("a");
-                PageUrlValues["productPage"] = i;
+                PageUrlValues["page"] = i;
                 tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
                 if (PageClassesEnabled)
                 {
