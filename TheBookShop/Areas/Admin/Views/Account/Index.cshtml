@@ -1,8 +1,8 @@
-﻿@model IEnumerable<IdentityUser>
+﻿@model IEnumerable<AppUser>
 
-<h4>Konta użytkowników</h4>
-
-<div class="text-danger" asp-validation-summary="ModelOnly"></div>
+<div class="text-center">
+    <h4>Konta użytkowników</h4>
+</div>
 
 <table class="table table-bordered table-hover table-sm" role="grid">
     <tr><th>ID</th><th>Name</th><th>Email</th></tr>
@@ -12,7 +12,7 @@
     }
     else
     {
-        foreach (IdentityUser user in Model)
+        foreach (AppUser user in Model)
         {
             <tr>
                 <td>@user.Id</td>
@@ -32,4 +32,6 @@
         }
     }
 </table>
-<a class="btn btn-primary" asp-action="Create">Create</a>
+<div class="text-center">
+    <a class="btn btn-primary" asp-action="Create">Dodaj użytkownika</a>
+</div>

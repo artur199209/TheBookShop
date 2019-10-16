@@ -31,7 +31,7 @@
                         <td>@p.Price</td>
                         <td>
                             <form asp-action="Delete" asp-controller="Product" method="post">
-                                <a asp-controller="Product" asp-action="Edit" asp-route-productId="@p.ProductId">
+                                <a asp-controller="Product" asp-action="Edit" asp-route-productId="@p.ProductId" class="btn btn-sm btn-warning">
                                     Edytuj
                                 </a>
                                 <input type="hidden" name="ProductId"
