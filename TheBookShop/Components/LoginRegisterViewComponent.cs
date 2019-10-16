@@ -2,15 +2,16 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TheBookShop.Models;
 
 namespace TheBookShop.Components
 {
     public class LoginRegisterViewComponent : ViewComponent
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public LoginRegisterViewComponent(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public LoginRegisterViewComponent(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;

@@ -6,19 +6,18 @@ using Moq;
 using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Models;
 using Xunit;
-using IdentityUser = Microsoft.AspNetCore.Identity.IdentityUser;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
 {
     public class AccountControllerTests
     {
-        private readonly Mock<UserManager<IdentityUser>> _mockUser;
-        private readonly Mock<IUserValidator<IdentityUser>> _mockUserValidator;
-        private readonly Mock<IPasswordValidator<IdentityUser>> _mockPasswordValidator;
-        private readonly Mock<IPasswordHasher<IdentityUser>> _mockPasswordHasher;
+        private readonly Mock<UserManager<AppUser>> _mockUser;
+        private readonly Mock<IUserValidator<AppUser>> _mockUserValidator;
+        private readonly Mock<IPasswordValidator<AppUser>> _mockPasswordValidator;
+        private readonly Mock<IPasswordHasher<AppUser>> _mockPasswordHasher;
         private const string Password = "admin123";
 
-        private readonly IdentityUser _identityUser = new IdentityUser
+        private readonly AppUser _appUser = new AppUser
         {
             UserName = "abcd",
             Id = "1234",
@@ -27,11 +26,11 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
         public AccountControllerTests()
         {
-            var userStoreMock = new Mock<IUserStore<IdentityUser>>();
-            _mockUser = new Mock<UserManager<IdentityUser>>(userStoreMock.Object, null, null, null, null, null, null, null, null);
-            _mockUserValidator = new Mock<IUserValidator<IdentityUser>>();
-            _mockPasswordValidator = new Mock<IPasswordValidator<IdentityUser>>();
-            _mockPasswordHasher = new Mock<IPasswordHasher<IdentityUser>>();
+            var userStoreMock = new Mock<IUserStore<AppUser>>();
+            _mockUser = new Mock<UserManager<AppUser>>(userStoreMock.Object, null, null, null, null, null, null, null, null);
+            _mockUserValidator = new Mock<IUserValidator<AppUser>>();
+            _mockPasswordValidator = new Mock<IPasswordValidator<AppUser>>();
+            _mockPasswordHasher = new Mock<IPasswordHasher<AppUser>>();
         }
 
 
@@ -40,15 +39,15 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         {
             _mockUser.Setup(x => x.Users).Returns(new[]
             {
-                new IdentityUser("abc1"),
-                new IdentityUser("abc2"),
-                new IdentityUser("abc3"),
-                new IdentityUser("abc4")
+                new AppUser(),
+                new AppUser(),
+                new AppUser(),
+                new AppUser()
             }.AsQueryable());
 
             var accountController = new AccountController(_mockUser.Object, _mockUserValidator.Object, _mockPasswordValidator.Object, _mockPasswordHasher.Object);
             
-            var result = GetViewModel<IEnumerable<IdentityUser>>(accountController.Index());
+            var result = GetViewModel<IEnumerable<AppUser>>(accountController.Index());
 
             Assert.Equal(4, result.Count());
         }
@@ -57,17 +56,17 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Can_Edit_User()
         {
             _mockUser.Setup(userManager => userManager.FindByIdAsync("1"))
-                .ReturnsAsync(new IdentityUser { Id = "1"});
+                .ReturnsAsync(new AppUser { Id = "1"});
             _mockUser.Setup(userManager => userManager.FindByIdAsync("2"))
-                .ReturnsAsync(new IdentityUser { Id = "2"});
+                .ReturnsAsync(new AppUser { Id = "2"});
             _mockUser.Setup(userManager => userManager.FindByIdAsync("3"))
-                .ReturnsAsync(new IdentityUser { Id = "3"});
+                .ReturnsAsync(new AppUser { Id = "3"});
 
             var accountController = new AccountController(_mockUser.Object, _mockUserValidator.Object, _mockPasswordValidator.Object, _mockPasswordHasher.Object);
 
-            var user1 = GetViewModel<IdentityUser>(accountController.Edit("1").Result);
-            var user2 = GetViewModel<IdentityUser>(accountController.Edit("2").Result);
-            var user3 = GetViewModel<IdentityUser>(accountController.Edit("3").Result);
+            var user1 = GetViewModel<AppUser>(accountController.Edit("1").Result);
+            var user2 = GetViewModel<AppUser>(accountController.Edit("2").Result);
+            var user3 = GetViewModel<AppUser>(accountController.Edit("3").Result);
 
             Assert.Equal("1", user1?.Id);
             Assert.Equal("2", user2?.Id);
@@ -78,13 +77,13 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Cannot_Edit_Non_Existing_User()
         {
             _mockUser.Setup(userManager => userManager.FindByIdAsync("1"))
-                .ReturnsAsync(new IdentityUser());
+                .ReturnsAsync(new AppUser());
             _mockUser.Setup(userManager => userManager.FindByIdAsync("2"))
-                .ReturnsAsync(new IdentityUser());
+                .ReturnsAsync(new AppUser());
 
             var accountController = new AccountController(_mockUser.Object, _mockUserValidator.Object, _mockPasswordValidator.Object, _mockPasswordHasher.Object);
 
-            var result = GetViewModel<IdentityUser>(accountController.Edit("3").Result);
+            var result = GetViewModel<AppUser>(accountController.Edit("3").Result);
 
             Assert.Null(result);
         }
@@ -92,7 +91,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Create_New_User()
         {
-            _mockUser.Setup(x => x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>()))
+            _mockUser.Setup(x => x.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success);
             var accountController = new AccountController(_mockUser.Object, _mockUserValidator.Object, _mockPasswordValidator.Object, _mockPasswordHasher.Object);
 
@@ -104,7 +103,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             };
 
             var result = accountController.Create(createModel).Result;
-            _mockUser.Verify(m => m.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>()));
+            _mockUser.Verify(m => m.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>()));
             Assert.Equal("Index", GetActionName(result));
         }
 
@@ -115,7 +114,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             accountController.ModelState.AddModelError("error", "error");
             var result = accountController.Create(null).Result;
-            _mockUser.Verify(x => x.CreateAsync(It.IsAny<IdentityUser>()), Times.Never());
+            _mockUser.Verify(x => x.CreateAsync(It.IsAny<AppUser>()), Times.Never());
             Assert.IsType<ViewResult>(result);
             Assert.True(GetModelErrorsCount(result) > 0);
         }
@@ -124,22 +123,22 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Can_Save_Valid_Changes()
         {
             _mockUser.Setup(userManager => userManager.FindByIdAsync("1234"))
-                .ReturnsAsync(new IdentityUser { UserName = "abc", Email = "wwww.ss@ww.pl"});
-            _mockUser.Setup(x => x.UpdateAsync(It.IsAny<IdentityUser>())).ReturnsAsync(IdentityResult.Success);
+                .ReturnsAsync(new AppUser { UserName = "abc", Email = "wwww.ss@ww.pl"});
+            _mockUser.Setup(x => x.UpdateAsync(It.IsAny<AppUser>())).ReturnsAsync(IdentityResult.Success);
 
             _mockUserValidator
-                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<IdentityUser>>(), It.IsAny<IdentityUser>()))
+                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<AppUser>>(), It.IsAny<AppUser>()))
                 .ReturnsAsync(IdentityResult.Success);
             _mockPasswordValidator
-                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<IdentityUser>>(), It.IsAny<IdentityUser>(), It.IsAny<string>()))
+                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<AppUser>>(), It.IsAny<AppUser>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success);
             
             var accountController = new AccountController(_mockUser.Object,
               _mockUserValidator.Object,
                _mockPasswordValidator.Object, _mockPasswordHasher.Object);
             
-            var result = (accountController.Edit(_identityUser.Id, _identityUser.Email, Password).Result);
-            _mockUser.Verify(m => m.UpdateAsync(It.IsAny<IdentityUser>()));
+            var result = (accountController.Edit(_appUser.Id, _appUser.Email, Password).Result);
+            _mockUser.Verify(m => m.UpdateAsync(It.IsAny<AppUser>()));
             Assert.Equal("Index", GetActionName(result));
         }
 
@@ -147,14 +146,14 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Cannot_Save_Invalid_Data()
         {
             _mockUser.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(new IdentityUser());
-            _mockUser.Setup(x => x.UpdateAsync(It.IsAny<IdentityUser>())).ReturnsAsync(IdentityResult.Failed());
+                .ReturnsAsync(new AppUser());
+            _mockUser.Setup(x => x.UpdateAsync(It.IsAny<AppUser>())).ReturnsAsync(IdentityResult.Failed());
             
             _mockUserValidator
-                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<IdentityUser>>(), It.IsAny<IdentityUser>()))
+                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<AppUser>>(), It.IsAny<AppUser>()))
                 .ReturnsAsync(IdentityResult.Failed());
             _mockPasswordValidator
-                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<IdentityUser>>(), It.IsAny<IdentityUser>(), It.IsAny<string>()))
+                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<AppUser>>(), It.IsAny<AppUser>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Failed());
 
             var accountController = new AccountController(_mockUser.Object,
@@ -163,7 +162,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             accountController.ModelState.AddModelError("error", "error");
             
-            var result = accountController.Edit(_identityUser.Id, _identityUser.Email, Password).Result;
+            var result = accountController.Edit(_appUser.Id, _appUser.Email, Password).Result;
             
             Assert.True(GetModelErrorsCount(result) > 0);
             Assert.IsType<ViewResult>(result);
@@ -173,12 +172,12 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Cannot_Save_Non_Existing_User()
         {
-            _mockUser.Setup(x => x.UpdateAsync(It.IsAny<IdentityUser>())).ReturnsAsync(IdentityResult.Success);
+            _mockUser.Setup(x => x.UpdateAsync(It.IsAny<AppUser>())).ReturnsAsync(IdentityResult.Success);
             _mockUserValidator
-                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<IdentityUser>>(), It.IsAny<IdentityUser>()))
+                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<AppUser>>(), It.IsAny<AppUser>()))
                 .ReturnsAsync(IdentityResult.Success);
             _mockPasswordValidator
-                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<IdentityUser>>(), It.IsAny<IdentityUser>(), It.IsAny<string>()))
+                .Setup(x => x.ValidateAsync(It.IsAny<UserManager<AppUser>>(), It.IsAny<AppUser>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success);
 
             var accountController = new AccountController(_mockUser.Object,
@@ -193,7 +192,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Delete_Existing_User()
         {
-            _mockUser.Setup(x => x.DeleteAsync(It.IsAny<IdentityUser>())).ReturnsAsync(IdentityResult.Success);
+            _mockUser.Setup(x => x.DeleteAsync(It.IsAny<AppUser>())).ReturnsAsync(IdentityResult.Success);
             var accountController = new AccountController(_mockUser.Object, _mockUserValidator.Object, _mockPasswordValidator.Object, _mockPasswordHasher.Object);
 
             var result = accountController.Delete("1234").Result;

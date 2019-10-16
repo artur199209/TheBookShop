@@ -9,13 +9,13 @@ namespace TheBookShop.Areas.Admin.Controllers
     [Route("Admin/[controller]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserValidator<IdentityUser> _userValidator;
-        private readonly IPasswordValidator<IdentityUser> _passwordValidator;
-        private readonly IPasswordHasher<IdentityUser> _passwordHasher;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IUserValidator<AppUser> _userValidator;
+        private readonly IPasswordValidator<AppUser> _passwordValidator;
+        private readonly IPasswordHasher<AppUser> _passwordHasher;
         
-        public AccountController(UserManager<IdentityUser> userManager, IUserValidator<IdentityUser> userValidator,
-            IPasswordValidator<IdentityUser> passwordValidator, IPasswordHasher<IdentityUser> passwordHasher)
+        public AccountController(UserManager<AppUser> userManager, IUserValidator<AppUser> userValidator,
+            IPasswordValidator<AppUser> passwordValidator, IPasswordHasher<AppUser> passwordHasher)
         {
             _userManager = userManager;
             _userValidator = userValidator;
@@ -42,7 +42,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser user = new IdentityUser
+                AppUser user = new AppUser
                 {
                     UserName = model.Name,
                     Email = model.Email
@@ -64,7 +64,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Edit(string id)
         {
-            IdentityUser user = await _userManager.FindByIdAsync(id);
+            AppUser user = await _userManager.FindByIdAsync(id);
 
             if (user != null)
             {
@@ -78,7 +78,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Edit(string id, string email, string password)
         {
-            IdentityUser user = await _userManager.FindByIdAsync(id);
+            AppUser user = await _userManager.FindByIdAsync(id);
 
             if (user != null)
             {
@@ -131,7 +131,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Delete(string id)
         {
-            IdentityUser user = await _userManager.FindByIdAsync(id);
+            AppUser user = await _userManager.FindByIdAsync(id);
 
             if (user != null)
             {
