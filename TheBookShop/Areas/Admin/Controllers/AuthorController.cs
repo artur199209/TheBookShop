@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models;
+using TheBookShop.Models.ViewModel;
 
 namespace TheBookShop.Areas.Admin.Controllers
 {
@@ -9,6 +11,7 @@ namespace TheBookShop.Areas.Admin.Controllers
     public class AuthorController : Controller
     {
         private readonly IAuthorRepository _authorRepository;
+        public int PageSize = 4;
 
         public AuthorController(IAuthorRepository authorRepository)
         {
@@ -17,9 +20,19 @@ namespace TheBookShop.Areas.Admin.Controllers
         
         [Route("")]
         [Route("[action]")]
-        public IActionResult Index()
+        [Route("[action]/{page}")]
+        public IActionResult Index(int page = 1)
         {
-            return View(_authorRepository.Authors);
+            return View(new AuthorListViewModel
+            {
+                Authors = _authorRepository.Authors.Skip((page - 1) * PageSize).Take(PageSize).ToList(),
+                PagingInfo = new PagingInfo()
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = _authorRepository.Authors.Count()
+                }
+            });
         }
 
         [Route("[action]")]
