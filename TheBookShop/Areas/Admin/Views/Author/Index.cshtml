@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Author>
+﻿@model TheBookShop.Areas.Admin.Model.AuthorListViewModel
 @{
     ViewData["Title"] = "Index";
 }
@@ -16,13 +16,13 @@
         <th></th>
     </tr>
 
-    @if (!Model.Any())
+    @if (!Model.Authors.Any())
     {
         <tr><td colspan="5" class="text-center">Brak autorów</td></tr>
     }
     else
     {
-        foreach (Author p in Model)
+        foreach (Author p in Model.Authors)
          {
              <tr>
                  <td>@p.Name</td>
@@ -51,4 +51,9 @@
 
 <div class="text-center">
     <a asp-action="Create" class="btn btn-primary">Dodaj autora</a>
+</div>
+
+<div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" class="btn-group float-left m-1">
 </div>
