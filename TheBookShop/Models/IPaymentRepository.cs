@@ -2,7 +2,7 @@
 
 namespace TheBookShop.Models
 {
-    interface IPaymentRepository
+    public interface IPaymentRepository
     {
         IQueryable<Payment> Payments { get; }
         void SavePayment(Payment payment);
