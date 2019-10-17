@@ -1,0 +1,18 @@
+﻿@model string
+
+<div class="text-center">
+    <h4>Nowa rola</h4>
+</div>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="name"></label>
+        <input name="name" class="form-control" />
+    </div>
+    
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Utwórz</button>
+        <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+    </div>
+
+</form>
