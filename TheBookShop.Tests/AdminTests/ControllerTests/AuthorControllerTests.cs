@@ -1,48 +1,48 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using TheBookShop.Areas.Admin.Controllers;
+using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models;
 using Xunit;
 
-namespace TheBookShop.Tests.ControllerTests
+namespace TheBookShop.Tests.AdminTests.ControllerTests
 {
     public class AuthorControllerTests
     {
+        private readonly Mock<IAuthorRepository> _authorRepositoryMock;
+        private readonly Author _author;
+
+        public AuthorControllerTests()
+        {
+            _authorRepositoryMock = new Mock<IAuthorRepository>();
+            _authorRepositoryMock.Setup(m => m.Authors).Returns(new[]
+            {
+                new Author { AuthorId = 1, Name = "Author1", Surname = "Surname1" },
+                new Author { AuthorId = 2, Name = "Author2", Surname = "Surname2" },
+                new Author { AuthorId = 3, Name = "Author3", Surname = "Surname3" }
+            }.AsQueryable());
+
+            _author = new Author { AuthorId = 4, Name = "Author4" };
+        }
+
         [Fact]
         public void Index_Contains_All_Authors()
         {
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
-            authorRepoMock.Setup(m => m.Authors).Returns((new []
-            {
-                new Author {AuthorId = 1, Name = "Jan", Surname = "Kowalski"},
-                new Author {AuthorId = 2, Name = "Marcin", Surname = "Nowak"},
-                new Author {AuthorId = 3, Name = "Jacek", Surname = "Nowak"},
-            }).AsQueryable());
-
-            AuthorController controller = new AuthorController(authorRepoMock.Object);
-            Author[] results = GetViewModel<IEnumerable<Author>>(controller.Index())?.ToArray();
-
-            Assert.Equal(3, results?.Length);
-            Assert.Equal("Jan", results?[0].Name);
-            Assert.Equal("Marcin", results?[1].Name);
-            Assert.Equal("Jacek", results?[2].Name);
+            AuthorController controller = new AuthorController(_authorRepositoryMock.Object);
+            var results = GetViewModel<AuthorListViewModel>(controller.Index()).Authors.ToArray();
+            
+            Assert.Equal(3, results.Length);
+            Assert.Equal("Author1", results[0].Name);
+            Assert.Equal("Author2", results[1].Name);
+            Assert.Equal("Author3", results[2].Name);
         }
 
         [Fact]
         public void Can_Edit_Author()
         {
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
-            authorRepoMock.Setup(m => m.Authors).Returns((new []
-            {
-                new Author {AuthorId = 1, Name = "Jan", Surname = "Kowalski"},
-                new Author {AuthorId = 2, Name = "Marcin", Surname = "Nowak"},
-                new Author {AuthorId = 3, Name = "Jacek", Surname = "Nowak"},
-            }).AsQueryable());
-
-            AuthorController controller = new AuthorController(authorRepoMock.Object);
+            AuthorController controller = new AuthorController(_authorRepositoryMock.Object);
             Author p1 = GetViewModel<Author>(controller.Edit(1));
             Author p2 = GetViewModel<Author>(controller.Edit(2));
             Author p3 = GetViewModel<Author>(controller.Edit(3));
@@ -55,15 +55,7 @@ namespace TheBookShop.Tests.ControllerTests
         [Fact]
         public void Cannot_Edit_Non_Existing_Author()
         {
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
-            authorRepoMock.Setup(m => m.Authors).Returns((new []
-            {
-                new Author {AuthorId = 1, Name = "Jan", Surname = "Kowalski"},
-                new Author {AuthorId = 2, Name = "Marcin", Surname = "Nowak"},
-                new Author {AuthorId = 3, Name = "Jacek", Surname = "Nowak"},
-            }).AsQueryable());
-
-            AuthorController controller = new AuthorController(authorRepoMock.Object);
+            AuthorController controller = new AuthorController(_authorRepositoryMock.Object);
             Author author = GetViewModel<Author>(controller.Edit(4));
 
             Assert.Null(author);
@@ -72,17 +64,15 @@ namespace TheBookShop.Tests.ControllerTests
         [Fact]
         public void Can_Save_Valid_Changes()
         {
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
             Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
 
-            AuthorController controller = new AuthorController(authorRepoMock.Object)
+            AuthorController controller = new AuthorController(_authorRepositoryMock.Object)
             {
                 TempData = tempData.Object
             };
-
-            Author author = new Author() { Name = "Jan" };
-            IActionResult result = controller.Edit(author);
-            authorRepoMock.Verify(m => m.SaveAuthor(author));
+            
+            IActionResult result = controller.Edit(_author);
+            _authorRepositoryMock.Verify(m => m.SaveAuthor(_author));
 
             Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", (result as RedirectToActionResult)?.ActionName);
@@ -91,40 +81,44 @@ namespace TheBookShop.Tests.ControllerTests
         [Fact]
         public void Cannot_Save_Invalid_Changes()
         {
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
-
-            AuthorController controller = new AuthorController(authorRepoMock.Object);
+            AuthorController controller = new AuthorController(_authorRepositoryMock.Object);
             controller.ModelState.AddModelError("error", "error");
-            Author author = new Author() { Name = "Jan" };
 
-            IActionResult result = controller.Edit(author);
+            IActionResult result = controller.Edit(_author);
 
-            authorRepoMock.Verify(m => m.SaveAuthor(It.IsAny<Author>()), Times.Never);
+            _authorRepositoryMock.Verify(m => m.SaveAuthor(It.IsAny<Author>()), Times.Never);
             Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
         public void Can_Delete_Valid_Author()
         {
-            Author author = new Author() { AuthorId = 4, Name = "Jan" };
-            
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
-            authorRepoMock.Setup(m => m.Authors).Returns((new []
-            {
-                new Author {AuthorId = 1, Name = "Jan", Surname = "Kowalski"},
-                new Author {AuthorId = 2, Name = "Marcin", Surname = "Nowak"},
-                new Author {AuthorId = 3, Name = "Jacek", Surname = "Nowak"},
-            }).AsQueryable());
+            AuthorController controller = new AuthorController(_authorRepositoryMock.Object);
+            controller.Delete(_author.AuthorId);
 
-            AuthorController controller = new AuthorController(authorRepoMock.Object);
-            controller.Delete(author.AuthorId);
+            _authorRepositoryMock.Verify(m => m.DeleteAuthor(_author.AuthorId));
+        }
 
-            authorRepoMock.Verify(m => m.DeleteAuthor(author.AuthorId));
+        [Fact]
+        public void Can_Send_Pagination()
+        {
+            AuthorController controller = new AuthorController(_authorRepositoryMock.Object);
+            var result = GetViewModel<AuthorListViewModel>(controller.Index()).PagingInfo;
+
+            Assert.Equal(3, result.TotalItems);
+            Assert.Equal(1, result.TotalPages);
+            Assert.Equal(1, result.CurrentPage);
+            Assert.Equal(4, result.ItemsPerPage);
         }
 
         private T GetViewModel<T>(IActionResult result) where T : class
         {
             return (result as ViewResult)?.ViewData.Model as T;
+        }
+
+        private string GetActionName(IActionResult result)
+        {
+            return (result as RedirectToActionResult)?.ActionName;
         }
     }
 }

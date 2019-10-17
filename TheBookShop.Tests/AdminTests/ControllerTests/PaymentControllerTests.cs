@@ -10,24 +10,24 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 {
     public class PaymentControllerTests
     {
-        private readonly Mock<IPaymentRepository> _mockPaymentRepository;
+        private readonly Mock<IPaymentRepository> _paymentRepositoryMock;
 
         public PaymentControllerTests()
         {
-            _mockPaymentRepository = new Mock<IPaymentRepository>();
+            _paymentRepositoryMock = new Mock<IPaymentRepository>();
         }
 
         [Fact]
         public void Index_Contains_All_Payments()
         {
-            _mockPaymentRepository.Setup(x => x.Payments).Returns(new[]
+            _paymentRepositoryMock.Setup(x => x.Payments).Returns(new[]
             {
-                new Payment {PaymentId = 1, Amount = 10},
-                new Payment {PaymentId = 2, Amount = 15},
-                new Payment {PaymentId = 3, Amount = 19},
+                new Payment { PaymentId = 1, Amount = 10 },
+                new Payment { PaymentId = 2, Amount = 15 },
+                new Payment { PaymentId = 3, Amount = 19 },
             }.AsQueryable());
 
-            var paymentController = new PaymentController(_mockPaymentRepository.Object);
+            var paymentController = new PaymentController(_paymentRepositoryMock.Object);
 
             var result = GetViewModel<IEnumerable<Payment>>(paymentController.Index()).ToArray();
 

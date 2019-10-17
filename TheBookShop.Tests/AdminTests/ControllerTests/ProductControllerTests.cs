@@ -11,19 +11,29 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 {
     public class ProductControllerTests
     {
+        private readonly Mock<IProductRepository> _productRepositoryMock;
+        private readonly Mock<IAuthorRepository> _authorRepositoryMock;
+        private readonly Product _product;
+
+        public ProductControllerTests()
+        {
+            _productRepositoryMock = new Mock<IProductRepository>();
+            _authorRepositoryMock = new Mock<IAuthorRepository>();
+
+            _productRepositoryMock.Setup(m => m.Products).Returns(new[]
+            {
+                new Product { ProductId = 1, Title = "Product1" },
+                new Product { ProductId = 2, Title = "Product2" },
+                new Product { ProductId = 3, Title = "Product3" },
+            }.AsQueryable());
+
+            _product = new Product { ProductId = 4, Title = "Product4" };
+        }
+
         [Fact]
         public void Index_Contains_All_Products()
         {
-            Mock<IProductRepository> productRepoMock = new Mock<IProductRepository>();
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
-            productRepoMock.Setup(m => m.Products).Returns((new []
-            {
-                new Product {ProductId = 1, Title = "Product1"},
-                new Product {ProductId = 2, Title = "Product2"},
-                new Product {ProductId = 3, Title = "Product3"},
-            }).AsQueryable());
-
-            ProductController controller = new ProductController(productRepoMock.Object, authorRepoMock.Object);
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object);
             Product[] results = GetViewModel<IEnumerable<Product>>(controller.Index())?.ToArray();
 
             Assert.Equal(3, results?.Length);
@@ -35,16 +45,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Edit_Product()
         {
-            Mock<IProductRepository> productRepoMock = new Mock<IProductRepository>();
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
-            productRepoMock.Setup(m => m.Products).Returns((new []
-            {
-                new Product {ProductId = 1, Title = "Product1"},
-                new Product {ProductId = 2, Title = "Product2"},
-                new Product {ProductId = 3, Title = "Product3"},
-            }).AsQueryable());
-
-            ProductController controller = new ProductController(productRepoMock.Object, authorRepoMock.Object);
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object);
             Product p1 = GetViewModel<Product>(controller.Edit(1));
             Product p2 = GetViewModel<Product>(controller.Edit(2));
             Product p3 = GetViewModel<Product>(controller.Edit(3));
@@ -57,16 +58,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Cannot_Edit_Non_Existing_Product()
         {
-            Mock<IProductRepository> productRepoMock = new Mock<IProductRepository>();
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
-            productRepoMock.Setup(m => m.Products).Returns((new []
-            {
-                new Product {ProductId = 1, Title = "Product1"},
-                new Product {ProductId = 2, Title = "Product2"},
-                new Product {ProductId = 3, Title = "Product3"},
-            }).AsQueryable());
-
-            ProductController controller = new ProductController(productRepoMock.Object, authorRepoMock.Object);
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object);
             Product p1 = GetViewModel<Product>(controller.Edit(4));
 
             Assert.Null(p1);
@@ -75,19 +67,16 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Save_Valid_Changes()
         {
-            Mock<IProductRepository> productRepoMock = new Mock<IProductRepository>();
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
             Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
 
-            ProductController controller = new ProductController(productRepoMock.Object, authorRepoMock.Object)
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object)
             {
                 TempData = tempData.Object
             };
             
-            Product product = new Product() { Title = "Test"};
-            IActionResult result = controller.Edit(product, null);
-            productRepoMock.Verify(m => m.SaveProduct(product));
+            IActionResult result = controller.Edit(_product, null);
 
+            _productRepositoryMock.Verify(m => m.SaveProduct(_product));
             Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", (result as RedirectToActionResult)?.ActionName);
         }
@@ -95,37 +84,22 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Cannot_Save_Invalid_Changes()
         {
-            Mock<IProductRepository> productRepoMock = new Mock<IProductRepository>();
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
-
-            ProductController controller = new ProductController(productRepoMock.Object, authorRepoMock.Object);
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object);
             controller.ModelState.AddModelError("error", "error");
-            Product product = new Product() { Title = "Test" };
+           
+            IActionResult result = controller.Edit(_product, null);
 
-            IActionResult result = controller.Edit(product, null);
-
-            productRepoMock.Verify(m => m.SaveProduct(It.IsAny<Product>()), Times.Never);
+            _productRepositoryMock.Verify(m => m.SaveProduct(It.IsAny<Product>()), Times.Never);
             Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
         public void Can_Delete_Valid_Product()
         {
-            Product prod4 = new Product(){ProductId = 4, Title = "Product4"};
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object);
+            controller.Delete(_product.ProductId);
 
-            Mock<IProductRepository> productRepoMock = new Mock<IProductRepository>();
-            Mock<IAuthorRepository> authorRepoMock = new Mock<IAuthorRepository>();
-            productRepoMock.Setup(m => m.Products).Returns((new []
-            {
-                new Product {ProductId = 1, Title = "Product1"},
-                new Product {ProductId = 2, Title = "Product2"},
-                new Product {ProductId = 3, Title = "Product3"},
-            }).AsQueryable());
-
-            ProductController controller = new ProductController(productRepoMock.Object, authorRepoMock.Object);
-            controller.Delete(prod4.ProductId);
-
-            productRepoMock.Verify(m => m.DeleteProduct(prod4.ProductId));
+            _productRepositoryMock.Verify(m => m.DeleteProduct(_product.ProductId));
         }
 
         private T GetViewModel<T>(IActionResult result) where T : class
