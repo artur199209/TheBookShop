@@ -1,4 +1,50 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model RoleEditModel
+
+<div class="text-center">
+    <h4>Edycja roli</h4>
+</div>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="roleName" value="@Model.Role.Name" />
+    <input type="hidden" name="roleId" value="@Model.Role.Id" />
+
+    <h6 class="bg-info p-1 text-white">Add To @Model.Role.Name</h6>
+    <table class="table table-bordered table-sm">
+        @if (!Model.NonMembers.Any()) {
+            <tr><td colspan="2">Wszyscy użytkownicy należą do tej roli</td></tr>
+        }
+        else
+        {
+            foreach (AppUser user in Model.NonMembers) {
+                 <tr>
+                     <td>@user.UserName</td>
+                     <td>
+                         <input type="checkbox" name="IdsToAdd" value="@user.Id">
+                     </td>
+                 </tr>
+             }
+        }
+    </table>
+
+    <h6 class="bg-info p-1 text-white">Usuń z @Model.Role.Name</h6>
+    <table class="table table-bordered table-sm">
+        @if (!Model.Members.Any()) {
+            <tr><td colspan="2">Brak użytkowników</td></tr>
+        }
+        else
+        {
+            foreach (AppUser user in Model.Members) {
+                 <tr>
+                     <td>@user.UserName</td>
+                     <td>
+                         <input type="checkbox" name="IdsToDelete" value="@user.Id">
+                     </td>
+                 </tr>
+             }
+        }
+    </table>
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+</form>
