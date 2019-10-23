@@ -77,6 +77,7 @@ namespace TheBookShop
                 routes.MapRoute(name: null, template: "{controller}/{action}/{id?}");
             });
 
+            AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
             //SeedData.EnsurePopulated(app);
         }
     }
