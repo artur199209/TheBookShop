@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Areas.Admin.Controllers;
+using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models;
 using Xunit;
 
@@ -99,6 +100,113 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             var result = GetActionName(roleController.Delete(It.IsAny<string>()).Result);
 
             _roleManagerMock.Verify(m => m.DeleteAsync(It.IsAny<IdentityRole>()), Times.Never);
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void Role_Does_Not_Contain_Members()
+        {
+            var user1 = new AppUser { UserName = "user1" };
+            var user2 = new AppUser { UserName = "user2" };
+            _roleManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync((IdentityRole)null);
+            _userManagerMock.Setup(x => x.Users).Returns(new[]
+            {
+               user1, user2
+            }.AsQueryable());
+
+            _userManagerMock.Setup(x => x.IsInRoleAsync(user1, It.IsAny<string>())).ReturnsAsync(true);
+            _userManagerMock.Setup(x => x.IsInRoleAsync(user2, It.IsAny<string>())).ReturnsAsync(true);
+            _roleManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new IdentityRole());
+
+            var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
+
+            var result = GetViewModel<RoleEditModel>(roleController.Edit(It.IsAny<string>()).Result);
+
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Members.Count());
+            Assert.Empty(result.NonMembers);
+        }
+
+        [Fact]
+        public void All_Users_Assigned_To_Role()
+        {
+            var user1 = new AppUser { UserName = "user1" };
+            var user2 = new AppUser { UserName = "user2" };
+            _roleManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync((IdentityRole)null);
+            _userManagerMock.Setup(x => x.Users).Returns(new[]
+            {
+                user1, user2
+            }.AsQueryable());
+
+            _userManagerMock.Setup(x => x.IsInRoleAsync(user1, It.IsAny<string>())).ReturnsAsync(false);
+            _userManagerMock.Setup(x => x.IsInRoleAsync(user2, It.IsAny<string>())).ReturnsAsync(false);
+            _roleManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new IdentityRole());
+
+            var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
+
+            var result = GetViewModel<RoleEditModel>(roleController.Edit(It.IsAny<string>()).Result);
+
+            Assert.NotNull(result);
+            Assert.Equal(2, result.NonMembers.Count());
+            Assert.Empty(result.Members);
+        }
+
+        [Fact]
+        public void Can_Assign_User_To_Role()
+        {
+            var model = new RoleModificationModel
+            {
+                RoleId = "1",
+                RoleName = "role1",
+                IdsToAdd = new [] { "1" }
+            };
+
+            _userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new AppUser());
+            _userManagerMock.Setup(x => x.AddToRoleAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
+
+            var result = GetActionName(roleController.Edit(model).Result);
+
+            _userManagerMock.Verify(m => m.FindByIdAsync(It.IsAny<string>()));
+            _userManagerMock.Verify(m => m.AddToRoleAsync(It.IsAny<AppUser>(), It.IsAny<string>()));
+            
+            Assert.Equal("Index", result);
+        }
+
+        [Fact]
+        public void Can_Remove_User_From_Role()
+        {
+            var model = new RoleModificationModel
+            {
+                RoleId = "1",
+                RoleName = "role1",
+                IdsToDelete = new[] { "1" }
+            };
+
+            _userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new AppUser());
+            _userManagerMock.Setup(x => x.RemoveFromRoleAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
+
+            var result = GetActionName(roleController.Edit(model).Result);
+
+            _userManagerMock.Verify(m => m.FindByIdAsync(It.IsAny<string>()));
+            _userManagerMock.Verify(m => m.RemoveFromRoleAsync(It.IsAny<AppUser>(), It.IsAny<string>()));
+
+            Assert.Equal("Index", result);
+        }
+
+        [Fact]
+        public void Cannot_Update_Role_When_Model_Is_Invalid()
+        {
+            var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
+            roleController.ModelState.AddModelError("error", "error");
+
+            var result = GetActionName(roleController.Edit(new RoleModificationModel()).Result);
+
             Assert.Null(result);
         }
 
