@@ -22,6 +22,7 @@ namespace TheBookShop.Areas.Admin.Components
         public bool IsParent { get; set; }
         public string NameOption { get; set; }
         public string IconClass { get; set; }
+        public bool IsActive { get; set; }
     }
 
 
@@ -30,10 +31,10 @@ namespace TheBookShop.Areas.Admin.Components
         public IEnumerable<LeftNavItem> LeftPanel()
         {
             var topNav = new List<LeftNavItem>();
-            topNav.Add(new LeftNavItem() { Id = 1, NameOption = "Home Management", IsParent = true, ParentId = -1, IconClass = "fa fa-dashboard" });
-            topNav.Add(new LeftNavItem() { Id = 2, Area = "Admin", Controller = "Admin", Action = "Index", NameOption = "Home Index", IsParent = false, ParentId = 1, IconClass = "fa fa-circle-o" });
+            topNav.Add(new LeftNavItem() { Id = 1, NameOption = "Home", IsParent = true, ParentId = -1, IconClass = "fas fa-home", IsActive = true});
+            topNav.Add(new LeftNavItem() { Id = 2, Area = "Admin", Controller = "Admin", Action = "Index", NameOption = "Home", IsParent = false, ParentId = 1, IconClass = "fa fa-circle-o" });
 
-            topNav.Add(new LeftNavItem() { Id = 3, NameOption = "Role", IsParent = true, ParentId = -1, IconClass = "fas fa-users" });
+            topNav.Add(new LeftNavItem() { Id = 3, NameOption = "Role", IsParent = true, ParentId = -1, IconClass = "fas fa-layer-group" });
             topNav.Add(new LeftNavItem() { Id = 4, Area = "Admin", Controller = "Role", Action = "Index", NameOption = "Wszystkie", IsParent = false, ParentId = 3, IconClass = "fa fa-circle-o" });
             topNav.Add(new LeftNavItem() { Id = 5, Area = "Admin", Controller = "Role", Action = "Create", NameOption = "Dodaj", IsParent = false, ParentId = 3, IconClass = "fa fa-circle-o" });
 
@@ -54,7 +55,7 @@ namespace TheBookShop.Areas.Admin.Components
             topNav.Add(new LeftNavItem() { Id = 17, Area = "Admin", Action = "Completed", NameOption = "Zakończone", Controller = "Order", IsParent = false, ParentId = 15, IconClass = "fa fa-circle-o" });
             topNav.Add(new LeftNavItem() { Id = 18, Area = "Admin", Action = "NotCompleted", NameOption = "W trakcie", Controller = "Order", IsParent = false, ParentId = 15, IconClass = "fa fa-circle-o" });
 
-            topNav.Add(new LeftNavItem() { Id = 19, NameOption = "Płatności", IsParent = true, ParentId = -1, IconClass = "fab fa-first-order" });
+            topNav.Add(new LeftNavItem() { Id = 19, NameOption = "Płatności", IsParent = true, ParentId = -1, IconClass = "fas fa-receipt" });
             topNav.Add(new LeftNavItem() { Id = 20, Area = "Admin", Controller = "Payment", Action = "Index", NameOption = "Wszystkie", IsParent = false, ParentId = 19, IconClass = "fa fa-circle-o" });
             return topNav;
         }
