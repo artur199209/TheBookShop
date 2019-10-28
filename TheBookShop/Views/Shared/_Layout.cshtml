@@ -3,32 +3,41 @@
 <head>
     <meta name="viewport" content="width=device-width" />
   
-    <link rel="stylesheet"
-          asp-href-include="/lib/bootstrap/dist/**/*.min.css"
-          asp-href-exclude="**/*-reboot*,**/*-grid*" />
-    <link rel="stylesheet" asp-href-include="/lib/fontawesome/css/*.css" />
-    <link rel="stylesheet" asp-href-include="/css/*.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/NavBar.css"/>
-    <script src="/lib/jquery/dist/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="/lib/jquery/dist/jquery.min.js"></script>
-    <script src="/lib/jquery-validate/dist/jquery.validate.min.js"></script>
-    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-   
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/NavBar.css"/>
+    <environment names="development">
+        <link asp-href-include="/css/*.css" rel="stylesheet"/>
+        <link asp-href-include="/lib/fontawesome/css/*.css" rel="stylesheet"/>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <link asp-href-include="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="/lib/jquery/dist/jquery.min.js"></script>
+        <script src="/lib/jquery-validate/dist/jquery.validate.min.js"></script>
+        <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    </environment>
     
+    <environment names="staging, production">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+              asp-href-include="/lib/bootstrap/dist/**/*.min.css"
+              asp-href-exclude="**/*-reboot*,**/*-grid*"
+              asp-fallback-test-class="btn"
+              asp-fallback-test-property="display"
+              asp-fallback-test-value="inline-block"
+              rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.4.1/css/*.css"
+              asp-href-include="/lib/fontawesome/css/*.css"
+              asp-fallback-test-class="fa"
+              asp-fallback-test-property="font-family"
+              asp-fallback-test-value="FontAwesome"
+              rel="stylesheet" />
+
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"
+                asp-fallback-src="/lib/jquery/dist/jquery.min.js"
+                asp-fallback-src-include="**.slim.**"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <link asp-href-include="/css/*.css" rel="stylesheet" />
+        <link rel="stylesheet" asp-href-include="/css/*.css" />
+    </environment>
+
     <title>The Book Shop</title>
-    <style type="text/css">
-        .rcorners1 {
-            border-radius: 25px;
-            border: 1px solid #73AD21;
-            padding: 20px;
-        }
-    </style>
 </head>
 <body>
     <div class="navbar navbar-inverse bg-inverse" role="navigation">
