@@ -38,7 +38,6 @@ namespace TheBookShop.Tests.ComponentTests
             var viewName = (result as ViewViewComponentResult)?.ViewName;
 
             Assert.Equal("SignedIn", viewName);
-
         }
 
         [Fact]
@@ -52,7 +51,6 @@ namespace TheBookShop.Tests.ComponentTests
             var viewName = (result as ViewViewComponentResult)?.ViewName;
 
             Assert.Equal("SignedOut", viewName);
-
         }
 
         [Fact]
