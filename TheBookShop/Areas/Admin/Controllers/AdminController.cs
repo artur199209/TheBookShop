@@ -36,7 +36,6 @@ namespace TheBookShop.Areas.Admin.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("")]
         public async Task<IActionResult> Login(LoginModel details)
         {
             if (ModelState.IsValid)
@@ -62,6 +61,7 @@ namespace TheBookShop.Areas.Admin.Controllers
             return View(details);
         }
 
+        [Route("[action]")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
