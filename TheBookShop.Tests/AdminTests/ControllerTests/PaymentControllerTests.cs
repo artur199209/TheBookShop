@@ -25,7 +25,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             {
                 new Payment { PaymentId = 1, Amount = 10 },
                 new Payment { PaymentId = 2, Amount = 15 },
-                new Payment { PaymentId = 3, Amount = 19 },
+                new Payment { PaymentId = 3, Amount = 19 }
             }.AsQueryable());
 
             var paymentController = new PaymentController(_paymentRepositoryMock.Object);
