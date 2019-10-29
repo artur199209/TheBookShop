@@ -1,22 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using Microsoft.AspNetCore.Routing;
 using TheBookShop.Infrastructure;
 using TheBookShop.Models;
-using TheBookShop.Models.ViewModel;
+using TheBookShop.Models.DataModels;
+using TheBookShop.Models.Repositories;
+using TheBookShop.Models.ViewModels;
 
 namespace TheBookShop.Controllers
 {
     [Route("[controller]")]
     public class CartController : Controller
     {
-        private IProductRepository repository;
-        private Cart cart;
+        private readonly IProductRepository _repository;
+        private readonly Cart _cart;
 
         public CartController(IProductRepository repo, Cart cartService)
         {
-            repository = repo;
-            cart = cartService;
+            _repository = repo;
+            _cart = cartService;
         }
 
         [Route("[action]")]
@@ -32,12 +33,12 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public RedirectToActionResult AddToCart(int productId, string returnUrl)
         {
-            Product product = repository.Products.FirstOrDefault(p => p.ProductId == productId);
+            Product product = _repository.Products.FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)
             {
-                cart.AddItem(product, 1);
-                SaveCart(cart);
+                _cart.AddItem(product, 1);
+                SaveCart(_cart);
             }
 
             return RedirectToAction("Index", new { returnUrl });
@@ -46,12 +47,12 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public RedirectToActionResult RemoveFromCart(int productId, string returnUrl)
         {
-            Product product = repository.Products.FirstOrDefault(p => p.ProductId == productId);
+            Product product = _repository.Products.FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)
             {
-                cart.RemoveLine(product);
-                SaveCart(cart);
+                _cart.RemoveLine(product);
+                SaveCart(_cart);
             }
 
             return RedirectToAction("Index", new { returnUrl });
@@ -60,12 +61,12 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public RedirectToActionResult DecreaseProductCount(int productId, string returnUrl)
         {
-            Product product = repository.Products.FirstOrDefault(p => p.ProductId == productId);
+            Product product = _repository.Products.FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)
             {
-                cart.DecreaseProductCount(product);
-                SaveCart(cart);
+                _cart.DecreaseProductCount(product);
+                SaveCart(_cart);
             }
 
             return RedirectToAction("Index", new { returnUrl });

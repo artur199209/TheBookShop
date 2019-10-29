@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Moq;
 using TheBookShop.Infrastructure;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
+using TheBookShop.Models.Repositories;
 using Xunit;
 
 namespace TheBookShop.Tests.InfrastructureTests

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Moq;
 using TheBookShop.Areas.Admin.Infrastructure;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.InfrastructureTests

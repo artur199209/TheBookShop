@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using Moq;
 using TheBookShop.Controllers;
-using TheBookShop.Infrastructure;
 using TheBookShop.Models;
-using TheBookShop.Models.ViewModel;
+using TheBookShop.Models.Repositories;
+using TheBookShop.Models.ViewModels;
 using Xunit;
 
 namespace TheBookShop.Tests.ControllerTests

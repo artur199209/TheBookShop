@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Areas.Admin.Model
 {

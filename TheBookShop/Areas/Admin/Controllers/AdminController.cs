@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace TheBookShop.Areas.Admin.Controllers

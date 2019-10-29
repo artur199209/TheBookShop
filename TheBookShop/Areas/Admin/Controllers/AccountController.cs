@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Areas.Admin.Controllers
 {

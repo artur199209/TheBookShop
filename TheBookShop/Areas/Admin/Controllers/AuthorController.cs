@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Areas.Admin.Model;
-using TheBookShop.Models;
-using TheBookShop.Models.ViewModel;
+using TheBookShop.Models.DataModels;
+using TheBookShop.Models.Repositories;
+using TheBookShop.Models.ViewModels;
 
 namespace TheBookShop.Areas.Admin.Controllers
 {

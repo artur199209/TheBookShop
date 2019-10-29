@@ -14,6 +14,7 @@ namespace TheBookShop.Tests.AdminTests.ComponentTests
         {
             var target = new AdminLeftPanelViewComponent();
             var results = GetViewModel<IEnumerable<LeftNavItem>>(target.Invoke())?.ToArray();
+
             Assert.NotNull(target);
             Assert.NotNull(results);
         }

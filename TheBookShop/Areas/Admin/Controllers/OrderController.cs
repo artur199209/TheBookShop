@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using TheBookShop.Models;
+using TheBookShop.Models.Repositories;
 
 namespace TheBookShop.Areas.Admin.Controllers
 {

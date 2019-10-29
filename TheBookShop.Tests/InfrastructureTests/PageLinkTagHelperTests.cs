@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Moq;
 using TheBookShop.Infrastructure;
-using TheBookShop.Models.ViewModel;
+using TheBookShop.Models.ViewModels;
 using Xunit;
-namespace TheBookShop.Tests
+
+namespace TheBookShop.Tests.InfrastructureTests
 {
     public class PageLinkTagHelperTests
     {

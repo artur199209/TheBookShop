@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.Routing;
 using Moq;
 using TheBookShop.Components;
 using TheBookShop.Models;
+using TheBookShop.Models.Repositories;
 using Xunit;
 
-namespace TheBookShop.Tests
+namespace TheBookShop.Tests.ComponentTests
 {
     public class NavigationMenuViewComponentTests
     {
@@ -16,20 +18,20 @@ namespace TheBookShop.Tests
         public void Can_Select_Categories()
         {
             var mock = new Mock<IProductRepository>();
-            mock.Setup(m => m.Products).Returns((new Product[]
+            mock.Setup(m => m.Products).Returns(new []
             {
-                new Product {ProductId = 1, Title = "Product1", Category = "Category1"},
-                new Product {ProductId = 2, Title = "Product2", Category = "Category2"},
-                new Product {ProductId = 3, Title = "Product3", Category = "Category1"},
-                new Product {ProductId = 4, Title = "Product4", Category = "Category3"},
-                new Product {ProductId = 5, Title = "Product5", Category = "Category1"}
-            }).AsQueryable());
+                new Product { ProductId = 1, Title = "Product1", Category = "Category1" },
+                new Product { ProductId = 2, Title = "Product2", Category = "Category2" },
+                new Product { ProductId = 3, Title = "Product3", Category = "Category1" },
+                new Product { ProductId = 4, Title = "Product4", Category = "Category3" },
+                new Product { ProductId = 5, Title = "Product5", Category = "Category1" }
+            }.AsQueryable());
 
             NavigationMenuViewComponent target = new NavigationMenuViewComponent(mock.Object);
 
-            var results = ((IEnumerable<string>)(target.Invoke() as ViewViewComponentResult).ViewData.Model).ToArray();
+            var results = GetViewModel<IEnumerable<string>>(target.Invoke()).ToArray();
 
-            Assert.True(Enumerable.SequenceEqual(new string[]{"Category1", "Category2", "Category3"}, results));
+            Assert.True(new []{"Category1", "Category2", "Category3"}.SequenceEqual(results));
         }
 
         [Fact]
@@ -38,30 +40,36 @@ namespace TheBookShop.Tests
             string categoryToSelect = "Category3";
 
             var mock = new Mock<IProductRepository>();
-            mock.Setup(m => m.Products).Returns((new Product[]
+            mock.Setup(m => m.Products).Returns(new []
             {
-                new Product {ProductId = 1, Title = "Product1", Category = "Category1"},
-                new Product {ProductId = 2, Title = "Product2", Category = "Category2"},
-                new Product {ProductId = 3, Title = "Product3", Category = "Category1"},
-                new Product {ProductId = 4, Title = "Product4", Category = "Category3"},
-                new Product {ProductId = 5, Title = "Product5", Category = "Category1"}
-            }).AsQueryable());
+                new Product { ProductId = 1, Title = "Product1", Category = "Category1" },
+                new Product { ProductId = 2, Title = "Product2", Category = "Category2" },
+                new Product { ProductId = 3, Title = "Product3", Category = "Category1" },
+                new Product { ProductId = 4, Title = "Product4", Category = "Category3" },
+                new Product { ProductId = 5, Title = "Product5", Category = "Category1" }
+            }.AsQueryable());
 
-            NavigationMenuViewComponent target = new NavigationMenuViewComponent(mock.Object);
-
-            target.ViewComponentContext = new ViewComponentContext
+            NavigationMenuViewComponent target = new NavigationMenuViewComponent(mock.Object)
             {
-                ViewContext = new ViewContext
+                ViewComponentContext = new ViewComponentContext
                 {
-                    RouteData = new RouteData()
+                    ViewContext = new ViewContext
+                    {
+                        RouteData = new RouteData()
+                    }
                 }
             };
 
             target.RouteData.Values["category"] = categoryToSelect;
 
-            var result = (string)(target.Invoke() as ViewViewComponentResult).ViewData["SelectedCategory"];
+            var result = (string)(target.Invoke() as ViewViewComponentResult)?.ViewData["SelectedCategory"];
 
             Assert.Equal(categoryToSelect, result);
+        }
+
+        private T GetViewModel<T>(IViewComponentResult result) where T : class
+        {
+            return (result as ViewViewComponentResult)?.ViewData.Model as T;
         }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using TheBookShop.Components;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
 using Xunit;
 
 namespace TheBookShop.Tests.ComponentTests

@@ -1,22 +1,22 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using TheBookShop.Models;
+using TheBookShop.Models.Repositories;
 
 namespace TheBookShop.Components
 {
     public class NavigationMenuViewComponent : ViewComponent
     {
-        private IProductRepository repository;
+        private readonly IProductRepository _repository;
 
         public NavigationMenuViewComponent(IProductRepository repo)
         {
-            repository = repo;
+            _repository = repo;
         }
 
         public IViewComponentResult Invoke()
         {
             ViewBag.SelectedCategory = RouteData?.Values["category"];
-            return View(repository.Products.Select(x => x.Category).Distinct().OrderBy(x => x));
+            return View(_repository.Products.Select(x => x.Category).Distinct().OrderBy(x => x));
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Infrastructure;
 using TheBookShop.Models;
+using TheBookShop.Models.Repositories;
 
 namespace TheBookShop.Areas.Admin.Controllers
 {

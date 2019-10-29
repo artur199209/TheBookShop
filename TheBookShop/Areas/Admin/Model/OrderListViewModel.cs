@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using TheBookShop.Models;
-using TheBookShop.Models.ViewModel;
+using TheBookShop.Models.DataModels;
+using TheBookShop.Models.ViewModels;
 
 namespace TheBookShop.Areas.Admin.Model
 {

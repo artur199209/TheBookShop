@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Areas.Admin.Model;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
+using TheBookShop.Models.Repositories;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
@@ -114,11 +115,6 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         private T GetViewModel<T>(IActionResult result) where T : class
         {
             return (result as ViewResult)?.ViewData.Model as T;
-        }
-
-        private string GetActionName(IActionResult result)
-        {
-            return (result as RedirectToActionResult)?.ActionName;
         }
     }
 }

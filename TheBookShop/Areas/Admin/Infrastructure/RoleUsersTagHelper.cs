@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Areas.Admin.Infrastructure
 {

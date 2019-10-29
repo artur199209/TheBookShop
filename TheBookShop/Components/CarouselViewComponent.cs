@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TheBookShop.Infrastructure;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
+using TheBookShop.Models.ViewModels;
 
 namespace TheBookShop.Components
 {

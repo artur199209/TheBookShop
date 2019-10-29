@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using TheBookShop.Infrastructure;
-using TheBookShop.Models;
-using TheBookShop.Models.ViewModel;
+using TheBookShop.Models.Repositories;
+using TheBookShop.Models.ViewModels;
 
 namespace TheBookShop.Controllers
 {
@@ -10,12 +9,12 @@ namespace TheBookShop.Controllers
     [Route("[controller]")]
     public class ProductController : Controller
     {
-        private IProductRepository repository;
+        private readonly IProductRepository _repository;
         public int PageSize = 4;
 
         public ProductController(IProductRepository repo)
         {
-            repository = repo;
+            _repository = repo;
         }
 
         [Route("")]
@@ -29,7 +28,7 @@ namespace TheBookShop.Controllers
         public ViewResult List(string category, int page = 1)
             => View(new ProductsListViewModel
             {
-                Products = repository.Products
+                Products = _repository.Products
                     .Where(p => category == null || p.Category == category)
                     .OrderBy(p => p.ProductId)
                     .Skip((page - 1) * PageSize)
@@ -38,8 +37,8 @@ namespace TheBookShop.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = category == null ? repository.Products.Count() 
-                        : repository.Products.Count(x => x.Category == category)
+                    TotalItems = category == null ? _repository.Products.Count() 
+                        : _repository.Products.Count(x => x.Category == category)
                 },
                 CurrentCategory = category
             });
@@ -47,7 +46,7 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public ViewResult ProductDetails(int productId)
         {
-            var product = repository.Products.FirstOrDefault(x => x.ProductId == productId);
+            var product = _repository.Products.FirstOrDefault(x => x.ProductId == productId);
             return View(product);
         }
     }

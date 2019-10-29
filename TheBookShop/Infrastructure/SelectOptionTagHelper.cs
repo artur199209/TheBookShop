@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
+using TheBookShop.Models.Repositories;
 
 namespace TheBookShop.Infrastructure
 {

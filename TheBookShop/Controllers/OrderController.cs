@@ -1,18 +1,19 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
+using TheBookShop.Models.Repositories;
 
 namespace TheBookShop.Controllers
 {
     public class OrderController : Controller
     {
-        private IOrderRepository repository;
-        private Cart cart;
+        private readonly IOrderRepository _repository;
+        private readonly Cart _cart;
 
         public OrderController(IOrderRepository repoService, Cart cartService)
         {
-            repository = repoService;
-            cart = cartService;
+            _repository = repoService;
+            _cart = cartService;
         }
 
         public ViewResult Checkout() => View(new Order());
@@ -20,15 +21,15 @@ namespace TheBookShop.Controllers
         [HttpPost]
         public IActionResult Checkout(Order order)
         {
-            if (cart.Lines.Count() == 0)
+            if (!_cart.Lines.Any())
             {
                 ModelState.AddModelError("", "Twój koszyk jest pusty!");
             }
 
             if (ModelState.IsValid)
             {
-                order.Lines = cart.Lines.ToArray();
-                repository.SaveOrder(order);
+                order.Lines = _cart.Lines.ToArray();
+                _repository.SaveOrder(order);
                 return RedirectToAction(nameof(Completed));
             }
             
@@ -37,24 +38,24 @@ namespace TheBookShop.Controllers
 
         public ViewResult Completed()
         {
-            cart.Clear();
+            _cart.Clear();
             return View();
         }
 
         public ViewResult List()
         {
-            return View(repository.Orders.Where(o => !o.Shipped));
+            return View(_repository.Orders.Where(o => !o.Shipped));
         }
 
         [HttpPost]
         public IActionResult MarkShipped(int orderId)
         {
-            Order order = repository.Orders.FirstOrDefault(o => o.OrderId == orderId);
+            Order order = _repository.Orders.FirstOrDefault(o => o.OrderId == orderId);
 
             if (order != null)
             {
                 order.Shipped = true;
-                repository.SaveOrder(order);
+                _repository.SaveOrder(order);
             }
             return RedirectToAction(nameof(List));
         }

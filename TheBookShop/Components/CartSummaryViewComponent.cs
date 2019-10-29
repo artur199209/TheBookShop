@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using TheBookShop.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Components
 {
     public class CartSummaryViewComponent : ViewComponent
     {
-        private Cart cart;
+        private readonly Cart _cart;
 
         public CartSummaryViewComponent(Cart cartService)
         {
-            cart = cartService;
+            _cart = cartService;
         }
 
         public IViewComponentResult Invoke()
         {
-            return View(cart);
+            return View(_cart);
         }
     }
 }

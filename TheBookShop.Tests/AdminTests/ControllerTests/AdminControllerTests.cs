@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Areas.Admin.Controllers;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
 using Xunit;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
