@@ -21,7 +21,7 @@ namespace TheBookShop.Infrastructure
         {
             output.Content.AppendHtml((await output.GetChildContentAsync(false)).GetContent());
 
-            var selected = ModelFor.Model as Author;
+            var selected = ModelFor?.Model as Author;
 
             if (selected == null)
             {
@@ -35,8 +35,8 @@ namespace TheBookShop.Infrastructure
                     : $"<option selected value={author.AuthorId}>{author.Name} {author.Surname} </option>");
             }
 
-            output.Attributes.SetAttribute("Name", ModelFor.Name);
-            output.Attributes.SetAttribute("Id", ModelFor.Name);
+            output.Attributes.SetAttribute("Name", ModelFor?.Name);
+            output.Attributes.SetAttribute("Id", ModelFor?.Name);
         }
     }
 }

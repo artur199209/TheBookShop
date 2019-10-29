@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using TheBookShop.Areas.Admin.Components;
 using Xunit;
@@ -12,27 +13,34 @@ namespace TheBookShop.Tests.AdminTests.ComponentTests
         public void Admin_Left_Panel_Is_Not_Null()
         {
             var target = new AdminLeftPanelViewComponent();
-            var results = ((IEnumerable<LeftNavItem>)(target.Invoke() as ViewViewComponentResult)?.ViewData.Model)?.ToArray();
+            var results = GetViewModel<IEnumerable<LeftNavItem>>(target.Invoke())?.ToArray();
             Assert.NotNull(target);
             Assert.NotNull(results);
         }
 
         [Fact]
-        public void Admin_Left_Panel_Contains_Parent_Items()
+        public void Admin_Left_Panel_Contains_Parents()
         {
             var target = new AdminLeftPanelViewComponent();
-            var results = ((IEnumerable<LeftNavItem>)(target.Invoke() as ViewViewComponentResult)?.ViewData.Model)?.ToArray();
-            
-            Assert.True(results?.Where(x => x.IsParent) != null);
+            var results = GetViewModel<IEnumerable<LeftNavItem>>(target.Invoke())?.ToArray();
+
+            var parents = results?.Where(x => x.IsParent);
+            Assert.NotNull(parents);
         }
 
         [Fact]
-        public void Admin_Left_Panel_Contains_Childrens_Items()
+        public void Admin_Left_Panel_Contains_Childrens()
         {
             var target = new AdminLeftPanelViewComponent();
-            var results = ((IEnumerable<LeftNavItem>)(target.Invoke() as ViewViewComponentResult)?.ViewData.Model)?.ToArray();
+            var results = GetViewModel<IEnumerable<LeftNavItem>>(target.Invoke())?.ToArray();
 
-            Assert.True(results?.Where(x => !x.IsParent) != null);
+            var childrens = results?.Where(x => !x.IsParent);
+            Assert.NotNull(childrens);
+        }
+
+        private T GetViewModel<T>(IViewComponentResult result) where T : class
+        {
+            return (result as ViewViewComponentResult)?.ViewData.Model as T;
         }
 
     }
