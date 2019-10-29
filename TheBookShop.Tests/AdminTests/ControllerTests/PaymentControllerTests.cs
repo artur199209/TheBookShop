@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Areas.Admin.Controllers;
-using TheBookShop.Models;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using Xunit;
