@@ -42,7 +42,7 @@
     <div class="navbar navbar-inverse bg-inverse" role="navigation">
         <div class="row">
             <a class="col navbar-brand" asp-area="" asp-controller="Product" asp-action="Index">Księgarnia</a>
-            <div class="text-white">Zaloguj/Zarejestruj</div>
+            @await Component.InvokeAsync("LoginRegister")
             <div class="col-1 text-right">
                 @await Component.InvokeAsync("CartSummary")
             </div>
@@ -66,7 +66,7 @@
         </nav>
     </div>
     <div class="container col-xl-auto">
-        <div class="row col-xl-auto p-5 justify-content-center">
+        <div class="row col-xl-auto p-5">
             <div class="col-xl-auto">
                 @RenderBody()
             </div>
