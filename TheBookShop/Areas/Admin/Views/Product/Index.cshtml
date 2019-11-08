@@ -30,7 +30,7 @@
                  <td>@p.Price</td>
                  <td>@p.Category</td>
                  <td>
-                     <form asp-action="Delete" method="post">
+                     <form asp-action="Delete" asp-antiforgery="true" method="post">
                          <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-productId="@p.ProductId">
                              Edytuj
                          </a>

@@ -6,7 +6,7 @@
 
 <div asp-validation-summary="All" class="text-danger"></div>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" asp-antiforgery="true" method="post" >
     <input type="hidden" name="roleName" value="@Model.Role.Name" />
     <input type="hidden" name="roleId" value="@Model.Role.Id" />
 

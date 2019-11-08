@@ -42,6 +42,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("[action]")]
         public IActionResult Edit(Product product, IFormCollection formValues)
         {
@@ -74,6 +75,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("[action]")]
         public IActionResult Delete(int productId)
         {

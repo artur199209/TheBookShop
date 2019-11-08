@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<Order>
 @{
     ViewBag.Title = "Orders";
-    Layout = "_AdminLayout";
 }
 
 @if (Model.Any())
@@ -16,7 +15,7 @@
                 <th>Product</th>
                 <th>Quantity</th>
                 <td>
-                    <form action="MarkShipped" method="post">
+                    <form asp-action="MarkShipped" asp-antiforgery="true" method="post">
                         <input type="hidden" name="orderId" value="@order.OrderId">
                         <button type="submit" class="btn btn-sm btn-danger">
                             Ship

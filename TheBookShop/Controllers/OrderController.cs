@@ -19,6 +19,7 @@ namespace TheBookShop.Controllers
         public ViewResult Checkout() => View(new Order());
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Checkout(Order order)
         {
             if (!_cart.Lines.Any())
@@ -48,6 +49,7 @@ namespace TheBookShop.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult MarkShipped(int orderId)
         {
             Order order = _repository.Orders.FirstOrDefault(o => o.OrderId == orderId);

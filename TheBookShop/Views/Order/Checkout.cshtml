@@ -2,7 +2,7 @@
 
 <p>Składanie zamówienia</p>
 
-<form asp-action="Checkout" method="post">
+<form asp-action="Checkout" asp-antiforgery="true" method="post">
     <div class="form-group">
         <div><span asp-validation-for="@Model.Customer.Name"></span></div>
         <label>Imię:</label><input asp-for="@Model.Customer.Name" class="form-control" />

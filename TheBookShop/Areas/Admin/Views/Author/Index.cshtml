@@ -30,7 +30,7 @@
                  <td>@p.Notes</td>
                  <td>@p.Products.Count</td>
                  <td>
-                     <form asp-action="Delete" method="post">
+                     <form asp-action="Delete" asp-antiforgery="true" method="post">
                          <a asp-controller="Author" asp-action="Books" class="btn btn-sm btn-info"
                             asp-route-authorId="@p.AuthorId">
                              Wyświetl książki

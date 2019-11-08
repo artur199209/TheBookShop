@@ -37,6 +37,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("[action]")]
         public async Task<IActionResult> Create(CreateModel model)
         {
@@ -75,6 +76,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("[action]")]
         public async Task<IActionResult> Edit(string id, string email, string password)
         {
@@ -128,6 +130,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("[action]")]
         public async Task<IActionResult> Delete(string id)
         {

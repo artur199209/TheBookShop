@@ -25,7 +25,7 @@
                 <td>@role.Name</td>
                 <td identity-role="@role.Id"></td>
                 <td>
-                    <form asp-action="Delete" asp-route-id="@role.Id" method="post">
+                    <form asp-action="Delete" asp-route-id="@role.Id" asp-antiforgery="true" method="post">
                         <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@role.Id">
                             Edytuj
                         </a>
