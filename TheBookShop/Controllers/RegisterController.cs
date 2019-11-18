@@ -29,20 +29,23 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Register(CreateModel model)
         {
-            AppUser user = new AppUser
+            if (ModelState.IsValid)
             {
-                UserName = model.Name,
-                Email = model.Email
-            };
+                AppUser user = new AppUser
+                {
+                    UserName = model.Name,
+                    Email = model.Email
+                };
 
-            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
-            if (result.Succeeded)
-            {
-                return RedirectToAction("index", "Product", new {area = ""});
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Product", new {area = ""});
+                }
+
+                AddErrorsFromResult(result);
             }
-
-            AddErrorsFromResult(result);
 
             return View(model);
         }
