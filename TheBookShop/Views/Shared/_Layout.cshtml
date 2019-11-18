@@ -10,6 +10,7 @@
         <script src="/lib/jquery/dist/jquery.min.js"></script>
         <script src="/lib/jquery-validate/dist/jquery.validate.min.js"></script>
         <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     </environment>
     
     <environment names="staging, production">
@@ -30,6 +31,10 @@
         <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"
                 asp-fallback-src="/lib/jquery/dist/jquery.min.js"
                 asp-fallback-src-include="**.slim.**"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery">
         </script>
         <link asp-href-include="/css/*.css" rel="stylesheet" />
