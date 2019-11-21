@@ -2,58 +2,62 @@
 @{
     Layout = "_Layout";
 }
-<br />
-<div class="container">
-<h3 style="text-align: center">Mój koszyk</h3>
-<br />
 
-<div class="text-center">
-    <a class="btn btn-primary" asp-area="" asp-action="Checkout" asp-controller="Order">Złóż zamówienie</a>
-    <a class="btn btn-primary" asp-area="" asp-action="List" asp-controller="Product">Kontynuuj zakupy</a>
-</div>
+@if (Model.Cart.Lines.Any())
+{
+    <div class="container">
+        <h3 style="text-align: center">Mój koszyk</h3>
 
-<br />
-<br />
+        <br />
 
-<div class="card col-xl-auto">
-    <div class="card-header col-xl-auto">
-        <div class="row col-xl-auto">
-            <div class="col-xl-4 text-center">Przedmiot</div>
-            <div class="col-xl-2 text-center">Cena jednostkowa</div>
-            <div class="col-xl-2 text-center">Ilość</div>
-            <div class="col-xl-3 text-center"><span class="float-right">Wartość</span></div>
-            <div class="col-xl-1 text-center"></div>
-        </div>
-    </div>
-    <div class="card-body">
-
-        @foreach (var item in @Model.Cart.Lines)
-        {
-            <partial name="CartLine" for="@item" />
-        }
-
-    </div>
-    <div class="card-footer">
-        <div class="row">
-            <div class="col-xl-10">
-                <span numero-items>
-                    Liczba: @Model.Cart.Lines.Sum(x => x.Quantity)
-                </span>
+        <div class="card col-xl-auto">
+            <div class="card-header col-xl-auto">
+                <div class="row col-xl-auto">
+                    <div class="col-xl-4 text-center">Produkt</div>
+                    <div class="col-xl-2 text-center">Cena</div>
+                    <div class="col-xl-2 text-center">Ilość</div>
+                    <div class="col-xl-3 text-center"><span class="float-right">Razem</span></div>
+                    <div class="col-xl-1 text-center"></div>
+                </div>
             </div>
-            <div class="col-xl-2">
-                Wartość: <span class="pull-right" total>
-                    @Model.Cart.ComputeTotalValue().ToString("c")
-                </span>
+            <div class="card-body">
+
+                @foreach (var item in @Model.Cart.Lines)
+                {
+                    <partial name="CartLine" for="@item" />
+                }
+
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-xl-10">
+                        <span numero-items>
+                            Liczba: @Model.Cart.Lines.Sum(x => x.Quantity)
+                        </span>
+                    </div>
+                    <div class="col-xl-2">
+                        Wartość:
+                        <span class="pull-right" total>
+                            @Model.Cart.ComputeTotalValue().ToString("c")
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <br />
+
+        <div class="text-center">
+            <a class="btn btn-primary" asp-area="" asp-action="Test" asp-controller="Order">Złóż zamówienie</a>
+            <a class="btn btn-primary" asp-area="" asp-action="List" asp-controller="Product">Kontynuuj zakupy</a>
+        </div>
+
     </div>
-</div>
-
-<br />
-
-<div class="text-center">
-    <a class="btn btn-primary" asp-area="" asp-action="Checkout" asp-controller="Order">Złóż zamówienie</a>
-    <a class="btn btn-primary" asp-area="" asp-action="List" asp-controller="Product">Kontynuuj zakupy</a>
-</div>
-
-</div>
+}
+else
+{
+    <div class="container text-center">
+        <h4>Nie dodałeś żadnego produktu do koszyka.</h4>
+        <p>Przejdź do <a asp-area="" asp-controller="Product" asp-action="List">strony głównej</a> i wybierz coś dla siebie</p>
+    </div>
+}
