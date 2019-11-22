@@ -7,9 +7,7 @@ html {
     height: 100%
 }
 
-
 #msform {
-    text-align: center;
     position: relative;
     margin-top: 20px
 }
@@ -23,16 +21,6 @@ html {
         box-sizing: border-box;
         width: 94%;
         margin: 0 3% 50px 3%;
-        position: relative
-    }
-
-    #msform fieldset {
-        background: white;
-        border: 0 none;
-        border-radius: 0.5rem;
-        box-sizing: border-box;
-        width: 100%;
-        padding-bottom: 20px;
         position: relative
     }
 
@@ -72,40 +60,7 @@ html {
             outline-width: 0
         }
 
-    #msform .action-button {
-        width: 100px;
-        background: red;
-        font-weight: bold;
-        color: white;
-        border: 0 none;
-        border-radius: 0px;
-        cursor: pointer;
-        padding: 10px 5px;
-        margin: 10px 5px
-    }
-
-        #msform .action-button:hover,
-        #msform .action-button:focus {
-            box-shadow: 0 0 0 2px white, 0 0 0 3px skyblue
-        }
-
-    #msform .action-button-previous {
-        width: 100px;
-        background: #616161;
-        font-weight: bold;
-        color: white;
-        border: 0 none;
-        border-radius: 0px;
-        cursor: pointer;
-        padding: 10px 5px;
-        margin: 10px 5px
-    }
-
-        #msform .action-button-previous:hover,
-        #msform .action-button-previous:focus {
-            box-shadow: 0 0 0 2px white, 0 0 0 3px #616161
-        }
-
+   
 select.list-dt {
     border: none;
     outline: 0;
