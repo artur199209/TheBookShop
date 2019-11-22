@@ -18,7 +18,8 @@ namespace TheBookShop.Models.Repositories
             .Include(o => o.DeliveryAddress)
             .Include(o => o.Payment)
             .Include(o => o.Lines)
-            .ThenInclude(l => l.Product);
+            .ThenInclude(l => l.Product)
+            .ThenInclude(p => p.Author);
 
         public void SaveOrder(Order order)
         {
