@@ -34,6 +34,7 @@ namespace TheBookShop
             services.AddTransient<IOrderRepository, EFOrderRepository>();
             services.AddTransient<IAuthorRepository, EFAuthorRepository>();
             services.AddTransient <IPaymentRepository, EFPaymentRepository>();
+            services.AddTransient<IDeliveryAdressRepository, EFDeliveryAddressRepository>();
             services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();
