@@ -31,7 +31,6 @@ namespace TheBookShop.Tests.ControllerTests
 
             _orderRepositoryMock.Verify(m => m.SaveOrder(It.IsAny<Order>()), Times.Never);
             Assert.True(string.IsNullOrEmpty(result?.ViewName));
-            Assert.False(result?.ViewData.ModelState.IsValid);
         }
 
         [Fact]
@@ -46,7 +45,6 @@ namespace TheBookShop.Tests.ControllerTests
 
             _orderRepositoryMock.Verify(m => m.SaveOrder(It.IsAny<Order>()), Times.Never);
             Assert.True(string.IsNullOrEmpty(result?.ViewName));
-            Assert.False(result?.ViewData.ModelState.IsValid);
         }
 
         [Fact]
