@@ -48,5 +48,20 @@ namespace TheBookShop.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult MarkShipped(int orderId)
+        {
+            var order = _orderRepository.Orders.FirstOrDefault(o => o.OrderId == orderId);
+
+            if (order != null)
+            {
+                order.Shipped = true;
+                _orderRepository.SaveOrder(order);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
