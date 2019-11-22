@@ -43,7 +43,20 @@ namespace TheBookShop.Areas.Admin.Controllers
 
             if (order != null)
             {
-                
+                return View(order);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [Route("[action]")]
+        public IActionResult Details(int orderId)
+        {
+            var order = _orderRepository.Orders.FirstOrDefault(x => x.OrderId == orderId);
+
+            if (order != null)
+            {
+                return View(order);
             }
 
             return RedirectToAction(nameof(Index));
