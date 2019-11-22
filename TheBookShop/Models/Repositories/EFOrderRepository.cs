@@ -14,6 +14,9 @@ namespace TheBookShop.Models.Repositories
         }
 
         public IQueryable<Order> Orders => _context.Orders
+            .Include(o => o.Customer)
+            .Include(o => o.DeliveryAddress)
+            .Include(o => o.Payment)
             .Include(o => o.Lines)
             .ThenInclude(l => l.Product);
 
