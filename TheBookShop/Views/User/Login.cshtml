@@ -2,9 +2,9 @@
 <style type="text/css">.btnwidth {
      width: 230px;
  }</style>
-<div class="container">
-    <div class="row text-center">
-        <div class="col-xl-6">
+<div class="container justify-content-end">
+    <div class="row justify-content-end">
+        <div class="col-xl-5">
             <h4>Logowanie</h4>
             <form asp-action="" asp-antiforgery="true" method="post">
                 <div class="form-group">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-xl-12">
                         <div class="custom-checkbox icheck">
                             <label>
                                 <input type="checkbox"> Zapamiętaj mnie
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-xl-12">
                         <button type="submit" class="btn btn-primary btn-block btn-flat">Zaloguj się</button>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
         <div class="col-xl-6 d-flex align-items-center flex-column text-center">
             <h4>Nie posiadam konta</h4>
             <div class="">
-                <a class="btn btn-primary btnwidth" asp-area="" asp-action="Steps" asp-controller="Order">Kontynuuj bez logowania</a>
+                <a class="btn btn-primary btnwidth" asp-area="" asp-action="Checkout" asp-controller="Order">Kontynuuj bez logowania</a>
             </div>
             <h4 class="mt-auto">Lub</h4>
             <div class="mt-auto">
