@@ -9,7 +9,8 @@ html {
 
 #msform {
     position: relative;
-    margin-top: 20px
+    margin-top: 20px;
+    margin-bottom: 20px
 }
 
     #msform fieldset .form-card {
@@ -46,7 +47,7 @@ html {
         font-family: montserrat;
         color: #2C3E50;
         font-size: 16px;
-        letter-spacing: 1px
+        letter-spacing: 1px;
     }
 
         #msform input:focus,
