@@ -31,98 +31,55 @@
                         <div id="msform">
                             <ul class="progressbar2" id="progressbar" class="text-center">
                                 <li class="active fas fa-shopping-cart">Koszyk</li>
-                                <li class="fas fa-user">Dane osobowe</li>
+                                <li class="active fas fa-user">Dane osobowe</li>
                                 <li class="fa fa-credit-card">Płatność</li>
                                 <li class="fas fa-check">Koniec</li>
                             </ul>
                             <br />
                             <form asp-area="" asp-controller="Order" asp-action="Checkout" asp-antiforgery="true" method="post">
-                                <fieldset class="col-xl-12">
-                                    <div class="form-group">
-                                        <h2 class="fs-title text-center">Podsumowanie koszyka</h2>
-                                        <div class="card col-xl-auto">
-                                            <div class="card-header col-xl-auto">
-                                                <div class="row col-xl-auto">
-                                                    <div class="col-xl-6 text-center">Produkt</div>
-                                                    <div class="col-xl-2 text-center">Cena</div>
-                                                    <div class="col-xl-1 text-center">Ilość</div>
-                                                    <div class="col-xl-2 text-center"><span class="float-right">Razem</span></div>
-                                                    <div class="col-xl-1 text-center"></div>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-
-                                                @foreach (var item in @Model.Lines)
-                                                {
-                                                    <partial name="CartLine" for="@item" />
-                                                    <hr/>
-                                                }
-
-                                            </div>
-                                            <div class="card-footer">
-                                                <div class="row">
-                                                    <div class="col-xl-10">
-                                                        <span numero-items>
-                                                            Liczba produktów: @Model.Lines.Sum(x => x.Quantity)
-                                                        </span>
-                                                    </div>
-                                                    <div class="col-xl-2">
-                                                        Suma:
-                                                        <span class="pull-right" total>
-                                                            @Model.Lines.Sum(x => x.Product.Price * x.Quantity).ToString("c")
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                   
-                                    <a asp-area="" asp-controller="Cart" asp-action="Index" class="btn btn-info custom">Wstecz</a>
-                                    <a class="next btn btn-info custom text-white">Dalej</a>
-                                </fieldset>
-                                <fieldset class="col-xl-12">
+                                <fieldset class="col-xl-12" id="fieldset1">
                                     <h2 class="fs-title text-center">Dane osobowe i adres</h2>
-                                    <div class="row col-xl-12">
-                                        <div class="form-group col-xl-6">
+                                    <div class="row">
+                                        <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label asp-for="@Model.Customer.Name"></label>
-                                                <input asp-for="@Model.Customer.Name" placeholder="@nameof(Model.Customer.Name)" class="form-control" />
+                                                <input asp-for="@Model.Customer.Name" class="form-control"/>
                                             </div>
                                             <div class="form-group">
                                                 <label asp-for="@Model.Customer.Surname"></label>
-                                                <input asp-for="@Model.Customer.Surname" class="form-control" />
+                                                <input asp-for="@Model.Customer.Surname" class="form-control"/>
                                             </div>
                                             <div class="form-group">
                                                 <label asp-for="@Model.Customer.PhoneNumber"></label>
-                                                <input asp-for="@Model.Customer.PhoneNumber" class="form-control" />
+                                                <input asp-for="@Model.Customer.PhoneNumber" class="form-control"/>
                                             </div>
                                             <div class="form-group">
                                                 <label asp-for="@Model.Customer.Email"></label>
-                                                <input asp-for="@Model.Customer.Email" class="form-control" />
+                                                <input asp-for="@Model.Customer.Email" class="form-control"/>
                                             </div>
                                         </div>
-                                        
-                                        <div class="form-group col-xl-6">
+
+                                        <div class="col-xl-6">
                                             <div class="form-group">
                                                 <label asp-for="@Model.DeliveryAddress.City"></label>
-                                                <input asp-for="@Model.DeliveryAddress.City" placeholder="@nameof(Model.DeliveryAddress.City)" class="form-control" />
+                                                <input asp-for="@Model.DeliveryAddress.City" class="form-control"/>
                                             </div>
                                             <div class="form-group">
                                                 <label asp-for="@Model.DeliveryAddress.HomeNumber"></label>
-                                                <input asp-for="@Model.DeliveryAddress.HomeNumber" placeholder="@nameof(Model.DeliveryAddress.City)" class="form-control" />
+                                                <input asp-for="@Model.DeliveryAddress.HomeNumber" class="form-control"/>
                                             </div>
                                             <div class="form-group">
                                                 <label asp-for="@Model.DeliveryAddress.ZipCode"></label>
-                                                <input asp-for="@Model.DeliveryAddress.ZipCode" placeholder="@nameof(Model.DeliveryAddress.City)" class="form-control" />
+                                                <input asp-for="@Model.DeliveryAddress.ZipCode" class="form-control"/>
                                             </div>
                                             <div class="form-group">
                                                 <label asp-for="@Model.DeliveryAddress.City"></label>
-                                                <input asp-for="@Model.DeliveryAddress.City" placeholder="@nameof(Model.DeliveryAddress.City)" class="form-control" />
+                                                <input asp-for="@Model.DeliveryAddress.City" class="form-control"/>
                                             </div>
                                         </div>
                                     </div>
-                                    <a class="previous btn btn-info custom text-white">Wstecz</a>
-                                    <a class="next btn btn-info custom text-white">Dalej</a>
+                                    <a asp-area="" asp-controller="Cart" asp-action="Index" class="btn btn-info custom">Wstecz</a>
+                                    <a class="next btn btn-info custom text-white" id="next1" onclick="validatePersonData()">Dalej</a>
                                 </fieldset>
                                 <fieldset class="col-xl-12">
                                     <div class="form-group">
@@ -132,26 +89,32 @@
                                             <div class='radio' data-value="paypal"><img src="https://i.imgur.com/jXjwZlj.jpg" width="200px" height="100px"></div> <br>
                                         </div> <label class="pay">Card Holder Name*</label> <input type="text" name="holdername" placeholder="" />
                                         <div class="row">
-                                            <div class="col-9"> <label class="pay">Card Number*</label> <input type="text" name="cardno" placeholder="" /> </div>
-                                            <div class="col-3"> <label class="pay">CVC*</label> <input type="password" name="cvcpwd" placeholder="***" /> </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label class="pay">Card Number*</label> <input type="text" name="cardno" placeholder="" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label class="pay">CVC*</label> <input type="password" name="cvcpwd" placeholder="***" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div> 
                                     <a class="previous btn btn-info custom text-white">Wstecz</a>
-                                    <a class="next btn btn-info custom text-white">Dalej</a>
+                                    <a class="next btn btn-info custom text-white" id="next2" onclick="validate2(0)">Dalej</a>
                                 </fieldset>
                                 <fieldset class="col-xl-12">
                                     <div class="form-group">
                                         <h2 class="fs-title text-center">Podsumowanie zamówienia</h2> <br><br>
-
+                                        
                                         <div class="row justify-content-center">
                                             <div class="col-7 text-center">
                                                 <h5>Złóż zamówienie klikając w poniższy przycisk</h5>
                                             </div>
                                         </div>
                                     </div>
-                                    <a class="previous btn btn-info custom text-white">Wstecz</a>
                                     <button type="submit" class="btn btn-success custom">Zamów</button>
-                                    <a asp-area="" asp-controller="Cart" asp-action="Index" class="btn btn-info custom">Zamów</a>
                                 </fieldset>
                             </form>
                         </div>
