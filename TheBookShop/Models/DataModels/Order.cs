@@ -11,12 +11,18 @@ namespace TheBookShop.Models.DataModels
         public ICollection<CartLine> Lines { get; set; }
         
         public Customer Customer { get; set; }
-
-        [BindNever]
+      
         public bool Shipped { get; set; }
         
         public DeliveryAddress DeliveryAddress { get; set; }
         public Payment Payment { get; set; }
         public bool GiftWrap { get; set; }
+
+        public enum OrderStatus
+        {
+            New,
+            InProgress,
+            Completed
+        }
     }
 }

@@ -1,27 +1,53 @@
 ﻿@model CartLine
 
-<div class="row text-center col-xl-auto" style="margin-top: 15px">
+<script>
+    $(function() {
+        $("#test123").click(function() {
+            var data = { "productId": 1};
+            $.ajax({
+                type: 'POST',
+                url: "/Cart/AddToCart2",
+                dataType: 'json',
+                data:  {
+                    productId: 8002
+                },
+                success: function () {},
+                error: function () {}
+            });
+        });
+    });
+ </script>
+
+<div class="row text-center col-xl-auto hover" style="margin-top: 15px">
     <input type="hidden" name="ProductID" />
-    <div class="col-xl-4 text-center">@Model.Product.Title</div>
+    <div class="col-xl-5 text-center">
+        <a class="btn"
+           asp-area=""
+           asp-controller="Product"
+           asp-action="ProductDetails"
+           asp-route-productId="@Model.Product.ProductId">
+            @Model.Product.Title
+        </a>
+    </div>
     <div class="col-xl-2 text-center">@Model.Product.Price.ToString("C")</div>
     <div class="col-xl-2 text-center">
         <div class="input-group">
-            <a class="btn" 
-               asp-action="DecreaseProductCount" 
-               asp-controller="Cart" 
+            <a class="btn"
+               asp-action="DecreaseProductCount"
+               asp-controller="Cart"
                asp-route-productId="@Model.Product.ProductId">
                 <span class="fa fa-minus"></span>
             </a>
             <label class="text-center form-control border-0">@Model.Quantity</label>
-            <a class="btn" 
-               asp-action="AddToCart" 
-               asp-controller="Cart" 
+            <a class="btn"
+               asp-action="AddToCart"
+               asp-controller="Cart"
                asp-route-productId="@Model.Product.ProductId">
                 <span class="fa fa-plus"></span>
             </a>
         </div>
     </div>
-    <div class="col-xl-3 text-center">
+    <div class="col-xl-2 text-center">
         <div class="float-right">
             <span class="pull-right" subtotal>
                 @((Model.Quantity * Model.Product.Price).ToString("c"))
@@ -30,11 +56,12 @@
     </div>
     <div class="col-1">
         <div class="float-md-none">
+            @*<button class="btn btn-sm btn-danger" id="test123">fsdfd
+                <span class="fa fa-remove"></span>
+            </button>*@
             <form asp-action="RemoveFromCart" asp-controller="Cart" method="post">
                 <input type="hidden" name="ProductId"
                        value="@Model.Product.ProductId" />
-                <input type="hidden" name="returnUrl"
-                       value="@ViewContext.HttpContext.Request.PathAndQuery()" />
                 <button type="submit" class="btn btn-sm btn-danger">
                     <span class="fa fa-remove"></span>
                 </button>
