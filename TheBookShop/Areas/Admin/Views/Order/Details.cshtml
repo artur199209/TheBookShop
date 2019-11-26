@@ -1,0 +1,115 @@
+﻿@model Order
+
+<div class="text-center">
+    <h4>Szczegóły zamówienia o numerze @Model.OrderId</h4>
+</div>
+<div class="row col-xl-12">
+    <div class="card col-xl-4">
+        <div class="card-body">
+            <h5 class="card-title text-center">
+                Dane osobowe
+            </h5>
+            <table class="table table-sm">
+                <tbody>
+                <tr>
+                    <th>Imię</th>
+                    <td class="text-right">@Model.Customer.Name</td>
+                </tr>
+                <tr>
+                    <th>Nazwisko</th>
+                    <td class="text-right">@Model.Customer.Surname</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td class="text-right">@Model.Customer.Email</td>
+                </tr>
+                <tr>
+                    <th>Telefon</th>
+                    <td class="text-right">@Model.Customer.PhoneNumber</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card col-xl-4">
+        <div class="card-body">
+            <h5 class="card-title text-center">
+                Dostawa
+            </h5>
+            <table class="table table-sm">
+                <tbody>
+                    <tr>
+                        <th>Kraj</th>
+                        <td class="text-right">@Model.DeliveryAddress.Country</td>
+                    </tr>
+                    <tr>
+                        <th>Miasto</th>
+                        <td class="text-right">@Model.DeliveryAddress.City</td>
+                    </tr>
+                    <tr>
+                        <th>Numer domu/mieszkania</th>
+                        <td class="text-right">@Model.DeliveryAddress.HomeNumber</td>
+                    </tr>
+                    <tr>
+                        <th>Kod pocztowy</th>
+                        <td class="text-right">@Model.DeliveryAddress.ZipCode</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card col-xl-4">
+        <div class="card-body">
+            <h5 class="card-title text-center">
+                Płatność
+            </h5>
+            <table class="table table-sm">
+                <tbody>
+                <tr>
+                    <th>Kwota</th>
+                    <td class="text-right">Model.Payment.Amount</td>
+                </tr>
+                <tr>
+                    <th>Data płatności</th>
+                    <td class="text-right">Model.Payment.PaymentDate</td>
+                </tr>
+                <tr>
+                    <th>Sposób zapłaty</th>
+                    <td class="text-right">Model.Payment.MethodOfPayment</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row col-xl-12">
+    <div class="card col-xl-12">
+        <div class="card-body">
+            <h5 class="card-title text-center">
+                Zakupy
+            </h5>
+            <table class="table table-sm">
+                <tbody>
+                    <tr>
+                        <th>Tytuł</th>
+                        <th>Autor</th>
+                        <th>Ilość</th>
+                    </tr>
+                    @foreach (var item in @Model.Lines)
+                    {
+
+                        <tr>
+                            <td class="text-left">@item.Product.Title</td>
+
+                            <td class="text-left">@item.Product.Author.Surname</td>
+
+                            <td class="text-left">@item.Quantity</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

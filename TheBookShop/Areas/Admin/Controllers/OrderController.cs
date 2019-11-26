@@ -49,6 +49,22 @@ namespace TheBookShop.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("[action]")]
+        public IActionResult Edit(bool shipped, int orderId)
+        {
+            var order = _orderRepository.Orders.FirstOrDefault(o => o.OrderId == orderId);
+
+            if (order != null)
+            {
+                order.Shipped = shipped;
+                _orderRepository.SaveOrder(order);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
         [Route("[action]")]
         public IActionResult Details(int orderId)
         {
@@ -57,21 +73,6 @@ namespace TheBookShop.Areas.Admin.Controllers
             if (order != null)
             {
                 return View(order);
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult MarkShipped(int orderId)
-        {
-            var order = _orderRepository.Orders.FirstOrDefault(o => o.OrderId == orderId);
-
-            if (order != null)
-            {
-                order.Shipped = true;
-                _orderRepository.SaveOrder(order);
             }
 
             return RedirectToAction(nameof(Index));
