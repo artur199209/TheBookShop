@@ -31,6 +31,8 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public IActionResult Checkout(Order order)
         {
+            order.Lines = _cart.Lines.ToArray();
+
             if (!_cart.Lines.Any())
             {
                 ModelState.AddModelError("", "Twój koszyk jest pusty!");
@@ -38,16 +40,23 @@ namespace TheBookShop.Controllers
 
             if (ModelState.IsValid)
             {
-                order.Lines = _cart.Lines.ToArray();
                 _orderRepository.SaveOrder(order);
                 return RedirectToAction(nameof(Completed));
             }
 
-            return RedirectToAction("Index", "Cart");
+            return View(order);
         }
 
         [Route("[action]")]
-        public ViewResult Test() => View();
+        public ViewResult Test()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return View(nameof(Checkout));
+            }
+
+            return View();
+        }
 
         [Route("[action]")]
         public ViewResult Completed()
