@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace TheBookShop.Models.DataModels
@@ -16,13 +21,17 @@ namespace TheBookShop.Models.DataModels
         
         public DeliveryAddress DeliveryAddress { get; set; }
         public Payment Payment { get; set; }
+        public DeliveryMethod DeliveryMethod { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
         public bool GiftWrap { get; set; }
 
-        public enum OrderStatus
+
+        public decimal CalculateTotalCosts()
         {
-            New,
-            InProgress,
-            Completed
+            var cartCost = Lines.Sum(x => x.Quantity * x.Product.Price);
+            var deliveryCost = PaymentMethod.Price;
+
+            return cartCost + deliveryCost;
         }
     }
 }
