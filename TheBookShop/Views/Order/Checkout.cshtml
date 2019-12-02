@@ -1,4 +1,9 @@
 ﻿@model Order
+<style type="text/css">
+    .form-check-input-reverse{
+        margin-left: 10px;
+    }
+</style>
 
 <div class="container">
     <div class="row mt-0">
@@ -11,82 +16,206 @@
                         <div id="msform">
                             <ul class="progressbar2" id="progressbar" class="text-center">
                                 <li class="active fas fa-shopping-cart">Koszyk</li>
-                                <li class="active fas fa-user">Dane osobowe</li>
-                                <li class="fa fa-credit-card">Płatność</li>
-                                <li class="fas fa-check">Koniec</li>
+                                <li class="active fas fa-user">Dostawa i płatność</li>
+                                <li class="fa fa-credit-card">Podsumowanie</li>
+                                <li class="fas fa-check">Potwierdzenie</li>
                             </ul>
                             <br />
                             <form asp-area="" asp-controller="Order" asp-action="Checkout" asp-antiforgery="true" method="post">
                                 <fieldset class="col-xl-12" id="fieldset1">
-                                    <h2 class="fs-title text-center">Dane osobowe i adres</h2>
-                                    <div class="row">
-                                        <div class="col-xl-6">
-                                            <div class="form-group">
-                                                <label asp-for="@Model.Customer.Name"></label>
-                                                <input asp-for="@Model.Customer.Name" class="form-control"/>
+
+                                    @await Component.InvokeAsync("PaymentMethod")
+
+                                    <div id="personData">
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <h2 class="fs-title text-center">Dane osobowe</h2>
                                             </div>
-                                            <div class="form-group">
-                                                <label asp-for="@Model.Customer.Surname"></label>
-                                                <input asp-for="@Model.Customer.Surname" class="form-control"/>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.Customer.Name"></label>
+                                                    <input asp-for="@Model.Customer.Name" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.Customer.Surname"></label>
+                                                    <input asp-for="@Model.Customer.Surname" class="form-control" />
+                                                </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label asp-for="@Model.Customer.PhoneNumber"></label>
-                                                <input asp-for="@Model.Customer.PhoneNumber" class="form-control"/>
-                                            </div>
-                                            <div class="form-group">
-                                                <label asp-for="@Model.Customer.Email"></label>
-                                                <input asp-for="@Model.Customer.Email" class="form-control"/>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.Customer.PhoneNumber"></label>
+                                                    <input asp-for="@Model.Customer.PhoneNumber" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.Customer.Email"></label>
+                                                    <input asp-for="@Model.Customer.Email" class="form-control" />
+                                                </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="col-xl-6">
-                                            <div class="form-group">
-                                                <label asp-for="@Model.DeliveryAddress.City"></label>
-                                                <input asp-for="@Model.DeliveryAddress.City" class="form-control"/>
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <h2 class="fs-title text-center">Dodatkowe informacje</h2>
                                             </div>
-                                            <div class="form-group">
-                                                <label asp-for="@Model.DeliveryAddress.HomeNumber"></label>
-                                                <input asp-for="@Model.DeliveryAddress.HomeNumber" class="form-control"/>
+                                            <div class="form-group col-xl-12" style="line-height: 12px">
+                                                <input class="form-check-input-reverse" type="checkbox" asp-for="@Model.GiftWrap" value="0">
+                                                <label class="form-check-label">
+                                                    Zapakuj jako prezent
+                                                </label>
                                             </div>
-                                            <div class="form-group">
-                                                <label asp-for="@Model.DeliveryAddress.ZipCode"></label>
-                                                <input asp-for="@Model.DeliveryAddress.ZipCode" class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <div id="address" style="display: none">
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <h2 class="fs-title text-center">Adres dostawy</h2>
                                             </div>
-                                            <div class="form-group">
-                                                <label asp-for="@Model.DeliveryAddress.City"></label>
-                                                <input asp-for="@Model.DeliveryAddress.City" class="form-control"/>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.DeliveryAddress.Country"></label>
+                                                    <input asp-for="@Model.DeliveryAddress.Country" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.DeliveryAddress.HomeNumber"></label>
+                                                    <input asp-for="@Model.DeliveryAddress.HomeNumber" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.DeliveryAddress.ZipCode"></label>
+                                                    <input asp-for="@Model.DeliveryAddress.ZipCode" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.DeliveryAddress.City"></label>
+                                                    <input asp-for="@Model.DeliveryAddress.City" class="form-control" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <a asp-area="" asp-controller="Cart" asp-action="Index" class="btn btn-info custom">Wstecz</a>
                                     <a class="next btn btn-info custom text-white" id="next1" onclick="validatePersonData()">Dalej</a>
                                 </fieldset>
-                                <fieldset class="col-xl-12">
+                                <fieldset class="col-xl-12 text-left" id="summaryFieldset">
                                     <div class="form-group">
-                                        <h2 class="fs-title text-center">Płatność</h2>
-                                        <div class="radio-group">
-                                            <div class='radio' data-value="credit"><img src="https://i.imgur.com/XzOzVHZ.jpg" width="200px" height="100px"></div>
-                                            <div class='radio' data-value="paypal"><img src="https://i.imgur.com/jXjwZlj.jpg" width="200px" height="100px"></div> <br>
-                                        </div> <label class="pay">Card Holder Name*</label> <input type="text" name="holdername" placeholder="" />
-                                        <div class="row">
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label class="pay">Card Number*</label> <input type="text" name="cardno" placeholder="" />
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-6">
-                                                <div class="form-group">
-                                                    <label class="pay">CVC*</label> <input type="password" name="cvcpwd" placeholder="***" />
+                                        <h2 class="fs-title text-center">Podsumowanie zamówienia</h2>
+                                        <hr style="width: 100%; color: lightgray; height: 1px; background-color:lightgray;" />
+                                        <h6 class="fs-title text-left">1. Dane osobowe</h6>
+                                        <div class="form-group" style="line-height: 12px">
+                                            <label id="personName"></label> <label id="personSurname"></label>
+                                            <br>
+                                            <label id="personEmail"></label> <label id="personPhoneNumber"></label>
+                                            <br>
+                                            <label id="addressCountry"></label>
+                                            <br>
+                                            <label id="addressZipCode"></label> <label id="addressCity"></label>
+                                            <br>
+                                            <label id="addressHomeNumer"></label>
+                                        </div>
+
+                                        <hr style="width: 100%; color: lightgray; height: 1px; background-color:lightgray;" />
+                                        <h6 class="fs-title text-left">2. Opcje prezentowe</h6>
+
+                                        <div class="form-group text-left" style="line-height: 12px">
+                                            <input class="form-check-input-reverse" type="checkbox" id="giftWrapCheck" disabled>
+                                            <label class="form-check-label" for="giftWrapCheck">Zapakuj jako prezent</label>
+                                        </div>
+
+
+                                        <hr style="width: 100%; color: lightgray; height: 1px; background-color:lightgray;" />
+                                        <h6 class="fs-title text-left">3. Metoda płatności i sposób dostawy</h6>
+                                        <div class="row col-xl-12 text-center">
+                                            <label class="form-check-label" id="paymentMethod"></label>
+                                        </div>
+                                        <div class="row col-xl-12 text-center">
+                                            <label class="form-check-label" id="deliveryOrderMethod"></label>
+                                        </div>
+                                        <br />
+                                        <br />
+                                        <div class="row col-xl-12 text-center">
+                                            <div class="card col-xl-12" id="bankTransferDiv">
+                                                <div class="card-body">
+                                                    <h5 class="card-title text-center">
+                                                        Płatność
+                                                    </h5>
+                                                    <p>Dane do przelewu</p>
+                                                    <table class="table table-sm">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Odbiorca</th>
+                                                                <td class="text-right"> <label>Mr John Doe</label></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Bank</th>
+                                                                <td class="text-right"> <label>Bank XYZ</label></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Nr konta</th>
+                                                                <td class="text-right"> <label>0158962545863983652499</label></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Tytuł przelewu</th>
+                                                                <td class="text-right"> <label>Numer zamówienia</label></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Kwota do zapłaty</th>
+                                                                <td class="text-right"> <strong> @((@Model.Lines.Sum(x => x.Quantity * x.Product.Price) + 10).ToString("c"))</strong></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
-                                    <a class="previous btn btn-info custom text-white">Wstecz</a>
-                                    <a class="next btn btn-info custom text-white" id="next2" onclick="validate2(0)">Dalej</a>
+
+                                        <div class="table-responsive col-xl-8 justify-content-end" style="margin-top: 20px">
+                                            <table class="table table-bordered" role="grid">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="right">
+                                                            <strong>Liczba produktów</strong>
+                                                        </td>
+                                                        <td class="right">@Model.Lines.Sum(x => x.Quantity)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="right">
+                                                            <strong>Zapakowane jako prezent</strong>
+                                                        </td>
+                                                        <td class="right">10zł</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="right">
+                                                            <strong>Koszt dostawy</strong>
+                                                        </td>
+                                                        <td class="right" id="deliveryCost"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="right">
+                                                            <strong>Wartość koszyka</strong>
+                                                        </td>
+                                                        <td class="right" id="cartCost"> @((@Model.Lines.Sum(x => x.Quantity * x.Product.Price)).ToString("c"))
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                       <td class="right">
+                                                            <strong>Suma całkowita</strong>
+                                                        </td>
+                                                        <td class="right">
+                                                            <strong id="totalCost"></strong>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <a class="previous btn btn-info custom text-white text-center">Wstecz</a>
+                                    <a class="next btn btn-info custom text-white" id="next3" onclick="validate2(0)">Zamów</a>
+                                    <button type="submit" class="btn btn-success custom">Zamów</button>
                                 </fieldset>
                                 <fieldset class="col-xl-12">
                                     <div class="form-group">
-                                        <h2 class="fs-title text-center">Podsumowanie zamówienia</h2> <br><br>
+                                        <h2 class="fs-title text-center">Potwierdzenie</h2> <br><br>
                                         
                                         <div class="row justify-content-center">
                                             <div class="col-7 text-center">
