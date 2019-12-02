@@ -77,19 +77,53 @@
     });
 });
 
+function formatNumberToCurrency(item) {
+    return item.toLocaleString('pl-PL', {
+        style: 'currency',
+        currency: 'PLN'
+    });
+}
+
+function setDeliveryCost() {
+    var deliveryCostDiv = document.getElementById("deliveryCost");
+    var deliveryCost = parseInt(getDeliveryPrice());
+    deliveryCostDiv.innerHTML = formatNumberToCurrency(deliveryCost);
+}
+
+function calculateTotalCost() {
+    var cartCostDiv = document.getElementById("cartCost");
+    var cartCost = cartCostDiv.innerHTML.split(' ')[1];
+    var deliveryPrice = getDeliveryPrice();
+    var totalCostDiv = document.getElementById("totalCost");
+    var totalCost = parseInt(deliveryPrice) + parseInt(cartCost);
+   
+    totalCostDiv.innerHTML = formatNumberToCurrency(totalCost);
+}
+
 function validatePersonData() {
-    var fieldset1 = document.getElementById("fieldset1");
-    var inputItems = fieldset1.getElementsByTagName("input");
-    var itemsCount = inputItems.length;
+    var inputs;
+
+    if (PersonalPickUpIsChoosen()) {
+        var personData = document.getElementById("personData");
+        inputs = personData.getElementsByTagName("input");
+       
+    } else {
+        var fieldset1 = document.getElementById("fieldset1");
+        inputs = fieldset1.getElementsByTagName("input");
+    }
+    
+    var itemsCount = inputs.length;
     var flags = [];
+    calculateTotalCost();
+    setDeliveryCost();
 
     for (var i = 0; i < itemsCount; i++) {
-        if (inputItems[i].value === "") {
-            inputItems[i].style.borderColor = "red";
+        if (inputs[i].value === "") {
+            inputs[i].style.borderColor = "red";
             flags[i] = false;
         }
         else {
-            inputItems[i].style.borderColor = "lightgray";
+            inputs[i].style.borderColor = "lightgray";
             flags[i] = true;
         }
     }
@@ -101,6 +135,11 @@ function validate2() {
     return true;
 }
 
+function selectFirstRadioButtonInRow(item) {
+    var allInputs = item.getElementsByTagName('input');
+    allInputs[0].checked = true;
+}
+
 function hideAllPaymentMethodsDivs() {
     var items = document.getElementsByName("Order.DeliveryMethod.DeliveryMethodId");
 
@@ -110,24 +149,41 @@ function hideAllPaymentMethodsDivs() {
     }
 }
 
-function getit() {
+function getCheckedItem() {
     var clickedItem = document.querySelector('input[name="Order.DeliveryMethod.DeliveryMethodId"]:checked').value;
+    return clickedItem;
+}
+
+function PersonalPickUpIsChoosen() {
+    var item = getCheckedItem();
+    if (item ==='1') {
+        return true;
+    }
+    return false;
+}
+
+function getDeliveryPrice() {
+    var y = $('input[name="Order.PaymentMethod.PaymentMethodId"]:checked').parent('label').text().trim();
+    
+    re = /\((.*)\)/;
+    var p = y.match(re)[1]//.replace(/[^0-9]/g, '');
+    return p;
+}
+
+function getit() {
     hideAllPaymentMethodsDivs();
+    var clickedItem = document.querySelector('input[name="Order.DeliveryMethod.DeliveryMethodId"]:checked').value;
+    var item = document.getElementById(clickedItem);
+    item.style.display = 'Block';
+    selectFirstRadioButtonInRow(item);
+
     var addressDiv = document.getElementById("address");
 
     if (clickedItem === '1') {
-        address.style.display = 'None';
+        addressDiv.style.display = 'None';
     } else {
-        address.style.display = 'Block';
+        addressDiv.style.display = 'Block';
     }
-
-    var item = document.getElementById(clickedItem);
-    
-    var allInputs = item.getElementsByTagName('input');
-    allInputs[0].checked = true;
-    
-    item.style.display = 'Block';
-    console.log(clickedItem);
 }
 
 function allTrue(obj) {
