@@ -101,6 +101,35 @@ function validate2() {
     return true;
 }
 
+function hideAllPaymentMethodsDivs() {
+    var items = document.getElementsByName("Order.DeliveryMethod.DeliveryMethodId");
+
+    for (i = 0; i < items.length; i++) {
+        var item = document.getElementById(items[i].value);
+        item.style.display = 'None';
+    }
+}
+
+function getit() {
+    var clickedItem = document.querySelector('input[name="Order.DeliveryMethod.DeliveryMethodId"]:checked').value;
+    hideAllPaymentMethodsDivs();
+    var addressDiv = document.getElementById("address");
+
+    if (clickedItem === '1') {
+        address.style.display = 'None';
+    } else {
+        address.style.display = 'Block';
+    }
+
+    var item = document.getElementById(clickedItem);
+    
+    var allInputs = item.getElementsByTagName('input');
+    allInputs[0].checked = true;
+    
+    item.style.display = 'Block';
+    console.log(clickedItem);
+}
+
 function allTrue(obj) {
     for (var k = 0; k < obj.length; k++) {
         if (!obj[k]) {return false;}
