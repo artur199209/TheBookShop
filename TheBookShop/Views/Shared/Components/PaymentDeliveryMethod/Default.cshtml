@@ -1,0 +1,80 @@
+﻿@using Microsoft.EntityFrameworkCore.Internal
+@model List<DeliveryMethod>
+
+<div class="col-xl-12">
+    <h2 class="fs-title text-center">Sposób dostawy</h2>
+    <div class="radio-group">
+
+        @foreach (var item in @Model)
+        {
+            if (item.DeliveryMethodId == 1)
+            {
+                <label for="Order_DeliveryMethod_DeliveryMethodId">
+                    <input type="radio" value="@item.DeliveryMethodId" id="Order_DeliveryMethod_DeliveryMethodId" name="Order.DeliveryMethod.DeliveryMethodId" onclick="getit();" checked="checked">
+                    @item.Name
+                </label>
+            }
+            else
+            {
+                <label for="Order_DeliveryMethod_DeliveryMethodId">
+                    <input type="radio" value="@item.DeliveryMethodId" id="Order_DeliveryMethod_DeliveryMethodId" name="Order.DeliveryMethod.DeliveryMethodId" onclick="getit();">
+                    @item.Name
+                </label>
+            }
+        }
+    </div>
+</div>
+
+@foreach (var item in @Model)
+{
+    if (item.DeliveryMethodId == 1)
+    {
+        <div class="col-xl-12" id="@item.DeliveryMethodId" style="display: block;">
+            <h2 class="fs-title text-center">Płatność</h2>
+            <div class="radio-group">
+                @foreach (var subItem in item.PaymentMethods)
+                {
+                    if (item.PaymentMethods.IndexOf(subItem) == 0)
+                    {
+                        <label for="Order_PaymentMethod_PaymentMethodId">
+                            <input class="form-check-input-reverse" type="radio" id="Order_PaymentMethod_PaymentMethodId" name="Order.PaymentMethod.PaymentMethodId" value="@subItem.PaymentMethodId" checked="checked">
+                            <label class="form-check-label" id="deliveryMethod">@subItem.Name (@subItem.Price zł)</label>
+                        </label>
+                    }
+                    else
+                    {
+                        <label for="Order_PaymentMethod_PaymentMethodId">
+                            <input class="form-check-input-reverse" type="radio" id="Order_PaymentMethod_PaymentMethodId" name="Order.PaymentMethod.PaymentMethodId" value="@subItem.PaymentMethodId">
+                            <label class="form-check-label" id="deliveryMethod">@subItem.Name (@subItem.Price zł)</label>
+                        </label>
+                    }
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-xl-12" id="@item.DeliveryMethodId" style="display: none;">
+            <h2 class="fs-title text-center">Płatność</h2>
+            <div class="radio-group">
+                @foreach (var subItem in item.PaymentMethods)
+                {
+                    if (item.PaymentMethods.IndexOf(subItem) == 0)
+                    {
+                        <label for="Order_PaymentMethod_PaymentMethodId">
+                            <input class="form-check-input-reverse" type="radio" id="Order_PaymentMethod_PaymentMethodId" name="Order.PaymentMethod.PaymentMethodId" value="@subItem.PaymentMethodId">
+                            <label class="form-check-label" id="deliveryMethod">@subItem.Name (@subItem.Price zł)</label>
+                        </label>
+                    }
+                    else
+                    {
+                        <label for="Order_PaymentMethod_PaymentMethodId">
+                            <input class="form-check-input-reverse" type="radio" id="Order_PaymentMethod_PaymentMethodId" name="Order.PaymentMethod.PaymentMethodId" value="@subItem.PaymentMethodId">
+                            <label class="form-check-label" id="deliveryMethod">@subItem.Name (@subItem.Price zł)</label>
+                        </label>
+                    }
+                }
+            </div>
+        </div>
+    }
+}
