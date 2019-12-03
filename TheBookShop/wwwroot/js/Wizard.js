@@ -7,7 +7,7 @@
         str1 = "next1";
         str2 = "next2";
 
-        if (!str1.localeCompare($(this).attr('id')) && validatePersonData() === true) {
+        if (!str1.localeCompare($(this).attr('id')) && validatePersonDataAndPrepareSummary() === true) {
             val1 = true;
         } else {
             val1 = false;
@@ -20,7 +20,7 @@
             val2 = false;
         }
 
-        if ((!str1.localeCompare($(this).attr('id')) && val1 === true) || (!str2.localeCompare($(this).attr('id')) && val2 === true)) {
+        if ((!str1.localeCompare($(this).attr('id')) && val1 === true)) {// || (!str2.localeCompare($(this).attr('id')) && val2 === true)) {
             currentFs = $(this).parent();
             nextFs = $(this).parent().next();
             var nextFs2 = $(this).parent().next().next();
@@ -84,7 +84,7 @@ function formatNumberToCurrency(item) {
     });
 }
 
-function setDeliveryCost() {
+function displayDeliveryCost() {
     var deliveryCostDiv = document.getElementById("deliveryCost");
     var deliveryCost = parseInt(getDeliveryPrice());
     deliveryCostDiv.innerHTML = formatNumberToCurrency(deliveryCost);
@@ -92,18 +92,44 @@ function setDeliveryCost() {
 
 function calculateTotalCost() {
     var cartCostDiv = document.getElementById("cartCost");
-    var cartCost = cartCostDiv.innerHTML.split(' ')[1];
+    var cartCost = cartCostDiv.innerHTML.trim().split(' ')[0];
     var deliveryPrice = getDeliveryPrice();
     var totalCostDiv = document.getElementById("totalCost");
+    var totalCostBankTransfer = document.getElementById("totalCostBankTransfer");
     var totalCost = parseInt(deliveryPrice) + parseInt(cartCost);
-   
     totalCostDiv.innerHTML = formatNumberToCurrency(totalCost);
+    totalCostBankTransfer.innerHTML = formatNumberToCurrency(totalCost);
 }
 
-function validatePersonData() {
+function displayDeliveryAndMethodPaymentsInSummary() {
+    var delMethod = $('input[name="Order.DeliveryMethod.DeliveryMethodId"]:checked').parent('label').text().trim();
+    var payMethod = $('input[name="Order.PaymentMethod.PaymentMethodId"]:checked').parent('label').text().trim();
+
+    var deliveryMethodSummary = document.getElementById("deliveryMethodSummary");
+    var paymentMethodSummary = document.getElementById("paymentMethodSummary");
+
+    deliveryMethodSummary.innerHTML = delMethod;
+    paymentMethodSummary.innerHTML = payMethod;
+}
+
+function displayGiftWrapIsChoosen() {
+    var giftWrap = document.querySelector('input[name="GiftWrap"]');
+    var giftWrapCheck = document.getElementById("giftWrapCheck");
+    giftWrapCheck.checked = giftWrap.checked;
+}
+
+function prepareSummaryInfo() {
+    calculateTotalCost();
+    displayDeliveryCost();
+    displayGiftWrapIsChoosen();
+    displayCustomerAndAddressEnteredData();
+    displayDeliveryAndMethodPaymentsInSummary();
+}
+
+function validatePersonDataAndPrepareSummary() {
     var inputs;
 
-    if (PersonalPickUpIsChoosen()) {
+    if (personalPickUpIsChoosen()) {
         var personData = document.getElementById("personData");
         inputs = personData.getElementsByTagName("input");
        
@@ -114,9 +140,7 @@ function validatePersonData() {
     
     var itemsCount = inputs.length;
     var flags = [];
-    calculateTotalCost();
-    setDeliveryCost();
-
+   
     for (var i = 0; i < itemsCount; i++) {
         if (inputs[i].value === "") {
             inputs[i].style.borderColor = "red";
@@ -127,6 +151,8 @@ function validatePersonData() {
             flags[i] = true;
         }
     }
+
+    prepareSummaryInfo();
 
     return allTrue(flags);
 }
@@ -154,7 +180,7 @@ function getCheckedItem() {
     return clickedItem;
 }
 
-function PersonalPickUpIsChoosen() {
+function personalPickUpIsChoosen() {
     var item = getCheckedItem();
     if (item ==='1') {
         return true;
@@ -170,7 +196,7 @@ function getDeliveryPrice() {
     return p;
 }
 
-function getit() {
+function hideOrShowPaymentMethodsAndAddressForm() {
     hideAllPaymentMethodsDivs();
     var clickedItem = document.querySelector('input[name="Order.DeliveryMethod.DeliveryMethodId"]:checked').value;
     var item = document.getElementById(clickedItem);
@@ -184,6 +210,42 @@ function getit() {
     } else {
         addressDiv.style.display = 'Block';
     }
+}
+
+function displayCustomerAndAddressEnteredData() {
+    var customerName = document.getElementById("Customer_Name");
+    var customerSurname = document.getElementById("Customer_Surname");
+    var customerEmail = document.getElementById("Customer_Email");
+    var customerPhoneNumber = document.getElementById("Customer_PhoneNumber");
+
+    var deliveryAddressCountry = document.getElementById("DeliveryAddress_Country");
+    var deliveryAddressCity = document.getElementById("DeliveryAddress_City");
+    var deliveryAddressHomeNumber = document.getElementById("DeliveryAddress_HomeNumber");
+    var deliveryAddressZipCode = document.getElementById("DeliveryAddress_ZipCode");
+    
+    var personName = document.getElementById("personName");
+    personName.innerHTML = customerName.value;
+
+    var personSurname = document.getElementById("personSurname");
+    personSurname.innerHTML = customerSurname.value;
+
+    var personEmail = document.getElementById("personEmail");
+    personEmail.innerHTML = customerEmail.value;
+
+    var personPhoneNumber = document.getElementById("personPhoneNumber");
+    personPhoneNumber.innerHTML = customerPhoneNumber.value;
+
+    var addressCountry = document.getElementById("addressCountry");
+    addressCountry.innerHTML = deliveryAddressCountry.value;
+
+    var addressCity = document.getElementById("addressCity");
+    addressCity.innerHTML = deliveryAddressCity.value;
+
+    var addressHomeNumber = document.getElementById("addressHomeNumer");
+    addressHomeNumber.innerHTML = deliveryAddressHomeNumber.value;
+
+    var addressZipCode = document.getElementById("addressZipCode");
+    addressZipCode.innerHTML = deliveryAddressZipCode.value;
 }
 
 function allTrue(obj) {
