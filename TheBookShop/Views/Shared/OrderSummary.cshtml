@@ -1,0 +1,115 @@
+﻿@model Order
+<div class="form-group">
+    <h2 class="fs-title text-center">Podsumowanie zamówienia</h2>
+    <hr style="width: 100%; color: lightgray; height: 1px; background-color:lightgray;" />
+    <h6 class="fs-title text-left">1. Dane osobowe</h6>
+    <div class="form-group" style="line-height: 12px">
+        <label id="personName"></label> <label id="personSurname"></label>
+        <br>
+        <label id="personEmail"></label> <label id="personPhoneNumber"></label>
+        <br>
+        <label id="addressCountry"></label>
+        <br>
+        <label id="addressZipCode"></label> <label id="addressCity"></label>
+        <br>
+        <label id="addressHomeNumer"></label>
+    </div>
+
+    <hr style="width: 100%; color: lightgray; height: 1px; background-color:lightgray;" />
+    <h6 class="fs-title text-left">2. Opcje prezentowe</h6>
+
+    <div class="form-group text-left" style="line-height: 12px">
+        <input class="form-check-input-reverse" type="checkbox" id="giftWrapCheck" disabled>
+        <label class="form-check-label" for="giftWrapCheck">Zapakuj jako prezent</label>
+    </div>
+
+
+    <hr style="width: 100%; color: lightgray; height: 1px; background-color:lightgray;" />
+    <h6 class="fs-title text-left">3. Metoda płatności i sposób dostawy</h6>
+
+    <div class="row col-xl-12 text-center">
+        <div class="card col-xl-12" id="bankTransferDiv">
+            <div class="card-body">
+                <h5 class="card-title text-center">
+                    Płatność
+                </h5>
+                <p>Dane do przelewu</p>
+                <table class="table table-sm">
+                    <tbody>
+                        <tr>
+                            <th>Odbiorca</th>
+                            <td class="text-right"> <label>Mr John Doe</label></td>
+                        </tr>
+                        <tr>
+                            <th>Bank</th>
+                            <td class="text-right"> <label>Bank XYZ</label></td>
+                        </tr>
+                        <tr>
+                            <th>Nr konta</th>
+                            <td class="text-right"> <label>0158962545863983652499</label></td>
+                        </tr>
+                        <tr>
+                            <th>Tytuł przelewu</th>
+                            <td class="text-right"> <label>Numer zamówienia</label></td>
+                        </tr>
+                        <tr>
+                            <th>Kwota do zapłaty</th>
+                            <td class="text-right" id="totalCostBankTransfer"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive col-xl-8 justify-content-end" style="margin-top: 20px">
+        <table class="table table-bordered" role="grid">
+            <tbody>
+                <tr>
+                    <td class="right"><strong>Sposób dostawy</strong></td>
+                    <td class="right" id="deliveryMethodSummary"></td>
+                </tr>
+                <tr>
+                    <td class="right"><strong>Sposób zapłaty</strong></td>
+                    <td class="right" id="paymentMethodSummary"></td>
+                </tr>
+                <tr>
+                    <td class="right">
+                        <strong>Liczba produktów</strong>
+                    </td>
+                    <td class="right">@Model.Lines.Sum(x => x.Quantity)</td>
+                </tr>
+                <tr>
+                    <td class="right">
+                        <strong>Zapakowane jako prezent</strong>
+                    </td>
+                    <td class="right">10zł</td>
+                </tr>
+                <tr>
+                    <td class="right">
+                        <strong>Koszt dostawy</strong>
+                    </td>
+                    <td class="right" id="deliveryCost"></td>
+                </tr>
+                <tr>
+                    <td class="right">
+                        <strong>Wartość koszyka</strong>
+                    </td>
+                    <td class="right" id="cartCost">
+                        @((@Model.Lines.Sum(x => x.Quantity * x.Product.Price)).ToString("c"))
+                    </td>
+                </tr>
+                <tr>
+                    <td class="right">
+                        <strong>Suma całkowita</strong>
+                    </td>
+                    <td class="right">
+                        <strong id="totalCost"></strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<a class="previous btn btn-info custom text-white text-center">Wstecz</a>
+<button type="submit" class="btn btn-success custom">Zamów</button>
