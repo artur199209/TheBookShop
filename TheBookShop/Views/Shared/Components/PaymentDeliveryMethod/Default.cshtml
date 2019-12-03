@@ -10,14 +10,14 @@
             if (item.DeliveryMethodId == 1)
             {
                 <label for="Order_DeliveryMethod_DeliveryMethodId">
-                    <input type="radio" value="@item.DeliveryMethodId" id="Order_DeliveryMethod_DeliveryMethodId" name="Order.DeliveryMethod.DeliveryMethodId" onclick="getit();" checked="checked">
+                    <input type="radio" value="@item.DeliveryMethodId" id="Order_DeliveryMethod_DeliveryMethodId" name="Order.DeliveryMethod.DeliveryMethodId" onclick="hideOrShowPaymentMethodsAndAddressForm();" checked="checked">
                     @item.Name
                 </label>
             }
             else
             {
                 <label for="Order_DeliveryMethod_DeliveryMethodId">
-                    <input type="radio" value="@item.DeliveryMethodId" id="Order_DeliveryMethod_DeliveryMethodId" name="Order.DeliveryMethod.DeliveryMethodId" onclick="getit();">
+                    <input type="radio" value="@item.DeliveryMethodId" id="Order_DeliveryMethod_DeliveryMethodId" name="Order.DeliveryMethod.DeliveryMethodId" onclick="hideOrShowPaymentMethodsAndAddressForm();">
                     @item.Name
                 </label>
             }
