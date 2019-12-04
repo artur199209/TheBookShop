@@ -24,7 +24,7 @@
                             <form asp-area="" asp-controller="Order" asp-action="Checkout" asp-antiforgery="true" method="post">
                                 <fieldset class="col-xl-12" id="fieldset1">
 
-                                    @await Component.InvokeAsync("PaymentDeliveryMethod")
+                                   @await Component.InvokeAsync("PaymentDeliveryMethod")
 
                                     <div id="personData">
                                         <div class="row">
@@ -60,7 +60,7 @@
                                                 <h2 class="fs-title text-center">Dodatkowe informacje</h2>
                                             </div>
                                             <div class="form-group col-xl-12" style="line-height: 12px">
-                                                <input class="form-check-input-reverse" type="checkbox" asp-for="@Model.GiftWrap" value="0">
+                                                <input class="form-check-input-reverse" type="checkbox" asp-for="@Model.GiftWrap" />
                                                 <label class="form-check-label">
                                                     Zapakuj jako prezent
                                                 </label>
@@ -98,7 +98,7 @@
                                     <a asp-area="" asp-controller="Cart" asp-action="Index" class="btn btn-info custom">Wstecz</a>
                                     <a class="next btn btn-info custom text-white" id="next1" onclick="validatePersonDataAndPrepareSummary()">Dalej</a>
                                 </fieldset>
-                                <fieldset class="col-xl-12 text-left" id="summaryFieldset">
+                                <fieldset class="col-xl-12" id="summaryFieldset">
                                     <partial name="OrderSummary" for="@Model"/>
                                 </fieldset>
                                 <fieldset class="col-xl-12">
