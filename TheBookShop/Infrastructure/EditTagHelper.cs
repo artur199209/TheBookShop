@@ -6,7 +6,6 @@ namespace TheBookShop.Infrastructure
     [HtmlTargetElement("edit", Attributes = "ram")]
     public class EditTagHelper : TagHelper
     {
-        //[HtmlAttributeName("asp-for")]
         public ModelExpression AspFor { get; set; }
         
         public override void Process(TagHelperContext context, TagHelperOutput output)
