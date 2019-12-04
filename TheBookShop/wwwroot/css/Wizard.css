@@ -11,6 +11,10 @@ html {
     width: 100px;
 }
 
+#bankTransferTable td, #orderSummaryTable td{
+    width: 50%;
+}
+
 #msform {
     position: relative;
     margin-top: 20px;
