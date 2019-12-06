@@ -15,11 +15,11 @@ namespace TheBookShop.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TheBookShop.Models.Author", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.Author", b =>
                 {
                     b.Property<int>("AuthorId")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace TheBookShop.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.CartLine", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.CartLine", b =>
                 {
                     b.Property<int>("CartLineId")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace TheBookShop.Migrations
                     b.ToTable("CartLine");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.Customer", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
@@ -68,13 +68,17 @@ namespace TheBookShop.Migrations
 
                     b.Property<int?>("CustomerAddressId");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired();
 
-                    b.Property<string>("Surname");
+                    b.Property<string>("Surname")
+                        .IsRequired();
 
                     b.HasKey("CustomerId");
 
@@ -83,7 +87,7 @@ namespace TheBookShop.Migrations
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.CustomerAddress", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.CustomerAddress", b =>
                 {
                     b.Property<int>("CustomerAddressId")
                         .ValueGeneratedOnAdd()
@@ -102,7 +106,7 @@ namespace TheBookShop.Migrations
                     b.ToTable("CustomerAddresses");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.DeliveryAddress", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.DeliveryAddress", b =>
                 {
                     b.Property<int>("DeliveryAddressId")
                         .ValueGeneratedOnAdd()
@@ -121,7 +125,20 @@ namespace TheBookShop.Migrations
                     b.ToTable("DeliveryAddresses");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.Opinion", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.DeliveryMethod", b =>
+                {
+                    b.Property<int>("DeliveryMethodId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("DeliveryMethodId");
+
+                    b.ToTable("DeliveryMethod");
+                });
+
+            modelBuilder.Entity("TheBookShop.Models.DataModels.Opinion", b =>
                 {
                     b.Property<int>("OpinionId")
                         .ValueGeneratedOnAdd()
@@ -144,7 +161,7 @@ namespace TheBookShop.Migrations
                     b.ToTable("Opinions");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.Order", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.Order", b =>
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
@@ -154,11 +171,17 @@ namespace TheBookShop.Migrations
 
                     b.Property<int?>("DeliveryAddressId");
 
+                    b.Property<int?>("DeliveryMethodId");
+
                     b.Property<bool>("GiftWrap");
 
                     b.Property<int?>("PaymentId");
 
+                    b.Property<int?>("PaymentMethodId");
+
                     b.Property<bool>("Shipped");
+
+                    b.Property<string>("TrackingNumber");
 
                     b.HasKey("OrderId");
 
@@ -166,12 +189,16 @@ namespace TheBookShop.Migrations
 
                     b.HasIndex("DeliveryAddressId");
 
+                    b.HasIndex("DeliveryMethodId");
+
                     b.HasIndex("PaymentId");
+
+                    b.HasIndex("PaymentMethodId");
 
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.Payment", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.Payment", b =>
                 {
                     b.Property<int>("PaymentId")
                         .ValueGeneratedOnAdd()
@@ -188,6 +215,25 @@ namespace TheBookShop.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("TheBookShop.Models.DataModels.PaymentMethod", b =>
+                {
+                    b.Property<int>("PaymentMethodId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("DeliveryMethodId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<decimal>("Price");
+
+                    b.HasKey("PaymentMethodId");
+
+                    b.HasIndex("DeliveryMethodId");
+
+                    b.ToTable("PaymentMethod");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.Product", b =>
@@ -231,9 +277,9 @@ namespace TheBookShop.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.CartLine", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.CartLine", b =>
                 {
-                    b.HasOne("TheBookShop.Models.Order")
+                    b.HasOne("TheBookShop.Models.DataModels.Order")
                         .WithMany("Lines")
                         .HasForeignKey("OrderId");
 
@@ -242,16 +288,16 @@ namespace TheBookShop.Migrations
                         .HasForeignKey("ProductId");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.Customer", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.Customer", b =>
                 {
-                    b.HasOne("TheBookShop.Models.CustomerAddress", "CustomerAddress")
+                    b.HasOne("TheBookShop.Models.DataModels.CustomerAddress", "CustomerAddress")
                         .WithMany()
                         .HasForeignKey("CustomerAddressId");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.Opinion", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.Opinion", b =>
                 {
-                    b.HasOne("TheBookShop.Models.Customer", "Customer")
+                    b.HasOne("TheBookShop.Models.DataModels.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId");
 
@@ -260,31 +306,46 @@ namespace TheBookShop.Migrations
                         .HasForeignKey("ProductId");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.Order", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.Order", b =>
                 {
-                    b.HasOne("TheBookShop.Models.Customer", "Customer")
+                    b.HasOne("TheBookShop.Models.DataModels.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("TheBookShop.Models.DeliveryAddress", "DeliveryAddress")
+                    b.HasOne("TheBookShop.Models.DataModels.DeliveryAddress", "DeliveryAddress")
                         .WithMany()
                         .HasForeignKey("DeliveryAddressId");
 
-                    b.HasOne("TheBookShop.Models.Payment", "Payment")
+                    b.HasOne("TheBookShop.Models.DataModels.DeliveryMethod", "DeliveryMethod")
+                        .WithMany()
+                        .HasForeignKey("DeliveryMethodId");
+
+                    b.HasOne("TheBookShop.Models.DataModels.Payment", "Payment")
                         .WithMany()
                         .HasForeignKey("PaymentId");
+
+                    b.HasOne("TheBookShop.Models.DataModels.PaymentMethod", "PaymentMethod")
+                        .WithMany()
+                        .HasForeignKey("PaymentMethodId");
                 });
 
-            modelBuilder.Entity("TheBookShop.Models.Payment", b =>
+            modelBuilder.Entity("TheBookShop.Models.DataModels.Payment", b =>
                 {
-                    b.HasOne("TheBookShop.Models.Customer", "Customer")
+                    b.HasOne("TheBookShop.Models.DataModels.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId");
+                });
+
+            modelBuilder.Entity("TheBookShop.Models.DataModels.PaymentMethod", b =>
+                {
+                    b.HasOne("TheBookShop.Models.DataModels.DeliveryMethod", "DeliveryMethod")
+                        .WithMany("PaymentMethods")
+                        .HasForeignKey("DeliveryMethodId");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.Product", b =>
                 {
-                    b.HasOne("TheBookShop.Models.Author", "Author")
+                    b.HasOne("TheBookShop.Models.DataModels.Author", "Author")
                         .WithMany("Products")
                         .HasForeignKey("AuthorId");
                 });
