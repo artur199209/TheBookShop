@@ -15,5 +15,7 @@ namespace TheBookShop.Models
         public DbSet<DeliveryAddress> DeliveryAddresses { get; set; }
         public DbSet<CustomerAddress> CustomerAddresses { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
     }
 }

@@ -135,7 +135,7 @@ namespace TheBookShop.Migrations
 
                     b.HasKey("DeliveryMethodId");
 
-                    b.ToTable("DeliveryMethod");
+                    b.ToTable("DeliveryMethods");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.DataModels.Opinion", b =>
@@ -233,7 +233,7 @@ namespace TheBookShop.Migrations
 
                     b.HasIndex("DeliveryMethodId");
 
-                    b.ToTable("PaymentMethod");
+                    b.ToTable("PaymentMethods");
                 });
 
             modelBuilder.Entity("TheBookShop.Models.Product", b =>

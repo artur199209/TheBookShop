@@ -29,9 +29,9 @@ namespace TheBookShop.Components
 
                     PaymentMethods = new List<PaymentMethod>()
                     {
-                        new PaymentMethod() {Name="Opłata za pobraniem", Price = 15},
-                        new PaymentMethod() {Name="Przelew bankowy", Price = 12},
-                        new PaymentMethod() {Name="Paypal", Price = 12}
+                        new PaymentMethod() {PaymentMethodId = 5, Name="Opłata za pobraniem", Price = 15},
+                        new PaymentMethod() {PaymentMethodId = 6, Name="Przelew bankowy", Price = 12},
+                        new PaymentMethod() {PaymentMethodId = 7, Name="Paypal", Price = 12}
                     }
                 });
 
@@ -42,9 +42,9 @@ namespace TheBookShop.Components
                     DeliveryMethodId = 3,
                     PaymentMethods = new List<PaymentMethod>()
                     {
-                        new PaymentMethod() {Name="Opłata za pobraniem", Price = 20},
-                        new PaymentMethod() {Name="Przelew bankowy", Price = 15},
-                        new PaymentMethod() {Name="Paypal", Price = 15}
+                        new PaymentMethod() {PaymentMethodId = 8, Name="Opłata za pobraniem", Price = 20},
+                        new PaymentMethod() {PaymentMethodId = 9, Name="Przelew bankowy", Price = 15},
+                        new PaymentMethod() {PaymentMethodId = 10, Name="Paypal", Price = 15}
                     }
                 });
            

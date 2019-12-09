@@ -2,6 +2,7 @@
 {
     var currentFs, nextFs, previousFs;
     var opacity;
+    selectFirstRadioButtonInDeliveryMethodRow();
 
     $(".next").click(function () {
         str1 = "next1";
@@ -102,8 +103,8 @@ function calculateTotalCost() {
 }
 
 function displayDeliveryAndMethodPaymentsInSummary() {
-    var delMethod = $('input[name="Order.DeliveryMethod.DeliveryMethodId"]:checked').parent('label').text().trim();
-    var payMethod = $('input[name="Order.PaymentMethod.PaymentMethodId"]:checked').parent('label').text().trim();
+    var delMethod = $('input[name="DeliveryMethod.DeliveryMethodId"]:checked').parent('label').text().trim();
+    var payMethod = $('input[name="PaymentMethod.PaymentMethodId"]:checked').parent('label').text().trim();
 
     var deliveryMethodSummary = document.getElementById("deliveryMethodSummary");
     var paymentMethodSummary = document.getElementById("paymentMethodSummary");
@@ -161,14 +162,19 @@ function validate2() {
     return true;
 }
 
+function selectFirstRadioButtonInDeliveryMethodRow() {
+    var allInputs = document.getElementsByName("DeliveryMethod.DeliveryMethodId");
+    allInputs[0].checked = true;
+}
+
 function selectFirstRadioButtonInRow(item) {
     var allInputs = item.getElementsByTagName('input');
     allInputs[0].checked = true;
 }
 
 function hideAllPaymentMethodsDivs() {
-    var items = document.getElementsByName("Order.DeliveryMethod.DeliveryMethodId");
-
+    var items = document.getElementsByName("DeliveryMethod.DeliveryMethodId");
+   
     for (i = 0; i < items.length; i++) {
         var item = document.getElementById(items[i].value);
         item.style.display = 'None';
@@ -176,7 +182,7 @@ function hideAllPaymentMethodsDivs() {
 }
 
 function getCheckedItem() {
-    var clickedItem = document.querySelector('input[name="Order.DeliveryMethod.DeliveryMethodId"]:checked').value;
+    var clickedItem = document.querySelector('input[name="DeliveryMethod.DeliveryMethodId"]:checked').value;
     return clickedItem;
 }
 
@@ -189,16 +195,16 @@ function personalPickUpIsChoosen() {
 }
 
 function getDeliveryPrice() {
-    var y = $('input[name="Order.PaymentMethod.PaymentMethodId"]:checked').parent('label').text().trim();
+    var deliveryLabelValue = $('input[name="PaymentMethod.PaymentMethodId"]:checked').parent('label').text().trim();
     
     re = /\((.*)\)/;
-    var p = y.match(re)[1]//.replace(/[^0-9]/g, '');
-    return p;
+    var price = deliveryLabelValue.match(re)[1]//.replace(/[^0-9]/g, '');
+    return price;
 }
 
 function hideOrShowPaymentMethodsAndAddressForm() {
     hideAllPaymentMethodsDivs();
-    var clickedItem = document.querySelector('input[name="Order.DeliveryMethod.DeliveryMethodId"]:checked').value;
+    var clickedItem = document.querySelector('input[name="DeliveryMethod.DeliveryMethodId"]:checked').value;
     var item = document.getElementById(clickedItem);
     item.style.display = 'Block';
     selectFirstRadioButtonInRow(item);

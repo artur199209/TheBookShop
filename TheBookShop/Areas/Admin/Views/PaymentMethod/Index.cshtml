@@ -1,0 +1,36 @@
+﻿@model IEnumerable<PaymentMethod>
+
+<div class="text-center">
+    <h4>Lista płatności</h4>
+</div>
+
+<table class="table table-bordered table-hover table-sm" role="grid">
+    <tr>
+        <th>ID</th>
+        <th>Nazwa</th>
+        <th>Sposoby zapłaty</th>
+        <th></th>
+    </tr>
+
+    @if (!Model.Any())
+    {
+        <tr><td colspan="4" class="text-center">Brak metod płatności</td></tr>
+    }
+    else
+    {
+        foreach (var paymentMethod in Model)
+        {
+            <tr>
+                <td>@paymentMethod.PaymentMethodId</td>
+                <td>@paymentMethod.Name</td>
+                <td>@paymentMethod.Price</td>
+                <td>@*<a asp-action="Edit" class="btn btn-primary">Edytuj</a>*@</td>
+            </tr>
+        }
+    }
+
+</table>
+
+<div class="text-center">
+    <a asp-action="Create" class="btn btn-primary">Dodaj nowy sposób płatności</a>
+</div>

@@ -1,0 +1,50 @@
+﻿@model DeliveryPaymentViewModel
+
+<div class="text-center">
+    <h4>Edycja roli</h4>
+</div>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="Edit" asp-antiforgery="true" method="post" >
+    <input type="hidden" asp-for="@Model.DeliveryMethod.Name" value="@Model.DeliveryMethod.Name" />
+    <input type="hidden" asp-for="@Model.DeliveryMethod.DeliveryMethodId" value="@Model.DeliveryMethod.DeliveryMethodId" />
+
+    <h6 class="bg-info p-1 text-white">Dodaj do @Model.DeliveryMethod.Name</h6>
+    <table class="table table-bordered table-sm">
+        @if (!Model.PaymentMethods.Any()) {
+            <tr><td colspan="2">Wszystkie metody płatności zostały przypisane do tego sposobu dostawy</td></tr>
+        }
+        else
+        {
+            foreach (var paymentMethod in Model.PaymentMethods) {
+                <tr>
+                    <td>@paymentMethod.Name</td>
+                    <td>
+                        <input type="checkbox" name="IdsToAdd" value="@paymentMethod.PaymentMethodId">
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+    <h6 class="bg-info p-1 text-white">Usuń z @Model.DeliveryMethod.Name</h6>
+    <table class="table table-bordered table-sm">
+        @if (!Model.DeliveryMethod.PaymentMethods.Any()) {
+            <tr><td colspan="2">Brak metod płatności do usunięcia</td></tr>
+        }
+        else
+        {
+            foreach (var paymentMethod in Model.DeliveryMethod.PaymentMethods) {
+                <tr>
+                    <td>@paymentMethod.Name</td>
+                    <td>
+                        <input type="checkbox" name="IdsToDelete" value="@paymentMethod.PaymentMethodId">
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+</form>

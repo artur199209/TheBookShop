@@ -57,6 +57,12 @@ namespace TheBookShop.Areas.Admin.Components
 
             topNav.Add(new LeftNavItem() { Id = 19, NameOption = "Płatności", IsParent = true, ParentId = -1, IconClass = "fas fa-receipt" });
             topNav.Add(new LeftNavItem() { Id = 20, Area = "Admin", Controller = "Payment", Action = "Index", NameOption = "Wszystkie", IsParent = false, ParentId = 19, IconClass = "fa fa-circle-o" });
+
+            topNav.Add(new LeftNavItem() { Id = 21, NameOption = "Metody dostawy", IsParent = true, ParentId = -1, IconClass = "fas fa-receipt" });
+            topNav.Add(new LeftNavItem() { Id = 22, Area = "Admin", Controller = "DeliveryMethod", Action = "Index", NameOption = "Wszystkie", IsParent = false, ParentId = 21, IconClass = "fa fa-circle-o" });
+
+            topNav.Add(new LeftNavItem() { Id = 23, NameOption = "Metody płatności", IsParent = true, ParentId = -1, IconClass = "fas fa-receipt" });
+            topNav.Add(new LeftNavItem() { Id = 24, Area = "Admin", Controller = "PaymentMethod", Action = "Index", NameOption = "Wszystkie", IsParent = false, ParentId = 23, IconClass = "fa fa-circle-o" });
             return topNav;
         }
     }

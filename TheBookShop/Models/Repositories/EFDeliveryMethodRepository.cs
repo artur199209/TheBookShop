@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using TheBookShop.Models.DataModels;
@@ -7,7 +8,7 @@ namespace TheBookShop.Models.Repositories
 {
     public class EFDeliveryMethodRepository : IDeliveryMethodRepository
     {
-        private ApplicationDbContext _applicationDbContext;
+        private readonly ApplicationDbContext _applicationDbContext;
 
         public EFDeliveryMethodRepository(ApplicationDbContext applicationDbContext)
         {
@@ -27,10 +28,16 @@ namespace TheBookShop.Models.Repositories
                 else
                 {
                     var deliveryMethodEntry = _applicationDbContext.DeliveryMethods.FirstOrDefault(x => x.DeliveryMethodId == deliveryMethod.DeliveryMethodId);
-
+                    
                     if (deliveryMethodEntry != null)
                     {
                         deliveryMethodEntry.Name = deliveryMethod.Name;
+                        deliveryMethodEntry.PaymentMethods = new List<PaymentMethod>();
+
+                        foreach (var paymentMethod in deliveryMethod.PaymentMethods)
+                        {
+                            deliveryMethodEntry.PaymentMethods.Add(paymentMethod);
+                        }
                     }
                 }
 

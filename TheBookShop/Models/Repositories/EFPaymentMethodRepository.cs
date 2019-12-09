@@ -6,7 +6,7 @@ namespace TheBookShop.Models.Repositories
 {
     public class EFPaymentMethodRepository : IPaymentMethodRepository
     {
-        private ApplicationDbContext _applicationDbContext;
+        private readonly ApplicationDbContext _applicationDbContext;
 
         public EFPaymentMethodRepository(ApplicationDbContext applicationDbContext)
         {
