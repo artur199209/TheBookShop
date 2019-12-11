@@ -32,9 +32,9 @@ namespace TheBookShop.Models.Repositories
                     if (deliveryMethodEntry != null)
                     {
                         deliveryMethodEntry.Name = deliveryMethod.Name;
-                        deliveryMethodEntry.PaymentMethods = new List<PaymentMethod>();
+                        deliveryMethodEntry.PaymentMethods = new List<DeliveryPaymentMethod>();
 
-                        foreach (var paymentMethod in deliveryMethod.PaymentMethods)
+                        foreach (var paymentMethod in deliveryMethod.PaymentMethods.ToList())
                         {
                             deliveryMethodEntry.PaymentMethods.Add(paymentMethod);
                         }

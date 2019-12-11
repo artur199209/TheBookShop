@@ -18,7 +18,7 @@ namespace TheBookShop.Models.Repositories
             .Include(o => o.DeliveryAddress)
             .Include(o => o.Payment)
             .Include(o => o.PaymentMethod)
-            .ThenInclude(p => p.DeliveryMethod)
+            .ThenInclude(p => p.DeliveryMethods)
             .Include(o => o.Lines)
             .ThenInclude(l => l.Product)
             .ThenInclude(p => p.Author);
