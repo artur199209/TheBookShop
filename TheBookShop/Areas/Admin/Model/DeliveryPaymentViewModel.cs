@@ -7,5 +7,6 @@ namespace TheBookShop.Areas.Admin.Model
     {
         public DeliveryMethod DeliveryMethod { get; set; }
         public List<PaymentMethod> PaymentMethods { get; set; }
+        public List<PaymentMethod> NonPaymentMethods { get; set; }
     }
 }
