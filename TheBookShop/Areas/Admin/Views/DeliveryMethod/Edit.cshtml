@@ -12,7 +12,7 @@
 
     <h6 class="bg-info p-1 text-white">Dodaj do @Model.DeliveryMethod.Name</h6>
     <table class="table table-bordered table-sm">
-        @if (!Model.PaymentMethods.Any()) {
+        @if (!Model.DeliveryMethod.PaymentMethods.Any()) {
             <tr><td colspan="2">Wszystkie metody płatności zostały przypisane do tego sposobu dostawy</td></tr>
         }
         else
@@ -36,10 +36,10 @@
         }
         else
         {
-            foreach (var paymentMethod in Model.PaymentMethods) {
+            foreach (var paymentMethod in Model.DeliveryMethod.PaymentMethods) {
                 <tr>
-                    <td>@paymentMethod.Name</td>
-                    <td>@paymentMethod.Price</td>
+                    <td>@paymentMethod.PaymentMethod.Name</td>
+                    <td>@paymentMethod.PaymentMethod.Price</td>
                     <td>
                         <input type="checkbox" name="IdsToDelete" value="@paymentMethod.PaymentMethodId">
                     </td>
