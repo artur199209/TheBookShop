@@ -15,7 +15,7 @@ namespace TheBookShop.Models.Repositories
             _applicationDbContext = applicationDbContext;
         }
 
-        public IQueryable<DeliveryMethod> DeliveryMethods => _applicationDbContext.DeliveryMethods.Include(x => x.PaymentMethods);
+        public IQueryable<DeliveryMethod> DeliveryMethods => _applicationDbContext.DeliveryMethods.Include(x => x.PaymentMethods).ThenInclude(p => p.PaymentMethod);
 
         public void SaveDeliveryMethod(DeliveryMethod deliveryMethod)
         {
