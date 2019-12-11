@@ -9,6 +9,7 @@ namespace TheBookShop.Models.DataModels
         public int DeliveryMethodId { get; set; }
 
         [Required(ErrorMessage = "Proszę podać nazwę sposobu dostawy.")]
+        [Display(Name = "Nazwa")]
         public string Name { get; set; }
 
         [BindNever]

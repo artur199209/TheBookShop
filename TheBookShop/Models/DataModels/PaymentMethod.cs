@@ -9,9 +9,11 @@ namespace TheBookShop.Models.DataModels
         public int PaymentMethodId { get; set; }
 
         [Required(ErrorMessage = "Proszę podać nazwę.")]
+        [Display(Name = "Nazwa")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Proszę podać koszt dostawy.")]
+        [Display(Name = "Cena")]
         public decimal Price { get; set; }
 
         [BindNever]
