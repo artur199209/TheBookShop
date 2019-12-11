@@ -57,15 +57,13 @@ namespace TheBookShop.Areas.Admin.Controllers
         public IActionResult Edit(int deliveryMethodId)
         {
             var deliveryMethod = _deliveryMethodRepository.DeliveryMethods.FirstOrDefault(x => x.DeliveryMethodId == deliveryMethodId);
-            var includedIds = deliveryMethod?.PaymentMethods.Select(x => x.PaymentMethodId);
             var allPaymentMethods = _paymentMethodRepository.PaymentMethods;
             var excludedIds = deliveryMethod?.PaymentMethods.Select(x => x.PaymentMethodId).ToList();
 
             var deliveryPaymentViewModel = new DeliveryPaymentViewModel
             {
                 DeliveryMethod = deliveryMethod,
-                NonPaymentMethods = allPaymentMethods.Where(w => !excludedIds.Contains(w.PaymentMethodId)).ToList(),
-                PaymentMethods = allPaymentMethods.Where(x => includedIds.Contains(x.PaymentMethodId)).ToList()
+                NonPaymentMethods = allPaymentMethods.Where(w => !excludedIds.Contains(w.PaymentMethodId)).ToList()
             };
 
             return View(deliveryPaymentViewModel);
