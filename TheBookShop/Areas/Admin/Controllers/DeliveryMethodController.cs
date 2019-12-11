@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using TheBookShop.Areas.Admin.Model;
 
 namespace TheBookShop.Areas.Admin.Controllers
@@ -53,18 +52,20 @@ namespace TheBookShop.Areas.Admin.Controllers
 
             return View(nameof(Index));
         }
-
-        [HttpGet]
+        
         [Route("[action]")]
         public IActionResult Edit(int deliveryMethodId)
         {
-            var deliveryMethod = _deliveryMethodRepository.DeliveryMethods
-                .FirstOrDefault(x => x.DeliveryMethodId == deliveryMethodId);
+            var deliveryMethod = _deliveryMethodRepository.DeliveryMethods.FirstOrDefault(x => x.DeliveryMethodId == deliveryMethodId);
+            var includedIds = deliveryMethod?.PaymentMethods.Select(x => x.PaymentMethodId);
+            var allPaymentMethods = _paymentMethodRepository.PaymentMethods;
+            var excludedIds = deliveryMethod?.PaymentMethods.Select(x => x.PaymentMethodId).ToList();
 
             var deliveryPaymentViewModel = new DeliveryPaymentViewModel
             {
                 DeliveryMethod = deliveryMethod,
-                PaymentMethods = _paymentMethodRepository.PaymentMethods.Except(deliveryMethod?.PaymentMethods).ToList()
+                NonPaymentMethods = allPaymentMethods.Where(w => !excludedIds.Contains(w.PaymentMethodId)).ToList(),
+                PaymentMethods = allPaymentMethods.Where(x => includedIds.Contains(x.PaymentMethodId)).ToList()
             };
 
             return View(deliveryPaymentViewModel);
@@ -77,31 +78,36 @@ namespace TheBookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                deliveryPaymentModificationModel.DeliveryMethod.PaymentMethods = new List<PaymentMethod>();
+                deliveryPaymentModificationModel.DeliveryMethod.PaymentMethods = _deliveryMethodRepository
+                    .DeliveryMethods.FirstOrDefault(x =>
+                        x.DeliveryMethodId == deliveryPaymentModificationModel.DeliveryMethod.DeliveryMethodId)
+                    ?.PaymentMethods ?? new List<DeliveryPaymentMethod>();
 
                 foreach (int id in deliveryPaymentModificationModel.IdsToAdd ?? new List<int>())
                 {
-                    var paymentMethod =
-                        _paymentMethodRepository.PaymentMethods.FirstOrDefault(x => x.PaymentMethodId == id);
-                    deliveryPaymentModificationModel.DeliveryMethod.PaymentMethods.Add(paymentMethod);
+                    var paymentMethod = new DeliveryPaymentMethod
+                    {
+                        PaymentMethod = _paymentMethodRepository.PaymentMethods.FirstOrDefault(x => x.PaymentMethodId == id)
+                    };
+                    deliveryPaymentModificationModel.DeliveryMethod.PaymentMethods?.Add(paymentMethod);
                 }
 
                 foreach (int id in deliveryPaymentModificationModel.IdsToDelete ?? new List<int>())
                 {
-                    var paymentMethod =
-                        _paymentMethodRepository.PaymentMethods.FirstOrDefault(x => x.PaymentMethodId == id);
-                    var result = deliveryPaymentModificationModel.DeliveryMethod.PaymentMethods.Remove(paymentMethod);
-
-                    ModelState.AddModelError("", "Błąd podczas usuwania metody płatności ze sposobu dostawy");
+                    var index = deliveryPaymentModificationModel.DeliveryMethod.PaymentMethods.ToList().FindIndex(x =>
+                        x.PaymentMethodId == id);
+                    deliveryPaymentModificationModel.DeliveryMethod.PaymentMethods.RemoveAt(index);
                 }
 
                 _deliveryMethodRepository.SaveDeliveryMethod(deliveryPaymentModificationModel.DeliveryMethod);
+            }
 
+            if (ModelState.IsValid)
+            {
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(deliveryPaymentModificationModel.DeliveryMethod.DeliveryMethodId);
+            return Edit(deliveryPaymentModificationModel.DeliveryMethod.DeliveryMethodId);
         }
-
     }
 }
