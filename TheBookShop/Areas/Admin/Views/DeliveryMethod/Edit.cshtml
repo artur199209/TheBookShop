@@ -7,8 +7,10 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <form asp-action="Edit" asp-antiforgery="true" method="post" >
-    <input type="hidden" asp-for="@Model.DeliveryMethod.Name" value="@Model.DeliveryMethod.Name" />
     <input type="hidden" asp-for="@Model.DeliveryMethod.DeliveryMethodId" value="@Model.DeliveryMethod.DeliveryMethodId" />
+    
+    <label asp-for="@Model.DeliveryMethod.Name"></label>
+    <input type="text" asp-for="@Model.DeliveryMethod.Name" value="@Model.DeliveryMethod.Name" />
 
     <h6 class="bg-info p-1 text-white">Dodaj do @Model.DeliveryMethod.Name</h6>
     <table class="table table-bordered table-sm">
