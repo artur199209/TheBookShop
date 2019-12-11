@@ -38,14 +38,14 @@
                     {
                         <label>
                             <edit asp-for="@subItem.PaymentMethodId" type="radio" ram value="@subItem.PaymentMethodId" checked="checked"/>
-                            <label class="form-check-label" id="deliveryMethod">@subItem.Name (@subItem.Price zł)</label>
+                            <label class="form-check-label" id="deliveryMethod">@subItem.PaymentMethod.Name (@subItem.PaymentMethod.Price zł)</label>
                         </label>
                     }
                     else
                     {
                         <label>
                             <edit asp-for="@subItem.PaymentMethodId" type="radio" ram value="@subItem.PaymentMethodId"/>
-                            <label class="form-check-label" id="deliveryMethod">@subItem.Name (@subItem.Price zł)</label>
+                            <label class="form-check-label" id="deliveryMethod">@subItem.PaymentMethod.Name (@subItem.PaymentMethod.Price zł)</label>
                         </label>
                     }
                 }
@@ -61,7 +61,7 @@
                 {
                     <label>
                         <edit asp-for="@subItem.PaymentMethodId" type="radio" ram value="@subItem.PaymentMethodId" />
-                        <label class="form-check-label" id="deliveryMethod">@subItem.Name (@subItem.Price zł)</label>
+                        <label class="form-check-label" id="deliveryMethod">@subItem.PaymentMethod.Name (@subItem.PaymentMethod.Price zł)</label>
                     </label>
                 }
             </div>

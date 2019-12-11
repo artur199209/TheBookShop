@@ -1,61 +1,22 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using TheBookShop.Models.DataModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using TheBookShop.Models.Repositories;
 
 namespace TheBookShop.Components
 {
     public class PaymentDeliveryMethodViewComponent : ViewComponent
     {
-        public List<DeliveryMethod> NavbarTop()
+        private readonly IDeliveryMethodRepository _deliveryMethodRepository;
+
+        public PaymentDeliveryMethodViewComponent(IDeliveryMethodRepository deliveryMethodRepository)
         {
-            var topNav = new List<DeliveryMethod>();
-            topNav.Add(new DeliveryMethod()
-            {
-                Name = "Odbiór w salonie",
-                DeliveryMethodId = 1,
-                PaymentMethods = new List<PaymentMethod>()
-                {
-                    new PaymentMethod() {PaymentMethodId = 1, Name = "Gotówka", Price = 0},
-                    new PaymentMethod() {PaymentMethodId = 2, Name = "Karta", Price = 0},
-                    new PaymentMethod() {PaymentMethodId = 3, Name = "Przelew bankowy", Price= 0},
-                    new PaymentMethod() {PaymentMethodId = 4, Name = "Paypal", Price = 0}
-                }
-            });
-            topNav.Add(
-                new DeliveryMethod()
-                {
-                    Name = "Poczta Polska",
-                    DeliveryMethodId = 2,
-
-                    PaymentMethods = new List<PaymentMethod>()
-                    {
-                        new PaymentMethod() {PaymentMethodId = 5, Name="Opłata za pobraniem", Price = 15},
-                        new PaymentMethod() {PaymentMethodId = 6, Name="Przelew bankowy", Price = 12},
-                        new PaymentMethod() {PaymentMethodId = 7, Name="Paypal", Price = 12}
-                    }
-                });
-
-            topNav.Add(
-                new DeliveryMethod()
-                {
-                    Name = "Przesyłka kurierska",
-                    DeliveryMethodId = 3,
-                    PaymentMethods = new List<PaymentMethod>()
-                    {
-                        new PaymentMethod() {PaymentMethodId = 8, Name="Opłata za pobraniem", Price = 20},
-                        new PaymentMethod() {PaymentMethodId = 9, Name="Przelew bankowy", Price = 15},
-                        new PaymentMethod() {PaymentMethodId = 10, Name="Paypal", Price = 15}
-                    }
-                });
-           
-            return topNav;
+            _deliveryMethodRepository = deliveryMethodRepository;
         }
         
         public IViewComponentResult Invoke()
         {
-
-            var data = NavbarTop();
-            return View(data);
+            var deliveryAndPaymentMethods = _deliveryMethodRepository.DeliveryMethods.ToList();
+            return View(deliveryAndPaymentMethods);
         }
     }
 }
