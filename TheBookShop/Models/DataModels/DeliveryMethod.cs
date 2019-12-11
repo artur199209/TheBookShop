@@ -12,6 +12,6 @@ namespace TheBookShop.Models.DataModels
         public string Name { get; set; }
 
         [BindNever]
-        public ICollection<PaymentMethod> PaymentMethods { get; set; }
+        public IList<DeliveryPaymentMethod> PaymentMethods { get; set; } = new List<DeliveryPaymentMethod>();
     }
 }

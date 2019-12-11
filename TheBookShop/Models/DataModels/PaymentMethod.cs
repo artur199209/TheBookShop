@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace TheBookShop.Models.DataModels
@@ -14,6 +15,6 @@ namespace TheBookShop.Models.DataModels
         public decimal Price { get; set; }
 
         [BindNever]
-        public DeliveryMethod DeliveryMethod { get; set; }
+        public IList<DeliveryPaymentMethod> DeliveryMethods { get; set; } = new List<DeliveryPaymentMethod>();
     }
 }
