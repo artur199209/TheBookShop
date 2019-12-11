@@ -1,7 +1,7 @@
 ﻿@model DeliveryPaymentViewModel
 
 <div class="text-center">
-    <h4>Edycja roli</h4>
+    <h4>Edycja metody dostawy</h4>
 </div>
 
 <div asp-validation-summary="All" class="text-danger"></div>
@@ -17,9 +17,10 @@
         }
         else
         {
-            foreach (var paymentMethod in Model.PaymentMethods) {
+            foreach (var paymentMethod in Model.NonPaymentMethods) {
                 <tr>
                     <td>@paymentMethod.Name</td>
+                    <td>@paymentMethod.Price</td>
                     <td>
                         <input type="checkbox" name="IdsToAdd" value="@paymentMethod.PaymentMethodId">
                     </td>
@@ -35,9 +36,10 @@
         }
         else
         {
-            foreach (var paymentMethod in Model.DeliveryMethod.PaymentMethods) {
+            foreach (var paymentMethod in Model.PaymentMethods) {
                 <tr>
                     <td>@paymentMethod.Name</td>
+                    <td>@paymentMethod.Price</td>
                     <td>
                         <input type="checkbox" name="IdsToDelete" value="@paymentMethod.PaymentMethodId">
                     </td>
