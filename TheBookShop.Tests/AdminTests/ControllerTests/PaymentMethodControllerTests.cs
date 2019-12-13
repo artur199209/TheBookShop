@@ -42,14 +42,17 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         {
             var tempData = new Mock<ITempDataDictionary>();
 
-            var deliveryMethodController =
+            var paymentMethodController =
                 new PaymentMethodController(_paymentMethodRepositoryMock.Object)
                 {
                     TempData = tempData.Object
                 };
 
-            deliveryMethodController.Create(It.IsAny<PaymentMethod>());
+            var result = paymentMethodController.Create(It.IsAny<PaymentMethod>());
+
             _paymentMethodRepositoryMock.Verify(x => x.SavePaymentMethod(It.IsAny<PaymentMethod>()));
+            Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", (result as RedirectToActionResult)?.ActionName);
         }
 
         [Fact]
@@ -57,16 +60,65 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         {
             var tempData = new Mock<ITempDataDictionary>();
 
-            var deliveryMethodController =
+            var paymentMethodController =
                 new PaymentMethodController(_paymentMethodRepositoryMock.Object)
                 {
                     TempData = tempData.Object
                 };
 
-            deliveryMethodController.ModelState.AddModelError("error", "error");
-            deliveryMethodController.Create(It.IsAny<PaymentMethod>());
+            paymentMethodController.ModelState.AddModelError("error", "error");
+            var result = paymentMethodController.Create(It.IsAny<PaymentMethod>());
 
             _paymentMethodRepositoryMock.Verify(x => x.SavePaymentMethod(It.IsAny<PaymentMethod>()), Times.Never());
+            Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public void Can_Edit_Payment_Method()
+        {
+            _paymentMethodRepositoryMock.Setup(x => x.PaymentMethods).Returns(new[]
+            {
+                new PaymentMethod { PaymentMethodId = 1 },
+                new PaymentMethod { PaymentMethodId = 2 },
+                new PaymentMethod { PaymentMethodId = 3 }
+            }.AsQueryable());
+
+            var paymentMethodController =
+                new PaymentMethodController(_paymentMethodRepositoryMock.Object);
+
+            PaymentMethod p1 = GetViewModel<PaymentMethod>(paymentMethodController.Edit(1));
+            PaymentMethod p2 = GetViewModel<PaymentMethod>(paymentMethodController.Edit(2));
+            PaymentMethod p3 = GetViewModel<PaymentMethod>(paymentMethodController.Edit(3));
+
+            Assert.Equal(1, p1.PaymentMethodId);
+            Assert.Equal(2, p2.PaymentMethodId);
+            Assert.Equal(3, p3.PaymentMethodId);
+        }
+
+        [Fact]
+        public void Can_Save_Valid_Changes()
+        {
+            var paymentMethodController =
+                new PaymentMethodController(_paymentMethodRepositoryMock.Object);
+
+            var result = paymentMethodController.Edit(It.IsAny<PaymentMethod>());
+
+            _paymentMethodRepositoryMock.Verify(x => x.SavePaymentMethod(It.IsAny<PaymentMethod>()));
+            Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", (result as RedirectToActionResult)?.ActionName);
+        }
+
+        [Fact]
+        public void Cannot_Save_Invalid_Changes()
+        {
+            var paymentMethodController =
+                new PaymentMethodController(_paymentMethodRepositoryMock.Object);
+            paymentMethodController.ModelState.AddModelError("error", "error");
+
+            var result = paymentMethodController.Edit(new PaymentMethod());
+
+            _paymentMethodRepositoryMock.Verify(x => x.SavePaymentMethod(It.IsAny<PaymentMethod>()), Times.Never);
+            Assert.IsType<ViewResult>(result);
         }
 
         private T GetViewModel<T>(IActionResult result) where T : class

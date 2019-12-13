@@ -25,13 +25,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Index_Contains_All_Delivery_Methods()
         {
-            _deliveryMethodRepositoryMock.Setup(x => x.DeliveryMethods).Returns(new[]
-            {
-                new DeliveryMethod(),
-                new DeliveryMethod(),
-                new DeliveryMethod(),
-                new DeliveryMethod()
-            }.AsQueryable());
+            SetUpMocks();
 
             var deliveryMethodController =
                 new DeliveryMethodController(_deliveryMethodRepositoryMock.Object, _paymentMethodRepository.Object);
@@ -45,7 +39,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Create_New_Delivery_Method()
         {
-            Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
+            var tempData = new Mock<ITempDataDictionary>();
 
             var deliveryMethodController =
                 new DeliveryMethodController(_deliveryMethodRepositoryMock.Object, _paymentMethodRepository.Object)
@@ -53,14 +47,17 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
                     TempData = tempData.Object
                 };
 
-            deliveryMethodController.Create(It.IsAny<string>());
+            var result = deliveryMethodController.Create(It.IsAny<string>());
+
             _deliveryMethodRepositoryMock.Verify(x => x.SaveDeliveryMethod(It.IsAny<DeliveryMethod>()));
+            Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", (result as RedirectToActionResult)?.ActionName);
         }
 
         [Fact]
         public void Cannot_Create_New_Delivery_Method_When_Model_Is_Invalid()
         {
-            Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
+            var tempData = new Mock<ITempDataDictionary>();
 
             var deliveryMethodController =
                 new DeliveryMethodController(_deliveryMethodRepositoryMock.Object, _paymentMethodRepository.Object)
@@ -69,11 +66,12 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
                 };
 
             deliveryMethodController.ModelState.AddModelError("error", "error");
-            deliveryMethodController.Create(It.IsAny<string>());
+            var result = deliveryMethodController.Create(It.IsAny<string>());
 
             _deliveryMethodRepositoryMock.Verify(x => x.SaveDeliveryMethod(It.IsAny<DeliveryMethod>()), Times.Never());
+            Assert.IsType<ViewResult>(result);
         }
-        
+
         [Fact]
         public void Can_Edit_Delivery_Method()
         {
@@ -88,14 +86,55 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             Assert.Equal(2, result.NonPaymentMethods.Count);
         }
 
+        [Fact]
+        public void Can_Save_Valid_Changes()
+        {
+            SetUpMocks();
+
+            var deliveryPaymentModificationModel = new DeliveryPaymentModificationModel()
+            {
+                DeliveryMethod = new DeliveryMethod()
+                {
+                    DeliveryMethodId = 1
+                }
+            };
+
+            var deliveryMethodController =
+                new DeliveryMethodController(_deliveryMethodRepositoryMock.Object, _paymentMethodRepository.Object);
+
+            var result = deliveryMethodController.Edit(deliveryPaymentModificationModel);
+
+            _deliveryMethodRepositoryMock.Verify(x => x.SaveDeliveryMethod(It.IsAny<DeliveryMethod>()));
+            Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", (result as RedirectToActionResult)?.ActionName);
+        }
+
+        [Fact]
+        public void Cannot_Save_Invalid_Changes()
+        {
+            SetUpMocks();
+
+            var deliveryPaymentModificationModel = new DeliveryPaymentModificationModel()
+            {
+                DeliveryMethod = new DeliveryMethod()
+                {
+                    DeliveryMethodId = 1
+                }
+            };
+
+            var deliveryMethodController =
+                new DeliveryMethodController(_deliveryMethodRepositoryMock.Object, _paymentMethodRepository.Object);
+            deliveryMethodController.ModelState.AddModelError("error", "error");
+
+            var result = deliveryMethodController.Edit(deliveryPaymentModificationModel);
+
+            _deliveryMethodRepositoryMock.Verify(x => x.SaveDeliveryMethod(It.IsAny<DeliveryMethod>()), Times.Never);
+            Assert.IsType<ViewResult>(result);
+        }
+
         private T GetViewModel<T>(IActionResult result) where T : class
         {
             return (result as ViewResult)?.ViewData.Model as T;
-        }
-
-        private string GetActionName(IActionResult result)
-        {
-            return (result as RedirectToActionResult)?.ActionName;
         }
 
         private void SetUpMocks()
