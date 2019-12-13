@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 
@@ -35,10 +36,34 @@ namespace TheBookShop.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _paymentMethodRepository.SavePaymentMethod(paymentMethod);
-                RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
 
             return View(paymentMethod);
+        }
+
+        [Route("[action]")]
+        public IActionResult Edit(int paymentMethodId)
+        {
+            var paymentMethod =
+                _paymentMethodRepository.PaymentMethods.FirstOrDefault(x => x.PaymentMethodId == paymentMethodId);
+
+            return View(paymentMethod);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("[action]")]
+        public IActionResult Edit(PaymentMethod paymentMethod)
+        {
+            if (ModelState.IsValid)
+            {
+                _paymentMethodRepository.SavePaymentMethod(paymentMethod);
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return Edit(paymentMethod.PaymentMethodId);
         }
     }
 }
