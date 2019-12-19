@@ -7,7 +7,7 @@
 {
     <div class="container">
         <h3 style="text-align: center">Mój koszyk</h3>
-       
+
         <br />
 
         <div class="card col-xl-auto">
@@ -60,4 +60,6 @@ else
         <h4>Nie dodałeś żadnego produktu do koszyka.</h4>
         <p>Przejdź do <a asp-area="" asp-controller="Product" asp-action="List">strony głównej</a> i wybierz coś dla siebie</p>
     </div>
+
+    @await Component.InvokeAsync("Carousel", new { category = "PROMOCJE" })
 }

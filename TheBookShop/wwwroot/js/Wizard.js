@@ -195,8 +195,8 @@ function personalPickUpIsChoosen() {
 }
 
 function getDeliveryPrice() {
-    var deliveryLabelValue = $('input[name="PaymentMethod.PaymentMethodId"]:checked').parent('label').text().trim();
-    
+    var deliveryLabelValue = $('input[name="DeliveryPaymentMethod.PaymentMethodId"]:checked').parent('label').text().trim();
+    console.log(deliveryLabelValue);
     re = /\((.*)\)/;
     var price = deliveryLabelValue.match(re)[1]//.replace(/[^0-9]/g, '');
     return price;
