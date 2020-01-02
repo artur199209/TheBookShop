@@ -15,8 +15,8 @@
                 @Model.UserName
             </a>
             <div class="dropdown-menu dropdown-custom-width">
-                <a class="dropdown-item">Zamówienia</a>
-                <a class="dropdown-item">Konto</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Order" asp-action="MyOrders" asp-route-email="@Model.Email">Zamówienia</a>
+                <a class="dropdown-item">Zmień hasło</a>
             </div>
         </li>
     </ul>
