@@ -64,5 +64,26 @@ namespace TheBookShop.Controllers
             _cart.Clear();
             return View();
         }
+
+        [Route("[action]")]
+        public IActionResult MyOrders(string email)
+        {
+            var myOrders = _orderRepository.Orders.Where(x => x.Customer.Email == email);
+
+            return View(myOrders);
+        }
+
+        [Route("[action]")]
+        public IActionResult OrderDetails(int orderId)
+        {
+            var order = _orderRepository.Orders.FirstOrDefault(x => x.OrderId == orderId);
+
+            if (order != null)
+            {
+                return View(order);
+            }
+
+            return RedirectToAction(nameof(MyOrders));
+        }
     }
 }
