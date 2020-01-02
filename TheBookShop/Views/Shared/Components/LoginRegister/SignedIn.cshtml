@@ -1,1 +1,23 @@
 ﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+
+<style type="text/css">
+    .dropdown-custom-width {
+        min-width: 150px;
+    }
+</style>
+
+<div class="dropdown">
+    <ul class="navbar-nav mr-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white"
+               id="dropdown_unternehmen" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @Model.UserName
+            </a>
+            <div class="dropdown-menu dropdown-custom-width">
+                <a class="dropdown-item">Zamówienia</a>
+                <a class="dropdown-item">Konto</a>
+            </div>
+        </li>
+    </ul>
+</div>
