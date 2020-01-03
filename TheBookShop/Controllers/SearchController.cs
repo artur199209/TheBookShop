@@ -1,7 +1,5 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
 
@@ -43,7 +41,7 @@ namespace TheBookShop.Controllers
                 return View(productListViewModel);
             }
 
-            return View();
+            return RedirectToAction("Index", "Product");
         }
     }
 }
