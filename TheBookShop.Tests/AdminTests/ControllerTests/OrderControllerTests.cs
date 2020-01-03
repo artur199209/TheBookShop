@@ -80,6 +80,28 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             Assert.Null(order);
         }
 
+        [Fact]
+        public void Can_Add_Tracking_Number_To_Order()
+        {
+            var orderController = new OrderController(_orderRepositoryMock.Object);
+
+            var result = orderController.AddTrackingNumber("123456", 1) as RedirectToActionResult;
+
+            _orderRepositoryMock.Verify(m => m.SaveOrder(It.IsAny<Order>()));
+            Assert.Equal("Index", result?.ActionName);
+        }
+
+        [Fact]
+        public void Cannot_Add_Tracking_Number_When_Model_Is_Invalid()
+        {
+            var orderController = new OrderController(_orderRepositoryMock.Object);
+            orderController.ModelState.AddModelError("error", "error");
+
+            orderController.AddTrackingNumber("123456", 1);
+
+            _orderRepositoryMock.Verify(m => m.SaveOrder(It.IsAny<Order>()), Times.Never());
+        }
+
         private T GetViewModel<T>(IActionResult result) where T : class
         {
             return (result as ViewResult)?.ViewData.Model as T;
