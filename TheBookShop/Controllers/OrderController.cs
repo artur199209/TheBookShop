@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
@@ -37,11 +38,12 @@ namespace TheBookShop.Controllers
             {
                 ModelState.AddModelError("", "Twój koszyk jest pusty!");
             }
-
+            
             if (ModelState.IsValid)
             {
+                order.OrderGuidId = Guid.NewGuid();
                 _orderRepository.SaveOrder(order);
-                return RedirectToAction(nameof(Completed));
+                return RedirectToAction(nameof(Completed), new { orderNumber = order.OrderGuidId });
             }
 
             return View(order);
@@ -59,10 +61,10 @@ namespace TheBookShop.Controllers
         }
 
         [Route("[action]")]
-        public ViewResult Completed()
+        public ViewResult Completed(Guid orderNumber)
         {
             _cart.Clear();
-            return View();
+            return View(orderNumber);
         }
 
         [Route("[action]")]
