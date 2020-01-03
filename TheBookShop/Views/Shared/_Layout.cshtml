@@ -85,10 +85,21 @@
                 <div class="row">
                     <div class="col-md-3 p-1">
                         <h5>INFORMACJE</h5>
-                        <div style="color: grey">Historia zamówień</div>
-                        <div style="color: grey">Koszty dostawy</div>
-                        <div style="color: grey">Formy płatności</div>
-                        <div style="color: grey">O Firmie</div>
+                        <div style="color: grey">
+                            <a asp-area="" asp-controller="About" asp-action="DeliveryMethods">
+                                Koszty dostawy
+                            </a>
+                        </div>
+                        <div style="color: grey">
+                            <a asp-area="" asp-controller="About" asp-action="PaymentMethods">
+                                Formy płatności
+                            </a>
+                        </div>
+                        <div style="color: grey">
+                            <a asp-area="" asp-controller="About" asp-action="Index">
+                                O Firmie
+                            </a>
+                        </div>
                     </div>
                     <div class="col-md-3 p-1">
                         <h5>KONTAKT</h5>
