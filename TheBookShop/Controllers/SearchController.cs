@@ -20,14 +20,14 @@ namespace TheBookShop.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> SearchItems(string searchString, int page = 1)
+        public ActionResult SearchItems(string searchString, int page = 1)
         {
             if (!string.IsNullOrEmpty(searchString))
             {
-                var products = await _productRepository.Products.Where(x => x.Title.Contains(searchString))
+                var products =  _productRepository.Products.Where(x => x.Title.Contains(searchString))
                     .OrderBy(p => p.ProductId)
                     .Skip((page - 1) * PageSize)
-                    .Take(PageSize).ToListAsync();
+                    .Take(PageSize).ToList();
 
                 var productListViewModel = new ProductsListViewModel
                 {
