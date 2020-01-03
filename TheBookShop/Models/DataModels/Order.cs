@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -10,6 +11,7 @@ namespace TheBookShop.Models.DataModels
         public int OrderId { get; set; }
         [BindNever]
         public ICollection<CartLine> Lines { get; set; }
+        public Guid OrderGuidId { get; set; }
         public string TrackingNumber { get; set; }
         public Customer Customer { get; set; }
         public bool Shipped { get; set; }
