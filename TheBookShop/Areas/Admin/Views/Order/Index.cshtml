@@ -11,6 +11,7 @@
         <th>Nazwisko</th>
         <th>Zrealizowane</th>
         <th>Zapakowane</th>
+        <th>Numer przesyłki</th>
         <th colspan="2"></th>
     </tr>
 
@@ -28,6 +29,7 @@
             <td>@order.Customer.Surname</td>
             <td>@order.Shipped</td>
             <td>@order.GiftWrap</td>
+            <td>@order.TrackingNumber ?? "brak numeru"</td>
             <td><a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId">Szczegóły</a></td>
             <td><a asp-area="Admin" asp-controller="Order" asp-action="Edit" asp-route-orderId="@order.OrderId">Zmień status</a></td>
         </tr>
