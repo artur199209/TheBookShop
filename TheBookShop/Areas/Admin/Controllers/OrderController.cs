@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Models.Repositories;
 
@@ -63,6 +64,32 @@ namespace TheBookShop.Areas.Admin.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [Route("[action]")]
+        public IActionResult AddTrackingNumber()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult AddTrackingNumber([Required] string trackingNumber, int orderId)
+        {
+            if (ModelState.IsValid)
+            {
+                var order = _orderRepository.Orders.FirstOrDefault(o => o.OrderId == orderId);
+
+                if (order != null)
+                {
+                    order.TrackingNumber = trackingNumber;
+                    _orderRepository.SaveOrder(order);
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View();
         }
 
         [Route("[action]")]
