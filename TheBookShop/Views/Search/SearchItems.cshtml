@@ -1,0 +1,21 @@
+﻿@model ProductsListViewModel
+
+@if (!Model.Products.Any())
+{
+    <h4>Brak produktów w naszym sklepie.</h4>
+
+    @await Component.InvokeAsync("Carousel", new { category = "PROMOCJE" })
+}
+else
+{
+    foreach (var p in Model.Products)
+    {
+        <partial name="ProductSummary" for="@p" />
+    }
+
+    <div page-model="@Model.PagingInfo" page-action="SearchItems" page-classes-enabled="true"
+         page-class="btn" page-class-normal="btn-secondary"
+         page-class-selected="btn-primary"
+         class="btn-group float-left m-1">
+    </div>
+}
