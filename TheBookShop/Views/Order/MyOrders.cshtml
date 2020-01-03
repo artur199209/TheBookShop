@@ -6,11 +6,11 @@
 
 <table class="table table-bordered table-hover table-sm" role="grid">
     <tr>
-        <th>ID</th>
+        <th>Numer zamówienia</th>
         <th>Imię</th>
         <th>Nazwisko</th>
         <th>Zrealizowane</th>
-        <th>Zapakowane</th>
+        <th>Numer przesyłki</th>
         <th colspan="2"></th>
     </tr>
 
@@ -23,11 +23,11 @@
         foreach (var order in Model)
         {
             <tr>
-                <td>@order.OrderId</td>
+                <td>@order.OrderGuidId</td>
                 <td>@order.Customer.Name</td>
                 <td>@order.Customer.Surname</td>
                 <td>@order.Shipped</td>
-                <td>@order.GiftWrap</td>
+                <td>@order.TrackingNumber</td>
                 <td><a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId">Szczegóły</a></td>
             </tr>
         }
