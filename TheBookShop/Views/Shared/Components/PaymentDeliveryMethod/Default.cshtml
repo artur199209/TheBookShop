@@ -10,14 +10,14 @@
             if (item.DeliveryMethodId == 1)
             {
                 <label>
-                    <edit asp-for="@item.DeliveryMethodId" model-for="@Model" type="radio" ram value="@item.DeliveryMethodId" onclick="hideOrShowPaymentMethodsAndAddressForm();" checked="checked"/>
+                    <input name="DeliveryPaymentMethod.DeliveryMethodId" id="PaymentDeliveryMethod_DeliveryMethodId" model-for="@Model" type="radio" ram value="@item.DeliveryMethodId" onclick="hideOrShowPaymentMethodsAndAddressForm();" checked="checked"/>
                     @item.Name
                 </label>
             }
             else
             {
                 <label>
-                    <edit asp-for="@item.DeliveryMethodId" type="radio" ram value="@item.DeliveryMethodId" onclick="hideOrShowPaymentMethodsAndAddressForm();"/>
+                    <input name="DeliveryPaymentMethod.DeliveryMethodId" id="PaymentDeliveryMethod_DeliveryMethodId" type="radio" ram value="@item.DeliveryMethodId" onclick="hideOrShowPaymentMethodsAndAddressForm();"/>
                     @item.Name
                 </label>
             }
