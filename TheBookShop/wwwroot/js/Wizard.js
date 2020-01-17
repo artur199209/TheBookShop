@@ -103,7 +103,7 @@ function calculateTotalCost() {
 }
 
 function displayDeliveryAndMethodPaymentsInSummary() {
-    var delMethod = $('input[name="DeliveryMethod.DeliveryMethodId"]:checked').parent('label').text().trim();
+    var delMethod = $('input[name="DeliveryPaymentMethod.DeliveryMethodId"]:checked').parent('label').text().trim();
     var payMethod = $('input[name="PaymentMethod.PaymentMethodId"]:checked').parent('label').text().trim();
 
     var deliveryMethodSummary = document.getElementById("deliveryMethodSummary");
@@ -163,7 +163,7 @@ function validate2() {
 }
 
 function selectFirstRadioButtonInDeliveryMethodRow() {
-    var allInputs = document.getElementsByName("DeliveryMethod.DeliveryMethodId");
+    var allInputs = document.getElementsByName("DeliveryPaymentMethod.DeliveryMethodId");
     allInputs[0].checked = true;
 }
 
@@ -173,7 +173,7 @@ function selectFirstRadioButtonInRow(item) {
 }
 
 function hideAllPaymentMethodsDivs() {
-    var items = document.getElementsByName("DeliveryMethod.DeliveryMethodId");
+    var items = document.getElementsByName("DeliveryPaymentMethod.DeliveryMethodId");
    
     for (i = 0; i < items.length; i++) {
         var item = document.getElementById(items[i].value);
@@ -182,7 +182,7 @@ function hideAllPaymentMethodsDivs() {
 }
 
 function getCheckedItem() {
-    var clickedItem = document.querySelector('input[name="DeliveryMethod.DeliveryMethodId"]:checked').value;
+    var clickedItem = document.querySelector('input[name="DeliveryPaymentMethod.DeliveryMethodId"]:checked').value;
     return clickedItem;
 }
 
@@ -196,7 +196,7 @@ function personalPickUpIsChoosen() {
 
 function getDeliveryPrice() {
     var deliveryLabelValue = $('input[name="DeliveryPaymentMethod.PaymentMethodId"]:checked').parent('label').text().trim();
-    console.log(deliveryLabelValue);
+    
     re = /\((.*)\)/;
     var price = deliveryLabelValue.match(re)[1]//.replace(/[^0-9]/g, '');
     return price;
@@ -204,7 +204,7 @@ function getDeliveryPrice() {
 
 function hideOrShowPaymentMethodsAndAddressForm() {
     hideAllPaymentMethodsDivs();
-    var clickedItem = document.querySelector('input[name="DeliveryMethod.DeliveryMethodId"]:checked').value;
+    var clickedItem = document.querySelector('input[name="DeliveryPaymentMethod.DeliveryMethodId"]:checked').value;
     var item = document.getElementById(clickedItem);
     item.style.display = 'Block';
     selectFirstRadioButtonInRow(item);
