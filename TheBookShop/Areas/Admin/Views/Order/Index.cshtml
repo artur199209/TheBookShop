@@ -9,7 +9,7 @@
         <th>ID</th>
         <th>Imię</th>
         <th>Nazwisko</th>
-        <th>Zrealizowane</th>
+        <th>Status</th>
         <th>Zapakowane</th>
         <th>Numer przesyłki</th>
         <th colspan="2"></th>
@@ -27,7 +27,7 @@
             <td>@order.OrderId</td>
             <td>@order.Customer.Name</td>
             <td>@order.Customer.Surname</td>
-            <td>@order.Shipped</td>
+            <td>@order.Status.GetDescription()</td>
             <td>@order.GiftWrap</td>
             <td>@order.TrackingNumber ?? "brak numeru"</td>
             <td><a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId">Szczegóły</a></td>

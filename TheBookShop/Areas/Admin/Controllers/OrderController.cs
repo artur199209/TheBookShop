@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 
 namespace TheBookShop.Areas.Admin.Controllers
@@ -53,13 +54,13 @@ namespace TheBookShop.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("[action]")]
-        public IActionResult Edit(bool shipped, int orderId)
+        public IActionResult Edit(Order.OrderStatus status, int orderId)
         {
             var order = _orderRepository.Orders.FirstOrDefault(o => o.OrderId == orderId);
 
             if (order != null)
             {
-                order.Shipped = shipped;
+                order.Status = status;
                 _orderRepository.SaveOrder(order);
             }
 
