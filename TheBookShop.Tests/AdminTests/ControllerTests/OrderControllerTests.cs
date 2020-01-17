@@ -18,11 +18,11 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             _orderRepositoryMock = new Mock<IOrderRepository>();
             _orderRepositoryMock.Setup(x => x.Orders).Returns(new[]
             {
-                new Order { OrderId = 1, Customer = new Customer(), DeliveryAddress =  new DeliveryAddress(), Shipped = true },
-                new Order { OrderId = 2, Customer = new Customer(), DeliveryAddress =  new DeliveryAddress(), Shipped = false },
-                new Order { OrderId = 3, Customer = new Customer(), DeliveryAddress =  new DeliveryAddress(), Shipped = false },
-                new Order { OrderId = 4, Customer = new Customer(), DeliveryAddress =  new DeliveryAddress(), Shipped = true },
-                new Order { OrderId = 5, Customer = new Customer(), DeliveryAddress =  new DeliveryAddress(), Shipped = true }
+                new Order { OrderId = 1, Customer = new Customer(), DeliveryAddress =  new DeliveryAddress(), Status = Order.OrderStatus.Shipped },
+                new Order { OrderId = 2, Customer = new Customer(), DeliveryAddress =  new DeliveryAddress(), Status = Order.OrderStatus.InProgress },
+                new Order { OrderId = 3, Customer = new Customer(), DeliveryAddress =  new DeliveryAddress(), Status = Order.OrderStatus.InProgress, },
+                new Order { OrderId = 4, Customer = new Customer(), DeliveryAddress =  new DeliveryAddress(), Status = Order.OrderStatus.Shipped },
+                new Order { OrderId = 5, Customer = new Customer(), DeliveryAddress =  new DeliveryAddress(), Status = Order.OrderStatus.Shipped }
             }.AsQueryable());
         }
 
@@ -42,7 +42,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             var orderController = new OrderController(_orderRepositoryMock.Object);
             var result = GetViewModel<IEnumerable<Order>>(orderController.Completed()).ToArray();
 
-            Assert.NotNull(result.Where(x => !x.Shipped));
+            Assert.NotNull(result);
             Assert.Equal(3, result.Length);
         }
 
@@ -52,7 +52,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             var orderController = new OrderController(_orderRepositoryMock.Object);
             var result = GetViewModel<IEnumerable<Order>>(orderController.NotCompleted()).ToArray();
 
-            Assert.NotNull(result.Where(x => x.Shipped));
+            Assert.NotNull(result);
             Assert.Equal(2, result.Length);
         }
 

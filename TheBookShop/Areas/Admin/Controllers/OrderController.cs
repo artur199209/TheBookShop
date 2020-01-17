@@ -28,14 +28,14 @@ namespace TheBookShop.Areas.Admin.Controllers
         public IActionResult Completed()
         {
             ViewData["Status"] = "Zakończone";
-            return View(nameof(Index), _orderRepository.Orders.Where(x => x.Shipped));
+            return View(nameof(Index), _orderRepository.Orders.Where(x => x.Status == Order.OrderStatus.Shipped));
         }
 
         [Route("[action]")]
         public IActionResult NotCompleted()
         {
             ViewData["Status"] = "Realizowane";
-            return View(nameof(Index), _orderRepository.Orders.Where(x => !x.Shipped));
+            return View(nameof(Index), _orderRepository.Orders.Where(x => x.Status != Order.OrderStatus.Shipped));
         }
 
         [Route("[action]")]
