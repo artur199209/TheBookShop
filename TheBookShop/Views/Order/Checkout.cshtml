@@ -1,6 +1,10 @@
 ﻿@model Order
+@{
+    ViewData["Title"] = "Zamówienie";
+}
+
 <style type="text/css">
-    .form-check-input-reverse{
+    .form-check-input-reverse {
         margin-left: 10px;
     }
 </style>
@@ -24,7 +28,7 @@
                             <form asp-area="" asp-controller="Order" asp-action="Checkout" asp-antiforgery="true" method="post">
                                 <fieldset class="col-xl-12" id="fieldset1">
 
-                                   @await Component.InvokeAsync("PaymentDeliveryMethod")
+                                    @await Component.InvokeAsync("PaymentDeliveryMethod")
 
                                     <div id="personData">
                                         <div class="row">
@@ -99,12 +103,12 @@
                                     <a class="next btn btn-info custom text-white" id="next1" onclick="validatePersonDataAndPrepareSummary()">Dalej</a>
                                 </fieldset>
                                 <fieldset class="col-xl-12" id="summaryFieldset">
-                                    <partial name="OrderSummary" for="@Model"/>
+                                    <partial name="OrderSummary" for="@Model" />
                                 </fieldset>
                                 <fieldset class="col-xl-12">
                                     <div class="form-group">
                                         <h2 class="fs-title text-center">Potwierdzenie</h2> <br><br>
-                                        
+
                                         <div class="row justify-content-center">
                                             <div class="col-7 text-center">
                                                 <h5>Złóż zamówienie klikając w poniższy przycisk</h5>

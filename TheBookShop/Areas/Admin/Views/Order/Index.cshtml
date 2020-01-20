@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<Order>
+@{
+    ViewData["Title"] = "Zamówienia";
+}
 
 <div class="text-center">
-<h4>@ViewData["status"] zamówienia</h4>
+    <h4>@ViewData["status"] zamówienia</h4>
 </div>
 
 <table class="table table-bordered table-hover table-sm" role="grid">
@@ -23,16 +26,16 @@
     {
         foreach (var order in Model)
         {
-        <tr>
-            <td>@order.OrderId</td>
-            <td>@order.Customer.Name</td>
-            <td>@order.Customer.Surname</td>
-            <td>@order.Status.GetDescription()</td>
-            <td>@order.GiftWrap</td>
-            <td>@order.TrackingNumber ?? "brak numeru"</td>
-            <td><a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId">Szczegóły</a></td>
-            <td><a asp-area="Admin" asp-controller="Order" asp-action="Edit" asp-route-orderId="@order.OrderId">Zmień status</a></td>
-        </tr>
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.Customer.Name</td>
+                <td>@order.Customer.Surname</td>
+                <td>@order.Status.GetDescription()</td>
+                <td>@order.GiftWrap</td>
+                <td>@order.TrackingNumber ?? "brak numeru"</td>
+                <td><a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId">Szczegóły</a></td>
+                <td><a asp-area="Admin" asp-controller="Order" asp-action="Edit" asp-route-orderId="@order.OrderId">Zmień status</a></td>
+            </tr>
         }
     }
 

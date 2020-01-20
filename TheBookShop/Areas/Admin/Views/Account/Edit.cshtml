@@ -1,5 +1,7 @@
 ﻿@model AppUser
-
+@{
+    ViewData["Title"] = "Edycja konta";
+}
 <h4>Edytuj użytkownika</h4>
 
 <form asp-action="Edit" asp-route-id="@Model.Id" asp-antiforgery="true" method="post">

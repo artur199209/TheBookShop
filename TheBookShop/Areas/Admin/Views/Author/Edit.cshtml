@@ -1,8 +1,11 @@
 ﻿@model Author
+@{
+    ViewData["Title"] = "Edycja autora";
+}
 
 <form asp-action="Edit" asp-antiforgery="true" method="post">
     <input type="hidden" name="AuthorId"
-           value="@Model.AuthorId"/>
+           value="@Model.AuthorId" />
     <div class="form-group">
         <label asp-for="Name"></label>
         <div><span asp-validation-for="Name" class="text-danger"></span></div>

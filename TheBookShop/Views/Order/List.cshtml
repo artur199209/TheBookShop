@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Order>
 @{
-    ViewBag.Title = "Orders";
+    ViewBag.Title = "Zamówienia";
 }
 
 @if (Model.Any())
@@ -14,14 +14,6 @@
                 <td>@order.Customer.Name</td>
                 <th>Product</th>
                 <th>Quantity</th>
-                <td>
-                    <form asp-action="MarkShipped" asp-antiforgery="true" method="post">
-                        <input type="hidden" name="orderId" value="@order.OrderId">
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            Ship
-                        </button>
-                    </form>
-                </td>
             </tr>
             foreach (CartLine cartLine in order.Lines)
              {
@@ -29,7 +21,6 @@
                      <td colspan="2"></td>
                      <td>@cartLine.Product.Title</td>
                      <td>@cartLine.Quantity</td>
-                     <td></td>
                  </tr>
              }
         }

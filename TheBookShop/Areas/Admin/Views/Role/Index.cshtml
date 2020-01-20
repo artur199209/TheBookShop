@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<IdentityRole>
+@{
+    ViewData["Title"] = "Wszystkie role";
+}
 
 <div class="text-center">
-    <h4>Wszystkie role</h4>    
+    <h4>Wszystkie role</h4>
 </div>
 
 <table class="table table-bordered table-hover table-sm" role="grid">
@@ -11,7 +14,7 @@
         <th>Użytkownicy</th>
         <th></th>
     </tr>
-    
+
     @if (!Model.Any())
     {
         <tr><td colspan="4" class="text-center">Brak ról</td></tr>

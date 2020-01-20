@@ -1,4 +1,7 @@
 ﻿@model Order
+@{
+    ViewData["Title"] = "Śledzenie zamówienia";
+}
 
 <div class="text-center">
     <h4>Edycja numeru śledzenia zamówienia o numerze @Model.OrderId</h4>
@@ -12,7 +15,7 @@
         <label for="trackingNumber"></label>
         <input name="trackingNumber" class="form-control" />
     </div>
-  
+
     <button type="submit">Zapisz</button>
     <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
 </form>

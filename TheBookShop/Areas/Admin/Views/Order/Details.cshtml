@@ -1,4 +1,7 @@
 ﻿@model Order
+@{
+    ViewData["Title"] = "Szczegóły zamówienia";
+}
 
 <div class="text-center">
     <h4>Szczegóły zamówienia o numerze @Model.OrderId</h4>
@@ -11,22 +14,22 @@
             </h5>
             <table class="table table-sm">
                 <tbody>
-                <tr>
-                    <th>Imię</th>
-                    <td class="text-right">@Model.Customer.Name</td>
-                </tr>
-                <tr>
-                    <th>Nazwisko</th>
-                    <td class="text-right">@Model.Customer.Surname</td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td class="text-right">@Model.Customer.Email</td>
-                </tr>
-                <tr>
-                    <th>Telefon</th>
-                    <td class="text-right">@Model.Customer.PhoneNumber</td>
-                </tr>
+                    <tr>
+                        <th>Imię</th>
+                        <td class="text-right">@Model.Customer.Name</td>
+                    </tr>
+                    <tr>
+                        <th>Nazwisko</th>
+                        <td class="text-right">@Model.Customer.Surname</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td class="text-right">@Model.Customer.Email</td>
+                    </tr>
+                    <tr>
+                        <th>Telefon</th>
+                        <td class="text-right">@Model.Customer.PhoneNumber</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -66,18 +69,18 @@
             </h5>
             <table class="table table-sm">
                 <tbody>
-                <tr>
-                    <th>Kwota</th>
-                    <td class="text-right">Model.Payment.Amount</td>
-                </tr>
-                <tr>
-                    <th>Data płatności</th>
-                    <td class="text-right">Model.Payment.PaymentDate</td>
-                </tr>
-                <tr>
-                    <th>Sposób zapłaty</th>
-                    <td class="text-right">Model.Payment.MethodOfPayment</td>
-                </tr>
+                    <tr>
+                        <th>Kwota</th>
+                        <td class="text-right">Model.Payment.Amount</td>
+                    </tr>
+                    <tr>
+                        <th>Data płatności</th>
+                        <td class="text-right">Model.Payment.PaymentDate</td>
+                    </tr>
+                    <tr>
+                        <th>Sposób zapłaty</th>
+                        <td class="text-right">Model.Payment.MethodOfPayment</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
