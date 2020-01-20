@@ -1,0 +1,27 @@
+﻿@model Opinion
+@{
+    ViewData["Title"] = "Opinia";
+}
+
+<div class="container">
+    <h4>Napisz opinię o wybranym produkcie</h4>
+    <form asp-action="SaveOpinion" asp-area="" asp-controller="Opinion" asp-antiforgery="true" method="post">
+        <input type="hidden" name="ProductId" for="@Model.Product.ProductId"
+               value="@Model.Product.ProductId" />
+        <div class="form-group">
+            <div><span asp-validation-for="Name" class="text-danger"></span></div>
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <div><span asp-validation-for="OpinionDescription" class="text-danger"></span></div>
+            <label asp-for="OpinionDescription"></label>
+            <textarea asp-for="OpinionDescription" class="form-control" ></textarea>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Napisz opinię</button>
+            </div>
+        </div>
+    </form>
+</div>

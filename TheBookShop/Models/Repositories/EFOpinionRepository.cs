@@ -6,21 +6,22 @@ namespace TheBookShop.Models.Repositories
 {
     public class EFOpinionRepository : IOpinionRepository
     {
-        private ApplicationDbContext applicationDbContext;
+        private readonly ApplicationDbContext _applicationDbContext;
 
-        public EFOpinionRepository(ApplicationDbContext _applicationDbContext)
+        public EFOpinionRepository(ApplicationDbContext applicationDbContext)
         {
-            applicationDbContext = _applicationDbContext;
+            _applicationDbContext = applicationDbContext;
         }
 
-        public IQueryable<Opinion> Opinions => applicationDbContext.Opinions;
+        public IQueryable<Opinion> Opinions => _applicationDbContext.Opinions;
 
         public void SaveOpinion(Opinion opinion)
         {
             try
             {
-                applicationDbContext.Opinions.Add(opinion);
-                applicationDbContext.SaveChanges();
+                _applicationDbContext.Attach(opinion.Product);
+                _applicationDbContext.Opinions.Add(opinion);
+                _applicationDbContext.SaveChanges();
             }
             catch(Exception ex)
             {
