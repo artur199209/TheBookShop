@@ -50,7 +50,7 @@ namespace TheBookShop.Controllers
         }
 
         [Route("[action]")]
-        public ViewResult Test()
+        public ViewResult LoginOrRegister()
         {
             if (User.Identity.IsAuthenticated)
             {
