@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace TheBookShop.Models.Repositories
 {
@@ -12,7 +13,7 @@ namespace TheBookShop.Models.Repositories
             context = ctx;
         }
 
-        public IQueryable<Product> Products => context.Products;
+        public IQueryable<Product> Products => context.Products.Include(o => o.Opinions);
         public void SaveProduct(Product product)
         {
             try
