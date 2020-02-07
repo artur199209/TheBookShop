@@ -5,8 +5,6 @@
 }
 
 .rating span.star, .rating span.star {
-    font-weight: normal;
-    font-style: normal;
     display: inline-block;
 }    
 
