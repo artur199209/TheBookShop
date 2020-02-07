@@ -1,6 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 
 namespace TheBookShop.Models.DataModels
 {
@@ -16,5 +16,8 @@ namespace TheBookShop.Models.DataModels
         [Required(ErrorMessage = "Proszę napisać opinię.")]
         [Display(Name = "Opinia")]
         public string OpinionDescription { get; set; }
+        [Display(Name = "Ocena")]
+        [HiddenInput]
+        public int Rating { get; set; }
     }
 }
