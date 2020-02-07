@@ -30,17 +30,12 @@ namespace TheBookShop.Controllers
         [HttpPost]
         [Route("action")]
         [ValidateAntiForgeryToken]
-        public IActionResult SaveOpinion(int productId, string name, string opinionDescription)
+        public IActionResult SaveOpinion(Opinion opinion, int productId)
         {
             if (ModelState.IsValid)
             {
                 var product = _productRepository.Products.FirstOrDefault(x => x.ProductId == productId);
-                var opinion = new Opinion
-                {
-                    Product = product,
-                    Name = name,
-                    OpinionDescription = opinionDescription
-                };
+                opinion.Product = product;
 
                 _opinionRepository.SaveOpinion(opinion);
                 return RedirectToAction("List", "Product");
