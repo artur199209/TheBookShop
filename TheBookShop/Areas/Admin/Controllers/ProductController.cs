@@ -24,9 +24,21 @@ namespace TheBookShop.Areas.Admin.Controllers
         }
         
         [Route("[action]")]
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            return View(_repository.Products);
+            return View(new ProductsListViewModel
+            {
+                Products = _repository.Products
+                    .OrderBy(p => p.ProductId)
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems =  _repository.Products.Count()
+                }
+            });
         }
 
         [Route("[action]")]

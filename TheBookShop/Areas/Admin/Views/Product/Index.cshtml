@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model ProductsListViewModel
 @{
     ViewData["Title"] = "Wszystkie książki";
 }
@@ -16,13 +16,13 @@
         <th></th>
     </tr>
 
-    @if (!Model.Any())
+    @if (!Model.Products.Any())
     {
         <tr><td colspan="5" class="text-center">Brak książek</td></tr>
     }
     else
     {
-        foreach (Product p in Model)
+        foreach (Product p in Model.Products)
         {
             <tr>
                 <td>@p.Title</td>
@@ -47,6 +47,14 @@
         }
     }
 </table>
+
+<div class="container" style="margin-bottom: 60px">
+    <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+         page-class="btn" page-class-normal="btn-secondary"
+         page-class-selected="btn-primary"
+         class="text-center btn-group float-left m-1">
+    </div>
+</div>
 
 <div class="text-center">
     <a asp-action="Create" class="btn btn-primary">Dodaj produkt</a>
