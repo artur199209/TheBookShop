@@ -31,6 +31,9 @@
                 <td>@p.Category</td>
                 <td>
                     <form asp-action="Delete" asp-antiforgery="true" method="post">
+                        <a asp-action="Opinion" class="btn btn-sm btn-info" asp-route-productId="@p.ProductId">
+                            Opinie
+                        </a>
                         <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-productId="@p.ProductId">
                             Edytuj
                         </a>
