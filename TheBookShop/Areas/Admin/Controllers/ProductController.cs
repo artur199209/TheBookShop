@@ -1,10 +1,11 @@
-﻿using System;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 using TheBookShop.Infrastructure;
 using TheBookShop.Models;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Models.ViewModels;
 
 namespace TheBookShop.Areas.Admin.Controllers
 {
@@ -14,6 +15,7 @@ namespace TheBookShop.Areas.Admin.Controllers
     {
         private readonly IProductRepository _repository;
         private readonly IAuthorRepository _authorRepository;
+        public int PageSize = 10;
 
         public ProductController(IProductRepository repo, IAuthorRepository authorRepository)
         {
@@ -39,6 +41,24 @@ namespace TheBookShop.Areas.Admin.Controllers
             var product = _repository.Products.FirstOrDefault(o => o.ProductId == productId);
 
             return View(product);
+        }
+
+        [Route("[action]")]
+        public IActionResult Opinion(int productId, int page = 1)
+        {
+            var opinions = _repository.Products.FirstOrDefault(x => x.ProductId == productId)?.Opinions;
+
+            return View(new OpinionsListViewModel()
+            {
+                Opinions = opinions?.Skip((page - 1) * PageSize).Take(PageSize).AsQueryable(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = opinions?.Count ?? 0
+                },
+                ProductId = productId
+            });
         }
 
         [HttpPost]
