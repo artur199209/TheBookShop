@@ -13,12 +13,14 @@ namespace TheBookShop.Tests.ControllerTests
     public class OrderControllerTests
     {
         private readonly Mock<IOrderRepository> _orderRepositoryMock;
+        private readonly Mock<IPaymentMethodRepository> _paymentMethodRepositoryMock;
         private readonly Cart _cart;
         private readonly Product _product;
 
         public OrderControllerTests()
         {
             _orderRepositoryMock = new Mock<IOrderRepository>();
+            _paymentMethodRepositoryMock = new Mock<IPaymentMethodRepository>();
             _cart = new Cart();
             _product = new Product { ProductId = 1, Title = "Product1" };
 
@@ -27,6 +29,11 @@ namespace TheBookShop.Tests.ControllerTests
                 new Order { OrderId = 1, Customer = new Customer { Email = "email@email.com" }},
                 new Order { OrderId = 2, Customer = new Customer { Email = "email@email.com" }},
                 new Order { OrderId = 3, Customer = new Customer { Email = "email2@email.com" }}
+            }.AsQueryable());
+
+            _paymentMethodRepositoryMock.Setup(x => x.PaymentMethods).Returns(new[]
+            {
+                new PaymentMethod() { Name = "Test", PaymentMethodId = 1, Price = 10 }
             }.AsQueryable());
         }
 
@@ -63,9 +70,16 @@ namespace TheBookShop.Tests.ControllerTests
         {
             _cart.AddItem(_product, 1);
 
-            OrderController target = new OrderController(_orderRepositoryMock.Object, _cart);
+            OrderController target = new OrderController(_orderRepositoryMock.Object, _cart, _paymentMethodRepositoryMock.Object);
 
-            RedirectToActionResult result = target.Checkout(new Order()) as RedirectToActionResult;
+            RedirectToActionResult result = target.Checkout(new Order
+            {
+                DeliveryPaymentMethod = new DeliveryPaymentMethod()
+                {
+                    PaymentMethodId = 1
+                },
+                
+            }) as RedirectToActionResult;
 
             _orderRepositoryMock.Verify(m => m.SaveOrder(It.IsAny<Order>()), Times.Once);
             Assert.Equal("Completed", result?.ActionName);
