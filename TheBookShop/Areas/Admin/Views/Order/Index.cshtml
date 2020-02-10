@@ -32,7 +32,8 @@
                 <td>@order.Customer.Surname</td>
                 <td>@order.Status.GetDescription()</td>
                 <td>@order.GiftWrap</td>
-                <td>@order.TrackingNumber ?? "brak numeru"</td>
+                <td>@(@order.TrackingNumber ?? "brak numeru") <a asp-area="Admin" asp-controller="Order" asp-action="AddTrackingNumber" asp-route-orderId="@order.OrderId"><i class="fas fa-edit"></i></a></td>
+                
                 <td><a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId">Szczegóły</a></td>
                 <td><a asp-area="Admin" asp-controller="Order" asp-action="Edit" asp-route-orderId="@order.OrderId">Zmień status</a></td>
             </tr>
