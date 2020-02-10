@@ -68,9 +68,9 @@ namespace TheBookShop.Areas.Admin.Controllers
         }
 
         [Route("[action]")]
-        public IActionResult AddTrackingNumber()
+        public IActionResult AddTrackingNumber(int orderId)
         {
-            return View();
+            return View(orderId);
         }
 
         [HttpPost]
