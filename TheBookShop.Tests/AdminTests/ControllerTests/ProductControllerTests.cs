@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Models;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Models.ViewModels;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
@@ -35,12 +35,13 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Index_Contains_All_Products()
         {
             ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object);
-            Product[] results = GetViewModel<IEnumerable<Product>>(controller.Index())?.ToArray();
+            var results = GetViewModel<ProductsListViewModel>(controller.Index());
+            var products = results.Products.ToList();
 
-            Assert.Equal(3, results?.Length);
-            Assert.Equal("Product1", results?[0].Title);
-            Assert.Equal("Product2", results?[1].Title);
-            Assert.Equal("Product3", results?[2].Title);
+            Assert.Equal(3, results.Products.Count());
+            Assert.Equal("Product1", products[0].Title);
+            Assert.Equal("Product2", products[1].Title);
+            Assert.Equal("Product3", products[2].Title);
         }
 
         [Fact]
