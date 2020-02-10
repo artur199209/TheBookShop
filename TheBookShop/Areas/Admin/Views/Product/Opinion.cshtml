@@ -1,0 +1,43 @@
+﻿@model OpinionsListViewModel
+
+<table class="table table-bordered table-hover table-sm" role="grid">
+    <tr>
+        <th>Użytkownik</th>
+        <th>Opis</th>
+        <th>Ocena</th>
+        <th></th>
+    </tr>
+
+    @if (!Model.Opinions.Any())
+    {
+        <tr><td colspan="5" class="text-center">Brak opinii</td></tr>
+    }
+    else
+    {
+        foreach (Opinion opinion in Model.Opinions)
+        {
+            <tr>
+                <td>@opinion.Name</td>
+                <td>@opinion.OpinionDescription</td>
+                <td>@opinion.Rating</td>
+                <td>
+                    <form asp-action="Delete" asp-antiforgery="true" method="post">
+                        <input type="hidden" name="ProductID" value="@opinion.OpinionId">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Usuń
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<div class="container" style="margin-bottom: 60px">
+    <div page-model="@Model.PagingInfo" page-action="Opinion" page-classes-enabled="true"
+         page-class="btn" page-class-normal="btn-secondary"
+         page-class-selected="btn-primary"
+         page-url-productId="@Model.ProductId"
+         class="text-center btn-group float-left m-1">
+    </div>
+</div>
