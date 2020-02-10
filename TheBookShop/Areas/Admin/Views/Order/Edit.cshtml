@@ -6,7 +6,6 @@
 <div class="text-center">
     <h4>Edycja statusu zamówienia o numerze @Model.OrderId</h4>
 </div>
-tutaj będzie dropdown z listą możliwych statusów zamówienia
 
 <form asp-area="Admin" asp-controller="Order" asp-action="Edit" asp-antiforgery="true" asp-route-orderId="@Model.OrderId" method="post">
     <select asp-for="@Model.Status" asp-items="EnumExtensions.GetEnumSelectList<Order.OrderStatus>()">
