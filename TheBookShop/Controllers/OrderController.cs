@@ -10,12 +10,14 @@ namespace TheBookShop.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IPaymentMethodRepository _paymentMethodRepository;
         private readonly Cart _cart;
 
-        public OrderController(IOrderRepository orderRepository, Cart cartService)
+        public OrderController(IOrderRepository orderRepository, Cart cartService, IPaymentMethodRepository paymentMethodRepository = null)
         {
             _orderRepository = orderRepository;
             _cart = cartService;
+            _paymentMethodRepository = paymentMethodRepository;
         }
 
         [Route("[action]")]
@@ -41,7 +43,18 @@ namespace TheBookShop.Controllers
             
             if (ModelState.IsValid)
             {
+                order.DeliveryPaymentMethod.PaymentMethod =
+                    _paymentMethodRepository.PaymentMethods.FirstOrDefault(x =>
+                        x.PaymentMethodId == order.DeliveryPaymentMethod.PaymentMethodId);
+               
                 order.OrderGuidId = Guid.NewGuid();
+                order.Cost = order.CalculateTotalCosts();
+                order.Payment = new Payment
+                {
+                    Amount = order.CalculateTotalCosts(),
+                    Customer = order.Customer,
+                    PaymentDate = DateTime.Now
+                };
                 _orderRepository.SaveOrder(order);
                 return RedirectToAction(nameof(Completed), new { orderNumber = order.OrderGuidId });
             }
