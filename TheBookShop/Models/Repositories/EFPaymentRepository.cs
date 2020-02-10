@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.Repositories
 {
     public class EFPaymentRepository : IPaymentRepository
     {
-        private ApplicationDbContext applicationDbContext;
+        private readonly ApplicationDbContext _applicationDbContext;
 
-        public EFPaymentRepository(ApplicationDbContext _applicationDbContext)
+        public EFPaymentRepository(ApplicationDbContext applicationDbContext)
         {
-            applicationDbContext = _applicationDbContext;
+            _applicationDbContext = applicationDbContext;
         }
 
-        public IQueryable<Payment> Payments => applicationDbContext.Payments;
+        public IQueryable<Payment> Payments => _applicationDbContext.Payments
+            .Include(c => c.Customer);
 
         public void SavePayment(Payment payment)
         {
@@ -21,11 +23,11 @@ namespace TheBookShop.Models.Repositories
             {
                 if (payment.PaymentId == 0)
                 {
-                    applicationDbContext.Payments.Add(payment);
+                    _applicationDbContext.Payments.Add(payment);
                 }
                 else
                 {
-                    var paymentEntry = applicationDbContext.Payments
+                    var paymentEntry = _applicationDbContext.Payments
                         .FirstOrDefault(x => x.PaymentId == payment.PaymentId);
 
                     if (paymentEntry != null)
@@ -36,7 +38,7 @@ namespace TheBookShop.Models.Repositories
                     }
                 }
 
-                applicationDbContext.SaveChanges();
+                _applicationDbContext.SaveChanges();
             }
             catch (Exception ex)
             {
