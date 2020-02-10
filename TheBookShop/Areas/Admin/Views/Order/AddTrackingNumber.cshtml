@@ -1,15 +1,15 @@
-﻿@model Order
+﻿@model int
 @{
     ViewData["Title"] = "Śledzenie zamówienia";
 }
 
 <div class="text-center">
-    <h4>Edycja numeru śledzenia zamówienia o numerze @Model.OrderId</h4>
+    <h4>Edycja numeru śledzenia zamówienia o numerze @Model</h4>
 </div>
 
-<form asp-area="Admin" asp-controller="Order" asp-action="AddTrackingNumber" asp-antiforgery="true" asp-route-orderId="@Model.OrderId" method="post">
+<form asp-area="Admin" asp-controller="Order" asp-action="AddTrackingNumber" asp-antiforgery="true" asp-route-orderId="@Model" method="post">
     <div class="form-group">
-        <input name="@Model.OrderId" type="hidden" class="form-control" />
+        <input name="@Model" type="hidden" class="form-control" />
     </div>
     <div class="form-group">
         <label for="trackingNumber"></label>
