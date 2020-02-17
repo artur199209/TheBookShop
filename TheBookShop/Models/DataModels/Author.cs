@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json;
 
 namespace TheBookShop.Models.DataModels
 {
@@ -17,6 +18,7 @@ namespace TheBookShop.Models.DataModels
         [Display(Name = "Notka")]
         [Required(ErrorMessage = "Proszę podać notatki o autorze")]
         public string Notes { get; set; }
+        [JsonIgnore]
         [BindNever]
         public ICollection<Product> Products { get; set; }
     }
