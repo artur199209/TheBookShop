@@ -7,17 +7,15 @@
 <div class="container">
     <div class="row">
         <div class="col-5">
-            <img src="\Images\47c9a5c20405494f828ad8d0d97a9b00.png" alt="@Model.Title">
+            <img src="@Model.Image" alt="@Model.Title">
         </div>
         <div class="col-7">
             <h2>
-                @Model.Title - @Model.Author
+                @Model.Title - @Model.Author.Name @Model.Author.Surname
             </h2>
-            <h4>Thinner, Lighter, Faster. All in One Desktop</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa.</p>
-            <hr>
-            <h3>Price - <del>$699</del> @Model.Price</h3>
-            <p>Inclusive of all taxes. Free home delivery.</p>
+         
+            <p>@Model.Description</p>
+            <h3>Cena @Model.Price zł</h3>
             <br>
             <form id="@Model.ProductId" asp-action="AddToCart" asp-controller="Cart" method="post">
                 <input type="hidden" name="productId" asp-for="@Model.ProductId"/>
@@ -28,13 +26,8 @@
                             <span class="fa fa-shopping-cart"></span>
                             Dodaj do koszyka
                         </button>
-                    </span>
-                </div>
-                <div class="text-center">
-                    <span class="card-text">
                         <a asp-area="" asp-controller="Opinion" asp-action="WriteOpinion" asp-route-productId="@Model.ProductId" class="btn btn-success">
-                            <span class="fa fa-shopping-cart"></span>
-                            Napisz opinię
+                           Napisz opinię
                         </a>
                     </span>
                 </div>
@@ -64,7 +57,7 @@
             <div class="tab-pane fade" id="profile" role="tabpanel">
                 dasd
             </div>
-            <div class="tab-pane fade" id="opinions" name="opinions" role="tabpanel">
+            <div class="tab-pane fade" id="opinions" name="opinions" role="tabpanel" style="margin-top: 20px">
                 <div class="container">
                     <div class="card">
                         <div class="card-body">
