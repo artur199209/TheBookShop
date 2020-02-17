@@ -38,6 +38,7 @@ namespace TheBookShop
             services.AddTransient<IDeliveryMethodRepository, EFDeliveryMethodRepository>();
             services.AddTransient<IPaymentMethodRepository, EFPaymentMethodRepository>();
             services.AddTransient<IOpinionRepository, EFOpinionRepository>();
+            services.AddTransient<IProductCategoryRepository, EFProductCategoryRepository>();
             services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();
@@ -51,34 +52,34 @@ namespace TheBookShop
             app.UseStaticFiles();
             app.UseSession();
             app.UseAuthentication();
-            // app.UseMvcWithDefaultRoute();
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: null,
-                    template: "{category}/Page{productPage:int}",
-                    defaults: new { controller = "Product", action = "List" }
-                );
+            app.UseMvcWithDefaultRoute();
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: null,
+            //        template: "{category}/Page{productPage:int}",
+            //        defaults: new { controller = "Product", action = "List" }
+            //    );
 
-                routes.MapRoute(
-                    name: null,
-                    template: "Page{productPage:int}",
-                    defaults: new { controller = "Product", action = "List", productPage = 1 }
-                );
+            //    routes.MapRoute(
+            //        name: null,
+            //        template: "Page{productPage:int}",
+            //        defaults: new { controller = "Product", action = "List", productPage = 1 }
+            //    );
 
-                routes.MapRoute(
-                    name: null,
-                    template: "{category}",
-                    defaults: new { controller = "Product", action = "List", productPage = 1 }
-                );
+            //    routes.MapRoute(
+            //        name: null,
+            //        template: "{category}",
+            //        defaults: new { controller = "Product", action = "List", productPage = 1 }
+            //    );
 
-                routes.MapRoute(
-                    name: null,
-                    template: "",
-                    defaults: new { controller = "Product", action = "List", productPage = 1 });
+            //    routes.MapRoute(
+            //        name: null,
+            //        template: "",
+            //        defaults: new { controller = "Product", action = "List", productPage = 1 });
 
-                routes.MapRoute(name: null, template: "{controller}/{action}/{id?}");
-            });
+            //    routes.MapRoute(name: null, template: "{controller}/{action}/{id?}");
+            //});
 
             AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
             //SeedData.EnsurePopulated(app);

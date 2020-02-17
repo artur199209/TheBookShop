@@ -1,0 +1,21 @@
+﻿@model ProductCategory
+@{
+    ViewData["Title"] = "Edycja kategorii";
+}
+
+<div class="text-center">
+    <h4>Edycja roli</h4>
+</div>
+
+<form asp-action="Edit" asp-antiforgery="true" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="@Model.ProductCategoryId" value="@Model.ProductCategoryId" />
+
+    <div class="form-group">
+        <label asp-for="@Model.Name"></label>
+        <input asp-for="@Model.Name" class="form-control" />
+    </div>
+   
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+</form>

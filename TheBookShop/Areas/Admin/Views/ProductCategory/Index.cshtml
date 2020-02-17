@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ProductCategory>
+@{
+    ViewData["Title"] = "Wszystkie kategorie";
+}
+
+<div class="text-center">
+    <h4>Wszystkie kategorie</h4>
+</div>
+
+<table class="table table-bordered table-hover table-sm" role="grid">
+    <tr>
+        <th>Id</th>
+        <th>Nazwa kategorii</th>
+        <th></th>
+    </tr>
+
+    @if (!Model.Any())
+    {
+        <tr><td colspan="4" class="text-center">Brak kategorii</td></tr>
+    }
+    else
+    {
+        foreach (ProductCategory category in Model)
+        {
+            <tr>
+                <td>@category.ProductCategoryId</td>
+                <td>@category.Name</td>
+                <td>
+                    <form asp-action="" asp-antiforgery="true" method="post">
+                        <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-productCategoryId="@category.ProductCategoryId">
+                            Edytuj
+                        </a>
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Usuń
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<div class="text-center">
+    <a asp-area="Admin" asp-controller="ProductCategory" asp-action="Create" class="btn btn-primary">Dodaj kategorię</a>
+</div>
