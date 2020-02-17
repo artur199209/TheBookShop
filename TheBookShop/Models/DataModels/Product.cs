@@ -21,9 +21,6 @@ namespace TheBookShop.Models
         [Display(Name = "Kategoria")]
         [Required(ErrorMessage = "Proszę podać kategorię")]
         public string Category { get; set; }
-        [Display(Name = "Podkategoria")]
-        [Required(ErrorMessage = "Proszę podać podkategorię")]
-        public string Subcategory { get; set; }
         [Display(Name = "Autor")]
         public Author Author { get; set; }
         [Display(Name = "Liczba stron")]
@@ -37,7 +34,7 @@ namespace TheBookShop.Models
         public string PublishingHouse { get; set; }
         [Display(Name = "Dostępna liczba")]
         [Required(ErrorMessage = "Proszę podać liczbę dostępnych produktów")]
-        public int QuantityInStock { get; set; }
+        public int SalesCounter { get; set; }
 
         public ICollection<Opinion> Opinions { get; set; }
     }

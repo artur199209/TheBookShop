@@ -40,8 +40,7 @@ namespace TheBookShop.Models.Repositories
                         productEntry.Image = product.Image;
                         productEntry.NumberOfPages = product.NumberOfPages;
                         productEntry.PublishingHouse = product.PublishingHouse;
-                        productEntry.QuantityInStock = product.QuantityInStock;
-                        productEntry.Subcategory = product.Subcategory;
+                        productEntry.SalesCounter = product.SalesCounter;
                     }
                 }
 
