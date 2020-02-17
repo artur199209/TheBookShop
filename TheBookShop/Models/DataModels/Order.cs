@@ -16,7 +16,7 @@ namespace TheBookShop.Models.DataModels
         public Guid OrderGuidId { get; set; }
         public string TrackingNumber { get; set; }
         public Customer Customer { get; set; }
-        public OrderStatus Status { get; set; }
+        public OrderStatus Status { get; set; } = OrderStatus.New;
         public bool Shipped { get; set; }
         public DeliveryAddress DeliveryAddress { get; set; }
         public Payment Payment { get; set; }
