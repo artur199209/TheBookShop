@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace TheBookShop.Models.DataModels
 {
@@ -9,6 +10,7 @@ namespace TheBookShop.Models.DataModels
         [BindNever]
         public int OpinionId { get; set; }
         [BindNever]
+        [JsonIgnore]
         public Product Product { get; set; }
         [Required(ErrorMessage = "Proszę podać swoje imię.")]
         [Display(Name = "Imię")]
