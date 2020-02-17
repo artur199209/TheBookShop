@@ -13,7 +13,10 @@ namespace TheBookShop.Models.Repositories
             context = ctx;
         }
 
-        public IQueryable<Product> Products => context.Products.Include(o => o.Opinions);
+        public IQueryable<Product> Products => context.Products
+            .Include(o => o.Opinions)
+            .Include(a => a.Author);
+
         public void SaveProduct(Product product)
         {
             try
