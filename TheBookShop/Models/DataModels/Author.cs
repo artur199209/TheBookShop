@@ -8,10 +8,13 @@ namespace TheBookShop.Models.DataModels
     {
         public int AuthorId { get; set; }
 
+        [Display(Name = "Imię")]
         [Required(ErrorMessage = "Proszę podać imię autora")]
         public string Name { get; set; }
+        [Display(Name = "Nazwisko")]
         [Required(ErrorMessage = "Proszę podać nazwisko autora")]
         public string Surname { get; set; }
+        [Display(Name = "Notka")]
         [Required(ErrorMessage = "Proszę podać notatki o autorze")]
         public string Notes { get; set; }
         [BindNever]

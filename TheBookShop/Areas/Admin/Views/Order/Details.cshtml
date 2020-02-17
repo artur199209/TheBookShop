@@ -71,15 +71,11 @@
                 <tbody>
                     <tr>
                         <th>Kwota</th>
-                        <td class="text-right">Model.Payment.Amount</td>
-                    </tr>
-                    <tr>
-                        <th>Data płatności</th>
-                        <td class="text-right">Model.Payment.PaymentDate</td>
+                        <td class="text-center">@Model.DeliveryPaymentMethod.PaymentMethod.Price</td>
                     </tr>
                     <tr>
                         <th>Sposób zapłaty</th>
-                        <td class="text-right">Model.Payment.MethodOfPayment</td>
+                        <td class="text-right">@Model.DeliveryPaymentMethod.PaymentMethod.Name</td>
                     </tr>
                 </tbody>
             </table>

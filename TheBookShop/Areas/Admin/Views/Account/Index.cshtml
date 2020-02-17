@@ -7,7 +7,7 @@
 </div>
 
 <table class="table table-bordered table-hover table-sm" role="grid">
-    <tr><th>ID</th><th>Name</th><th>Email</th></tr>
+    <tr><th>ID</th><th>Imię</th><th>Email</th></tr>
     @if (!Model.Any())
     {
         <tr><td colspan="3" class="text-center">Brak kont użytkowników</td></tr>
@@ -23,10 +23,10 @@
                 <td>
                     <form asp-action="Delete" asp-route-id="@user.Id" asp-antiforgery="true" method="post">
                         <a class="btn btn-sm btn-primary" asp-action="Edit"
-                           asp-route-id="@user.Id">Edit</a>
+                           asp-route-id="@user.Id">Edytuj</a>
                         <button type="submit"
                                 class="btn btn-sm btn-danger">
-                            Delete
+                            Usuń
                         </button>
                     </form>
                 </td>
