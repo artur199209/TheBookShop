@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models
@@ -18,6 +17,7 @@ namespace TheBookShop.Models
         public DbSet<Payment> Payments { get; set; }
         public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
