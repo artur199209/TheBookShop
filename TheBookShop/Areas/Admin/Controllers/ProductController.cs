@@ -15,12 +15,14 @@ namespace TheBookShop.Areas.Admin.Controllers
     {
         private readonly IProductRepository _repository;
         private readonly IAuthorRepository _authorRepository;
+        private readonly IProductCategoryRepository _productCategoryRepository;
         public int PageSize = 10;
 
-        public ProductController(IProductRepository repo, IAuthorRepository authorRepository)
+        public ProductController(IProductRepository repo, IAuthorRepository authorRepository, IProductCategoryRepository productCategoryRepository)
         {
             _repository = repo;
             _authorRepository = authorRepository;
+            _productCategoryRepository = productCategoryRepository;
         }
         
         [Route("[action]")]
@@ -84,11 +86,21 @@ namespace TheBookShop.Areas.Admin.Controllers
                 {
                     var authorId = Convert.ToInt32(formValues["Author"]);
                     var author = _authorRepository.GetAuthorById(authorId);
+
+                    var categoryId = Convert.ToInt32(formValues["Category"]);
+                    var category =
+                        _productCategoryRepository.ProductCategories.FirstOrDefault(x =>
+                            x.ProductCategoryId == categoryId);
                     IFormFile file = formValues.Files.FirstOrDefault();
 
                     if (author != null)
                     {
                         product.Author = author;
+                    }
+
+                    if (category != null)
+                    {
+                        product.Category = category;
                     }
 
                     if (file != null)
