@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using TheBookShop.Areas.Admin.Controllers;
-using TheBookShop.Models;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
@@ -16,12 +15,14 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
     {
         private readonly Mock<IProductRepository> _productRepositoryMock;
         private readonly Mock<IAuthorRepository> _authorRepositoryMock;
+        private readonly Mock<IProductCategoryRepository> _productCategoryRepositoryMock;
         private readonly Product _product;
 
         public ProductControllerTests()
         {
             _productRepositoryMock = new Mock<IProductRepository>();
             _authorRepositoryMock = new Mock<IAuthorRepository>();
+            _productCategoryRepositoryMock = new Mock<IProductCategoryRepository>();
 
             _productRepositoryMock.Setup(m => m.Products).Returns(new[]
             {
@@ -44,7 +45,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Index_Contains_All_Products()
         {
-            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object);
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object);
             var results = GetViewModel<ProductsListViewModel>(controller.Index());
             var products = results.Products.ToList();
 
@@ -57,7 +58,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Edit_Product()
         {
-            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object);
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object);
             Product p1 = GetViewModel<Product>(controller.Edit(1));
             Product p2 = GetViewModel<Product>(controller.Edit(2));
             Product p3 = GetViewModel<Product>(controller.Edit(3));
@@ -70,7 +71,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Cannot_Edit_Non_Existing_Product()
         {
-            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object);
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object);
             Product p1 = GetViewModel<Product>(controller.Edit(4));
 
             Assert.Null(p1);
@@ -81,7 +82,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         {
             Mock<ITempDataDictionary> tempData = new Mock<ITempDataDictionary>();
 
-            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object)
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object)
             {
                 TempData = tempData.Object
             };
@@ -96,7 +97,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Cannot_Save_Invalid_Changes()
         {
-            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object);
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object);
             controller.ModelState.AddModelError("error", "error");
            
             IActionResult result = controller.Edit(_product, null);
@@ -108,7 +109,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Delete_Valid_Product()
         {
-            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object);
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object);
             controller.Delete(_product.ProductId);
 
             _productRepositoryMock.Verify(m => m.DeleteProduct(_product.ProductId));
@@ -117,7 +118,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Paginate_Products()
         {
-            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object) { PageSize = 3 };
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object) { PageSize = 3 };
 
             ProductsListViewModel result = GetViewModel<ProductsListViewModel>(controller.Index());
 
@@ -131,7 +132,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Send_Pagination_For_Products()
         {
-            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object) { PageSize = 3 };
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object) { PageSize = 3 };
 
             ProductsListViewModel result = GetViewModel<ProductsListViewModel>(controller.Index());
 
@@ -146,7 +147,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Display_Opinions()
         {
-            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object) { PageSize = 3 };
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object) { PageSize = 3 };
             OpinionsListViewModel result = GetViewModel<OpinionsListViewModel>(controller.Opinion(1));
 
             Assert.NotNull(result);
@@ -157,7 +158,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Paginate_Opinions()
         {
-            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object) { PageSize = 3 };
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object) { PageSize = 3 };
             OpinionsListViewModel result = GetViewModel<OpinionsListViewModel>(controller.Opinion(1));
 
             var opinions = result?.Opinions.ToArray();
@@ -170,7 +171,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         [Fact]
         public void Can_Send_Pagination_For_Opinions()
         {
-            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object) { PageSize = 3 };
+            ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object) { PageSize = 3 };
 
             OpinionsListViewModel result = GetViewModel<OpinionsListViewModel>(controller.Opinion(1));
 
