@@ -62,22 +62,29 @@
                     <div class="card">
                         <div class="card-body">
                             
-                            @foreach (var opinion in Model.Opinions)
+                            @if (Model.Opinions.Any())
                             {
-                                <div class="row col-xl-12 col-xl-auto">
-                                    <div class="col-12">
-                                        <p>
-                                            <strong>@opinion.Name</strong>
-                                            @for (int i = 0; i < opinion.Rating; i++)
-                                            {
-                                                <span class="float-right"><i class="text-warning fa fa-star"></i></span>
-                                            }
-                                        </p>
-                                        <div class="clearfix"></div>
-                                        <p>@opinion.OpinionDescription</p>
+                                foreach (var opinion in Model.Opinions)
+                                 {
+                                     <div class="row col-xl-12 col-xl-auto">
+                                         <div class="col-12">
+                                             <p>
+                                                 <strong>@opinion.Name</strong>
+                                                 @for (int i = 0; i < opinion.Rating; i++)
+                                                 {
+                                                     <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                                 }
+                                             </p>
+                                             <div class="clearfix"></div>
+                                             <p>@opinion.OpinionDescription</p>
 
-                                    </div>
-                                </div>
+                                         </div>
+                                     </div>
+                                 }
+                            }
+                            else
+                            {
+                                <p>Brak opinii o wybranym produkcie.</p>
                             }
                             
                         </div>
