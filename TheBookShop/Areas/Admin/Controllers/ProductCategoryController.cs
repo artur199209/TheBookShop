@@ -50,12 +50,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         {
             var category = _productCategoryRepository.ProductCategories.FirstOrDefault(x => x.ProductCategoryId == productCategoryId);
 
-            if (category != null)
-            {
-                return View(category);
-            }
-
-            return Edit(productCategoryId);
+            return View(category);
         }
 
         [HttpPost]
