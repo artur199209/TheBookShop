@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using TheBookShop.Infrastructure;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
 
@@ -93,7 +93,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 
                     if (file != null)
                     {
-                        product.Image = "\\Images\\" + file?.FileName;
+                        product.Image = "\\Images\\" + file.FileName;
                         FileHelper.CopyImageFile(file);
                     }
                 }
