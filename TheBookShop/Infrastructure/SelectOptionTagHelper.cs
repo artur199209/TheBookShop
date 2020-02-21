@@ -6,7 +6,7 @@ using TheBookShop.Models.Repositories;
 
 namespace TheBookShop.Infrastructure
 {
-    [HtmlTargetElement("select", Attributes = "model-for")]
+    [HtmlTargetElement("select", Attributes = "model-for, Author")]
     public class SelectOptionTagHelper : TagHelper
     {
         private readonly IAuthorRepository _authorRepository;

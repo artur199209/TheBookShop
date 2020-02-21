@@ -6,7 +6,7 @@ using TheBookShop.Models.Repositories;
 
 namespace TheBookShop.Areas.Admin.Infrastructure
 {
-    [HtmlTargetElement("select", Attributes = "asp-for, ProductCategory")]
+    [HtmlTargetElement("select", Attributes = "model-for, ProductCategory")]
     public class SelectOptionForProductCategoryTagHelper : TagHelper
     {
         private readonly IProductCategoryRepository _productCategoryRepository;
