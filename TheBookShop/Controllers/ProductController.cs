@@ -29,7 +29,7 @@ namespace TheBookShop.Controllers
             => View(new ProductsListViewModel
             {
                 Products = _repository.Products
-                    .Where(p => category == null || p.Category == category)
+                    .Where(p => category == null || p.Category.Name == category)
                     .OrderBy(p => p.ProductId)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize),
@@ -38,7 +38,7 @@ namespace TheBookShop.Controllers
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
                     TotalItems = category == null ? _repository.Products.Count() 
-                        : _repository.Products.Count(x => x.Category == category)
+                        : _repository.Products.Count(x => x.Category.Name == category)
                 },
                 CurrentCategory = category
             });

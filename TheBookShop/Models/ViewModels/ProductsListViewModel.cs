@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.ViewModels
 {

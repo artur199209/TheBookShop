@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.Repositories
 {

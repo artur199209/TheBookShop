@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Controllers;
 using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
 using Xunit;

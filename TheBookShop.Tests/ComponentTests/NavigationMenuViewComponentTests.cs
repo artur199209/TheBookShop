@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.Routing;
 using Moq;
 using TheBookShop.Components;
-using TheBookShop.Models;
+using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using Xunit;
 
@@ -20,11 +20,11 @@ namespace TheBookShop.Tests.ComponentTests
             var mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns(new []
             {
-                new Product { ProductId = 1, Title = "Product1", Category = "Category1" },
-                new Product { ProductId = 2, Title = "Product2", Category = "Category2" },
-                new Product { ProductId = 3, Title = "Product3", Category = "Category1" },
-                new Product { ProductId = 4, Title = "Product4", Category = "Category3" },
-                new Product { ProductId = 5, Title = "Product5", Category = "Category1" }
+                new Product { ProductId = 1, Title = "Product1", Category = new ProductCategory { Name = "Category1" }},
+                new Product { ProductId = 2, Title = "Product2", Category = new ProductCategory { Name = "Category2" }},
+                new Product { ProductId = 3, Title = "Product3", Category = new ProductCategory { Name = "Category1" }},
+                new Product { ProductId = 4, Title = "Product4", Category = new ProductCategory { Name = "Category3" }},
+                new Product { ProductId = 5, Title = "Product5", Category = new ProductCategory { Name = "Category1" }}
             }.AsQueryable());
 
             NavigationMenuViewComponent target = new NavigationMenuViewComponent(mock.Object);
@@ -42,11 +42,11 @@ namespace TheBookShop.Tests.ComponentTests
             var mock = new Mock<IProductRepository>();
             mock.Setup(m => m.Products).Returns(new []
             {
-                new Product { ProductId = 1, Title = "Product1", Category = "Category1" },
-                new Product { ProductId = 2, Title = "Product2", Category = "Category2" },
-                new Product { ProductId = 3, Title = "Product3", Category = "Category1" },
-                new Product { ProductId = 4, Title = "Product4", Category = "Category3" },
-                new Product { ProductId = 5, Title = "Product5", Category = "Category1" }
+                new Product { ProductId = 1, Title = "Product1", Category = new ProductCategory { Name = "Category1" }},
+                new Product { ProductId = 2, Title = "Product2", Category = new ProductCategory { Name = "Category2" }},
+                new Product { ProductId = 3, Title = "Product3", Category = new ProductCategory { Name = "Category1" }},
+                new Product { ProductId = 4, Title = "Product4", Category = new ProductCategory { Name = "Category3" }},
+                new Product { ProductId = 5, Title = "Product5", Category = new ProductCategory { Name = "Category1" }}
             }.AsQueryable());
 
             NavigationMenuViewComponent target = new NavigationMenuViewComponent(mock.Object)

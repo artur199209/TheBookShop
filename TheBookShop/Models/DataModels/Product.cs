@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using TheBookShop.Models.DataModels;
 
-namespace TheBookShop.Models
+namespace TheBookShop.Models.DataModels
 {
     public class Product
     {
@@ -20,7 +19,7 @@ namespace TheBookShop.Models
         public decimal Price { get; set; }
         [Display(Name = "Kategoria")]
         [Required(ErrorMessage = "Proszę podać kategorię")]
-        public string Category { get; set; }
+        public ProductCategory Category { get; set; }
         [Display(Name = "Autor")]
         public Author Author { get; set; }
         [Display(Name = "Liczba stron")]

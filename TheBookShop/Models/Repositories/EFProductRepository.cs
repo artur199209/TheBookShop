@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.Repositories
 {
