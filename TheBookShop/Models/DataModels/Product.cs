@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace TheBookShop.Models.DataModels
@@ -20,6 +21,9 @@ namespace TheBookShop.Models.DataModels
         [Display(Name = "Kategoria")]
         [Required(ErrorMessage = "Proszę podać kategorię")]
         public ProductCategory Category { get; set; }
+        [Display(Name = "Typ sprzedaży")]
+        [Required(ErrorMessage = "Proszę podać typ sprzedaży")]
+        public SalesTypeEnums SalesType { get; set; }
         [Display(Name = "Autor")]
         public Author Author { get; set; }
         [Display(Name = "Liczba stron")]
@@ -31,10 +35,17 @@ namespace TheBookShop.Models.DataModels
         [Display(Name = "Wydawnictwo")]
         [Required(ErrorMessage = "Proszę podać nazwę wydawnictwa")]
         public string PublishingHouse { get; set; }
-        [Display(Name = "Dostępna liczba")]
-        [Required(ErrorMessage = "Proszę podać liczbę dostępnych produktów")]
-        public int SalesCounter { get; set; }
 
         public ICollection<Opinion> Opinions { get; set; }
+
+        public enum SalesTypeEnums
+        {
+            [Description("Zapowiedź")]
+            BookPreview,
+            [Description("Sprzedaż")]
+            Book,
+            [Description("Wyprzedaż")]
+            BookSale
+        }
     }
 }
