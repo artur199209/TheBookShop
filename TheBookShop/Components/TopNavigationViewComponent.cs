@@ -63,7 +63,7 @@ namespace TheBookShop.Components
                 topNav.Add(new NavbarItem { Id = topNav.Max(x => x.Id) + 1, Action = "List", NameOption = category.Name, Controller = "Product", IsParent = false, ParentId = 1 });
             }
             
-            topNav.Add(new NavbarItem { Id = topNav.Max(x => x.Id) + 1, Action = "Index", NameOption = "Bestsellery", Controller = "Books", IsParent = false, ParentId = -1 });
+            topNav.Add(new NavbarItem { Id = topNav.Max(x => x.Id) + 1, Action = "Bestsellers", NameOption = "Bestsellery", Controller = "Books", IsParent = false, ParentId = -1 });
             topNav.Add(new NavbarItem { Id = topNav.Max(x => x.Id) + 1, Action = "Previews", NameOption = "Zapowiedzi", Controller = "Books", IsParent = false, ParentId = -1 });
             topNav.Add(new NavbarItem { Id = topNav.Max(x => x.Id) + 1, Action = "Sales", NameOption = "Wyprzedaż", Controller = "Books", IsParent = false, ParentId = -1 });
 
