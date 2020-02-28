@@ -21,7 +21,10 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public ViewResult Index()
         {
-            return View();
+            var carouselViewModel = new CarouselViewModel();
+            carouselViewModel.ProductsInThePromotion = _repository.Products.Where(x => x.IsProductInPromotion);
+
+            return View(carouselViewModel);
         }
 
         [Route("[action]")]
