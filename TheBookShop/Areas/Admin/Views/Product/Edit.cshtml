@@ -57,6 +57,15 @@
         <div><span asp-validation-for="Price" class="text-danger"></span></div>
         <input asp-for="Price" class="form-control" />
     </div>
+    <div class="form-group">
+        <input asp-for="IsProductInPromotion" class="form-check-input-reverse" type="checkbox"/>
+        <label asp-for="IsProductInPromotion"></label>
+    </div>
+    <div class="form-group">
+        <label asp-for="PromotionalPrice"></label>
+        <div><span asp-validation-for="PromotionalPrice" class="text-danger"></span></div>
+        <input asp-for="PromotionalPrice" class="form-control" />
+    </div>
     <div class="text-center">
         <button class="btn btn-primary" type="submit">Zapisz</button>
         <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
