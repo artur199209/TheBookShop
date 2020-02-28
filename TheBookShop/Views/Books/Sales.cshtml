@@ -1,0 +1,17 @@
+﻿@model ProductsListViewModel
+@{
+    ViewData["Title"] = "Wyprzedaż";
+}
+
+@foreach (var p in Model.Products)
+{
+    <partial name="ProductSummary" for="@p" />
+}
+
+<div class="container" style="margin-bottom: 60px">
+    <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+         page-class="btn" page-class-normal="btn-secondary"
+         page-class-selected="btn-primary"
+         class="text-center btn-group float-left m-1">
+    </div>
+</div>

@@ -1,0 +1,9 @@
+﻿@model List<Product>
+@{
+    ViewData["Title"] = "Bestsellery";
+}
+
+@foreach (var p in Model)
+{
+    <partial name="ProductSummary" for="@p" />
+}
