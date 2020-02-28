@@ -32,10 +32,10 @@
                 <div class="carousel-inner col-xl-auto justify-content-center" role="listbox">
                     <div class="carousel-item active justify-content-center">
                         <div class="row">
-                            @Html.Partial("ProductSummary", new Product())
-                            @Html.Partial("ProductSummary", new Product())
-                            @Html.Partial("ProductSummary", new Product())
-                            @Html.Partial("ProductSummary", new Product())
+                            @foreach (var item in @Model.ProductsInThePromotion)
+                            {
+                                @Html.Partial("ProductSummary", item)
+                            }
                         </div>
                     </div>
                     <div class="carousel-item justify-content-center">

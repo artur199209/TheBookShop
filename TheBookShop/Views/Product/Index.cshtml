@@ -1,4 +1,4 @@
-﻿
+﻿@model CarouselViewModel
 @{
     ViewData["Title"] = "Strona główna";
 }
@@ -10,6 +10,6 @@ dasdasdsadsadasdasdas
 dasdasdasdasdasdasdasdas
 dasdasdasdasdasdasdasdasdas
 
-@await Component.InvokeAsync("Carousel", new { category = "PROMOCJE" })
-@await Component.InvokeAsync("Carousel", new { category = "NOWOŚCI" })
-@await Component.InvokeAsync("Carousel", new { category = "BESTSELLERY" })
+@await Component.InvokeAsync("Carousel", new { category = "PROMOCJE", products = @Model.ProductsInThePromotion })
+@await Component.InvokeAsync("Carousel", new { category = "NOWOŚCI", products = @Model.ProductsInThePromotion })
+@await Component.InvokeAsync("Carousel", new { category = "BESTSELLERY", products = @Model.ProductsInThePromotion })
