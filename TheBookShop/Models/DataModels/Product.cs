@@ -18,6 +18,10 @@ namespace TheBookShop.Models.DataModels
         [Display(Name = "Cena")]
         [Required(ErrorMessage = "Proszę podać cenę")]
         public decimal Price { get; set; }
+        [Display(Name = "Promocyjna cena")]
+        public decimal PromotionalPrice { get; set; }
+        [Display(Name = "Produkt w promocji?")]
+        public bool IsProductInPromotion { get; set; }
         [Display(Name = "Kategoria")]
         [Required(ErrorMessage = "Proszę podać kategorię")]
         public ProductCategory Category { get; set; }
