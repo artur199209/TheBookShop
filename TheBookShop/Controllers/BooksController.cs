@@ -21,7 +21,7 @@ namespace TheBookShop.Controllers
         }
 
         [Route("[action]")]
-        public IActionResult Index()
+        public IActionResult Bestsellers()
         {
             var shippedItems = _orderRepository.Orders.Where(x => x.Status == Order.OrderStatus.Shipped).ToList();
            
@@ -38,8 +38,6 @@ namespace TheBookShop.Controllers
             var salesProducts = _productRepository.Products
                 .Where(x => x.SalesType == Product.SalesTypeEnums.BookSale)
                 .OrderBy(p => p.ProductId).ToList();
-            ViewData["salesType"] = Product.SalesTypeEnums.BookSale.GetDescription();
-
 
             return View(new ProductsListViewModel
             {
@@ -60,7 +58,6 @@ namespace TheBookShop.Controllers
         {
             var previewProducts = _productRepository.Products.Where(x => x.SalesType == Product.SalesTypeEnums.BookPreview)
                 .OrderBy(p => p.ProductId).ToList();
-            ViewData["salesType"] = Product.SalesTypeEnums.BookPreview.GetDescription();
 
             return View(new ProductsListViewModel
             {
