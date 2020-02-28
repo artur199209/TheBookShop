@@ -28,7 +28,7 @@
     <div class="form-group">
         <label asp-for="SalesType"></label>
         <div><span asp-validation-for="SalesType" class="text-danger"></span></div>
-        <select asp-for="SalesType" asp-items="EnumExtensions.GetEnumSelectList<Product.SalesTypeEnums>()">
+        <select asp-for="SalesType" asp-items="EnumExtensions.GetEnumSelectList<Product.SalesTypeEnums>()" class="form-control">
             <option>Wybierz kategorię</option>
         </select>
     </div>
