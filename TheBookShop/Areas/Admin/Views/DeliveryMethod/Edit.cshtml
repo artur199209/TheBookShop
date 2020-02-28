@@ -16,7 +16,7 @@
 
     <h6 class="bg-info p-1 text-white">Dodaj do @Model.DeliveryMethod.Name</h6>
     <table class="table table-bordered table-sm">
-        @if (!Model.DeliveryMethod.PaymentMethods.Any())
+        @if (Model.DeliveryMethod.PaymentMethods.Any())
         {
             <tr><td colspan="2">Wszystkie metody płatności zostały przypisane do tego sposobu dostawy</td></tr>
         }
