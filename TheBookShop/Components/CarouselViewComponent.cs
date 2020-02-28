@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.ViewModels;
 
@@ -6,16 +7,14 @@ namespace TheBookShop.Components
 {
     public class CarouselViewComponent : ViewComponent
     {
-        private Cart cart;
-
-        public CarouselViewComponent(Cart cartService)
+        public CarouselViewComponent()
         {
-            cart = cartService;
         }
 
-        public IViewComponentResult Invoke(string category, int id)
+        public IViewComponentResult Invoke(IEnumerable<Product> products, string category, int id)
         {
             var p = new CarouselViewModel();
+            p.ProductsInThePromotion = products;
             p.Category = category;
             p.Id = id;
             return View(p);

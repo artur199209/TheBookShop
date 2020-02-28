@@ -42,6 +42,8 @@ namespace TheBookShop.Models.Repositories
                         productEntry.NumberOfPages = product.NumberOfPages;
                         productEntry.PublishingHouse = product.PublishingHouse;
                         productEntry.SalesType = product.SalesType;
+                        productEntry.IsProductInPromotion = product.IsProductInPromotion;
+                        productEntry.PromotionalPrice = product.PromotionalPrice;
                     }
                 }
 
