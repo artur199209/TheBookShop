@@ -36,7 +36,7 @@ namespace TheBookShop.Models.DataModels
         }
         public decimal CalculateTotalCosts()
         {
-            var cartCost = Lines.Sum(x => x.Quantity * x.Product.Price);
+            var cartCost = Lines.Sum(x => x.Quantity * (x.Product.IsProductInPromotion ? x.Product.PromotionalPrice : x.Product.Price));
             var deliveryCost = DeliveryPaymentMethod.PaymentMethod.Price;
 
             return cartCost + deliveryCost;
