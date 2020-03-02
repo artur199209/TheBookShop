@@ -13,13 +13,22 @@
             <h2>
                 @Model.Title - @Model.Author.Name @Model.Author.Surname
             </h2>
-         
+
             <p>@Model.Description</p>
-            <h3>Cena @Model.Price zł</h3>
+
+            @if (Model.IsProductInPromotion)
+            {
+                <h3>Cena <del>@Model.Price zł</del> @Model.PromotionalPrice zł</h3>
+            }
+            else
+            {
+                <h3>Cena @Model.Price zł</h3>
+            }
+
             <br>
             <form id="@Model.ProductId" asp-action="AddToCart" asp-controller="Cart" method="post">
-                <input type="hidden" name="productId" asp-for="@Model.ProductId"/>
-                <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()"/>
+                <input type="hidden" name="productId" asp-for="@Model.ProductId" />
+                <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
                 <div class="text-center">
                     <span class="card-text">
                         <button class="btn btn-success" type="submit">
@@ -27,7 +36,7 @@
                             Dodaj do koszyka
                         </button>
                         <a asp-area="" asp-controller="Opinion" asp-action="WriteOpinion" asp-route-productId="@Model.ProductId" class="btn btn-success">
-                           Napisz opinię
+                            Napisz opinię
                         </a>
                     </span>
                 </div>
