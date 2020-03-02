@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Controllers;
@@ -66,14 +67,18 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var productController = new ProductController(_productRepositoryMock.Object) { NewProductsCount = 3 };
 
-            var result = GetViewModel<CarouselViewModel>(productController.Index());
+            var result = GetViewModel<List<CarouselViewModel>>(productController.Index());
 
-            var newProducts = result.NewProducts.ToList();
-            var promotionProducts = result.ProductsInThePromotion.ToList();
+            var newProducts = result[0].Products.ToList();
+            var promotionProducts = result[1].Products.ToList();
+            var newProductsCategory = result[0].Category;
+            var promotionProductsCategory = result[1].Category;
 
             Assert.NotNull(result);
             Assert.Equal(5, promotionProducts.Count);
             Assert.Equal(3, newProducts.Count);
+            Assert.Equal("NOWOŚCI", newProductsCategory);
+            Assert.Equal("PROMOCJE", promotionProductsCategory);
         }
 
         private T GetViewModel<T>(IActionResult result) where T : class
