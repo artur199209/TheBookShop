@@ -11,6 +11,7 @@ namespace TheBookShop.Controllers
     {
         private readonly IProductRepository _repository;
         public int PageSize = 4;
+        public int NewProductsCount = 12;
 
         public ProductController(IProductRepository repo)
         {
@@ -21,9 +22,11 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public ViewResult Index()
         {
-            var carouselViewModel = new CarouselViewModel();
-            carouselViewModel.ProductsInThePromotion = _repository.Products.Where(x => x.IsProductInPromotion);
-
+            var carouselViewModel = new CarouselViewModel
+            {
+                ProductsInThePromotion = _repository.Products.Where(x => x.IsProductInPromotion),
+                NewProducts = _repository.Products.OrderByDescending(x => x.ProductId).Take(NewProductsCount)
+            };
             return View(carouselViewModel);
         }
 

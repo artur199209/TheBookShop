@@ -7,17 +7,14 @@ namespace TheBookShop.Components
 {
     public class CarouselViewComponent : ViewComponent
     {
-        public CarouselViewComponent()
+        public IViewComponentResult Invoke(IEnumerable<Product> products, string category)
         {
-        }
-
-        public IViewComponentResult Invoke(IEnumerable<Product> products, string category, int id)
-        {
-            var p = new CarouselViewModel();
-            p.ProductsInThePromotion = products;
-            p.Category = category;
-            p.Id = id;
-            return View(p);
+            var carouselComponentViewModel = new CarouselComponentViewModel
+            {
+                Products = products,
+                Category = category
+            };
+            return View(carouselComponentViewModel);
         }
     }
 }
