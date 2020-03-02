@@ -9,12 +9,12 @@ namespace TheBookShop.Components
     {
         public IViewComponentResult Invoke(IEnumerable<Product> products, string category)
         {
-            var carouselComponentViewModel = new CarouselComponentViewModel
+            var carouselViewModel = new CarouselViewModel
             {
                 Products = products,
                 Category = category
             };
-            return View(carouselComponentViewModel);
+            return View(carouselViewModel);
         }
     }
 }
