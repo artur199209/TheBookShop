@@ -1,7 +1,6 @@
-﻿@model CarouselViewModel
+﻿@model CarouselComponentViewModel
 @{
     ViewData["Title"] = "Default";
-    Product p = new Product();
 }
 
 <div class="container" style="padding: 10px">
@@ -32,7 +31,7 @@
                 <div class="carousel-inner col-xl-auto justify-content-center" role="listbox">
                     <div class="carousel-item active justify-content-center">
                         <div class="row">
-                            @foreach (var item in @Model.ProductsInThePromotion)
+                            @foreach (var item in @Model.Products.Take(4))
                             {
                                 @Html.Partial("ProductSummary", item)
                             }
