@@ -12,7 +12,14 @@
         </span>
         <br/>
         <span class="badge badge-pill badge-primary">
-            @Model.Price.ToString("c")
+            @if (Model.IsProductInPromotion)
+            {
+                <del>@Model.Price.ToString("c")</del> @Model.PromotionalPrice.ToString("c")
+            }
+            else
+            {
+                @Model.Price.ToString("c")
+            }
         </span>
     </div>
     </a>
