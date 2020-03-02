@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
@@ -22,12 +23,26 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public ViewResult Index()
         {
-            var carouselViewModel = new CarouselViewModel
+            var carouselViewModels = new List<CarouselViewModel>
             {
-                ProductsInThePromotion = _repository.Products.Where(x => x.IsProductInPromotion),
-                NewProducts = _repository.Products.OrderByDescending(x => x.ProductId).Take(NewProductsCount)
+                new CarouselViewModel()
+                {
+                    Category = "NOWOŚCI",
+                    Products = _repository.Products.OrderByDescending(x => x.ProductId).Take(NewProductsCount)
+                },
+                new CarouselViewModel()
+                {
+                    Category = "PROMOCJE",
+                    Products = _repository.Products.Where(x => x.IsProductInPromotion),
+                },
+                new CarouselViewModel()
+                {
+                    Category = "BESTSELLERY",
+                    Products = _repository.Products.Where(x => x.IsProductInPromotion),
+                }
             };
-            return View(carouselViewModel);
+
+            return View(carouselViewModels);
         }
 
         [Route("[action]")]
