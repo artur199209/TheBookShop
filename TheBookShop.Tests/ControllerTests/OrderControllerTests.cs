@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Controllers;
-using TheBookShop.Models;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using Xunit;
@@ -26,7 +25,25 @@ namespace TheBookShop.Tests.ControllerTests
 
             _orderRepositoryMock.Setup(x => x.Orders).Returns(new[]
             {
-                new Order { OrderId = 1, Customer = new Customer { Email = "email@email.com" }},
+                new Order
+                {
+                    OrderId = 1, Customer = new Customer { Email = "email@email.com" },
+                    Lines = new List<CartLine>()
+                    {
+                        new CartLine
+                        {
+                            CartLineId = 1, Product = new Product { IsProductInPromotion = true, Price = 20, PromotionalPrice = 10 }, Quantity = 4
+                        },
+                        new CartLine
+                        {
+                            CartLineId = 2, Product = new Product { IsProductInPromotion = false, Price = 15, PromotionalPrice = 10 }, Quantity = 2
+                        }
+                    },
+                    DeliveryPaymentMethod = new DeliveryPaymentMethod
+                    {
+                        PaymentMethod = new PaymentMethod { Price = 0 }
+                    }
+                },
                 new Order { OrderId = 2, Customer = new Customer { Email = "email@email.com" }},
                 new Order { OrderId = 3, Customer = new Customer { Email = "email2@email.com" }}
             }.AsQueryable());
@@ -103,6 +120,18 @@ namespace TheBookShop.Tests.ControllerTests
             var result = GetViewModel<Order>(controller.OrderDetails(1));
 
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Can_Calculate_Total_Costs()
+        {
+            var controller = new OrderController(_orderRepositoryMock.Object, _cart);
+
+            var orderDetails = GetViewModel<Order>(controller.OrderDetails(1));
+
+            var totalCosts = orderDetails.CalculateTotalCosts();
+
+            Assert.Equal(70, totalCosts);
         }
 
         private T GetViewModel<T>(IActionResult result) where T : class
