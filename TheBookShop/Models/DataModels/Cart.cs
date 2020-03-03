@@ -5,15 +5,15 @@ namespace TheBookShop.Models.DataModels
 {
     public class Cart
     {
-        private List<CartLine> lineCollection = new List<CartLine>();
+        private readonly List<CartLine> _lineCollection = new List<CartLine>();
 
         public virtual void AddItem(Product product, int quantity)
         {
-            CartLine line = lineCollection.FirstOrDefault(p => p.Product.ProductId == product.ProductId);
+            CartLine line = _lineCollection.FirstOrDefault(p => p.Product.ProductId == product.ProductId);
 
             if (line == null)
             {
-                lineCollection.Add(new CartLine()
+                _lineCollection.Add(new CartLine()
                 {
                     Product =  product,
                     Quantity = quantity
@@ -27,7 +27,7 @@ namespace TheBookShop.Models.DataModels
 
         public virtual void DecreaseProductCount(Product product)
         {
-            CartLine line = lineCollection.FirstOrDefault(p => p.Product.ProductId == product.ProductId);
+            CartLine line = _lineCollection.FirstOrDefault(p => p.Product.ProductId == product.ProductId);
 
             if (line != null)
             {
@@ -42,14 +42,14 @@ namespace TheBookShop.Models.DataModels
 
         public virtual void RemoveLine(Product product)
         {
-            lineCollection.RemoveAll(l => l.Product.ProductId == product.ProductId);
+            _lineCollection.RemoveAll(l => l.Product.ProductId == product.ProductId);
         }
 
-        public virtual decimal ComputeTotalValue() => lineCollection.Sum(e => e.Product.Price * e.Quantity);
+        public virtual decimal ComputeTotalValue() => _lineCollection.Sum(x => x.LineCost());
 
-        public virtual void Clear() => lineCollection.Clear();
+        public virtual void Clear() => _lineCollection.Clear();
 
-        public virtual IEnumerable<CartLine> Lines => lineCollection;
+        public virtual IEnumerable<CartLine> Lines => _lineCollection;
     }
 
     public class CartLine
@@ -57,5 +57,10 @@ namespace TheBookShop.Models.DataModels
         public int CartLineId { get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }
+
+        public decimal LineCost()
+        {
+            return Quantity * (Product.IsProductInPromotion ? Product.PromotionalPrice : Product.Price);
+        }
     }
 }
