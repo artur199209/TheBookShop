@@ -6,6 +6,7 @@ using Moq;
 using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models.DataModels;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
@@ -35,7 +36,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
 
-            var result = GetViewModel<IEnumerable<IdentityRole>>(roleController.Index()).ToArray();
+            var result = CastHelper.GetViewModel<IEnumerable<IdentityRole>>(roleController.Index()).ToArray();
 
             Assert.NotNull(result);
             Assert.Equal(3, result.Length);
@@ -49,10 +50,11 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
             var result = roleController.Create(It.IsAny<string>()).Result;
-
+            var actionName = CastHelper.GetActionName(result);
             _roleManagerMock.Verify(m => m.CreateAsync(It.IsAny<IdentityRole>()));
+
             Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Index", GetActionName(result));
+            Assert.Equal("Index", actionName);
         }
 
         [Fact]
@@ -61,7 +63,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             _roleManagerMock.Setup(x => x.RoleExistsAsync(It.IsAny<string>())).ReturnsAsync(true);
 
             var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
-            var result = GetActionName(roleController.Create(It.IsAny<string>()).Result);
+            var result = CastHelper.GetActionName(roleController.Create(It.IsAny<string>()).Result);
 
             Assert.Null(result);
             _roleManagerMock.Verify(m => m.CreateAsync(It.IsAny<IdentityRole>()), Times.Never());
@@ -73,7 +75,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
             roleController.ModelState.AddModelError("error", "error");
            
-            var result = GetActionName(roleController.Create(null).Result);
+            var result = CastHelper.GetActionName(roleController.Create(null).Result);
             _roleManagerMock.Verify(m => m.CreateAsync(It.IsAny<IdentityRole>()), Times.Never);
             Assert.Null(result);
         }
@@ -85,7 +87,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             _roleManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new IdentityRole());
             var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
 
-            var result = GetActionName(roleController.Delete(It.IsAny<string>()).Result);
+            var result = CastHelper.GetActionName(roleController.Delete(It.IsAny<string>()).Result);
 
             _roleManagerMock.Verify(m => m.DeleteAsync(It.IsAny<IdentityRole>()));
             Assert.Equal("Index", result);
@@ -97,7 +99,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             _roleManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>())).ReturnsAsync((IdentityRole)null);
             var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
 
-            var result = GetActionName(roleController.Delete(It.IsAny<string>()).Result);
+            var result = CastHelper.GetActionName(roleController.Delete(It.IsAny<string>()).Result);
 
             _roleManagerMock.Verify(m => m.DeleteAsync(It.IsAny<IdentityRole>()), Times.Never);
             Assert.Null(result);
@@ -120,7 +122,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
 
-            var result = GetViewModel<RoleEditModel>(roleController.Edit(It.IsAny<string>()).Result);
+            var result = CastHelper.GetViewModel<RoleEditModel>(roleController.Edit(It.IsAny<string>()).Result);
 
             Assert.NotNull(result);
             Assert.Equal(2, result.Members.Count());
@@ -144,7 +146,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
 
-            var result = GetViewModel<RoleEditModel>(roleController.Edit(It.IsAny<string>()).Result);
+            var result = CastHelper.GetViewModel<RoleEditModel>(roleController.Edit(It.IsAny<string>()).Result);
 
             Assert.NotNull(result);
             Assert.Equal(2, result.NonMembers.Count());
@@ -167,7 +169,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
 
-            var result = GetActionName(roleController.Edit(model).Result);
+            var result = CastHelper.GetActionName(roleController.Edit(model).Result);
 
             _userManagerMock.Verify(m => m.FindByIdAsync(It.IsAny<string>()));
             _userManagerMock.Verify(m => m.AddToRoleAsync(It.IsAny<AppUser>(), It.IsAny<string>()));
@@ -191,7 +193,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
 
-            var result = GetActionName(roleController.Edit(model).Result);
+            var result = CastHelper.GetActionName(roleController.Edit(model).Result);
 
             _userManagerMock.Verify(m => m.FindByIdAsync(It.IsAny<string>()));
             _userManagerMock.Verify(m => m.RemoveFromRoleAsync(It.IsAny<AppUser>(), It.IsAny<string>()));
@@ -205,19 +207,9 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             var roleController = new RoleController(_userManagerMock.Object, _roleManagerMock.Object);
             roleController.ModelState.AddModelError("error", "error");
 
-            var result = GetActionName(roleController.Edit(new RoleModificationModel()).Result);
+            var result = CastHelper.GetActionName(roleController.Edit(new RoleModificationModel()).Result);
 
             Assert.Null(result);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
-        }
-
-        private string GetActionName(IActionResult result)
-        {
-            return (result as RedirectToActionResult)?.ActionName;
         }
     }
 }

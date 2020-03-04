@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.Routing;
@@ -8,6 +7,7 @@ using Moq;
 using TheBookShop.Components;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.ComponentTests
@@ -29,7 +29,7 @@ namespace TheBookShop.Tests.ComponentTests
 
             NavigationMenuViewComponent target = new NavigationMenuViewComponent(mock.Object);
 
-            var results = GetViewModel<IEnumerable<string>>(target.Invoke()).ToArray();
+            var results = CastHelper.GetViewComponentModel<IEnumerable<string>>(target.Invoke()).ToArray();
 
             Assert.True(new []{"Category1", "Category2", "Category3"}.SequenceEqual(results));
         }
@@ -65,11 +65,6 @@ namespace TheBookShop.Tests.ComponentTests
             var result = (string)(target.Invoke() as ViewViewComponentResult)?.ViewData["SelectedCategory"];
 
             Assert.Equal(categoryToSelect, result);
-        }
-
-        private T GetViewModel<T>(IViewComponentResult result) where T : class
-        {
-            return (result as ViewViewComponentResult)?.ViewData.Model as T;
         }
     }
 }

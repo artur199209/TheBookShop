@@ -5,6 +5,7 @@ using Moq;
 using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
@@ -30,7 +31,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Index_Contains_All_Orders()
         {
             var orderController = new OrderController(_orderRepositoryMock.Object);
-            var result = GetViewModel<IEnumerable<Order>>(orderController.Index()).ToArray();
+            var result = CastHelper.GetViewModel<IEnumerable<Order>>(orderController.Index()).ToArray();
 
             Assert.NotNull(result);
             Assert.Equal(5, result.Length);
@@ -40,7 +41,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Completed_Contains_Only_Completed_Orders()
         {
             var orderController = new OrderController(_orderRepositoryMock.Object);
-            var result = GetViewModel<IEnumerable<Order>>(orderController.Completed()).ToArray();
+            var result = CastHelper.GetViewModel<IEnumerable<Order>>(orderController.Completed()).ToArray();
 
             Assert.NotNull(result);
             Assert.Equal(3, result.Length);
@@ -50,7 +51,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void NotCompleted_Contains_Only_Not_Completed_Orders()
         {
             var orderController = new OrderController(_orderRepositoryMock.Object);
-            var result = GetViewModel<IEnumerable<Order>>(orderController.NotCompleted()).ToArray();
+            var result = CastHelper.GetViewModel<IEnumerable<Order>>(orderController.NotCompleted()).ToArray();
 
             Assert.NotNull(result);
             Assert.Equal(2, result.Length);
@@ -61,9 +62,9 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         {
             var orderController = new OrderController(_orderRepositoryMock.Object);
 
-            var order1 = GetViewModel<Order>(orderController.Details(1));
-            var order2 = GetViewModel<Order>(orderController.Details(2));
-            var order3 = GetViewModel<Order>(orderController.Details(3));
+            var order1 = CastHelper.GetViewModel<Order>(orderController.Details(1));
+            var order2 = CastHelper.GetViewModel<Order>(orderController.Details(2));
+            var order3 = CastHelper.GetViewModel<Order>(orderController.Details(3));
 
             Assert.Equal(1, order1?.OrderId);
             Assert.Equal(2, order2?.OrderId);
@@ -75,7 +76,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         {
             var orderController = new OrderController(_orderRepositoryMock.Object);
 
-            var order = GetViewModel<Order>(orderController.Details(99));
+            var order = CastHelper.GetViewModel<Order>(orderController.Details(99));
 
             Assert.Null(order);
         }
@@ -101,11 +102,5 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             _orderRepositoryMock.Verify(m => m.SaveOrder(It.IsAny<Order>()), Times.Never());
         }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
-        }
-
     }
 }

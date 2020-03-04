@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Controllers;
 using TheBookShop.Models.DataModels;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.ControllerTests
@@ -24,9 +25,10 @@ namespace TheBookShop.Tests.ControllerTests
                 .ReturnsAsync(IdentityResult.Success);
             var registerController = new RegisterController(_userManagerMock.Object);
 
-            var result = registerController.Register(new CreateModel()).Result;
+            var actionName = CastHelper.GetActionName(registerController.Register(new CreateModel()).Result);
             _userManagerMock.Verify(m => m.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>()));
-            Assert.Equal("Index", GetActionName(result));
+            
+            Assert.Equal("Index", actionName);
         }
 
         [Fact]
@@ -38,11 +40,6 @@ namespace TheBookShop.Tests.ControllerTests
             var result = registerController.Register(null).Result;
             _userManagerMock.Verify(x => x.CreateAsync(It.IsAny<AppUser>()), Times.Never());
             Assert.IsType<ViewResult>(result);
-        }
-
-        private string GetActionName(IActionResult result)
-        {
-            return (result as RedirectToActionResult)?.ActionName;
         }
     }
 }

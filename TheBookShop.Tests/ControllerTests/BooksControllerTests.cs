@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Moq;
+﻿using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using TheBookShop.Controllers;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.ControllerTests
@@ -117,7 +117,7 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var controller = new BooksController(_orderRepositoryMock.Object, _productRepositoryMock.Object);
 
-            var result = GetViewModel<IEnumerable<Product>>(controller.Bestsellers()).ToList();
+            var result = CastHelper.GetViewModel<IEnumerable<Product>>(controller.Bestsellers()).ToList();
 
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);
@@ -128,7 +128,7 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var controller = new BooksController(_orderRepositoryMock.Object, _productRepositoryMock.Object);
 
-            var result = GetViewModel<IEnumerable<Product>>(controller.Bestsellers()).ToList();
+            var result = CastHelper.GetViewModel<IEnumerable<Product>>(controller.Bestsellers()).ToList();
 
             Assert.NotNull(result);
             Assert.Equal(2, result[0].ProductId);
@@ -140,7 +140,7 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var controller = new BooksController(_orderRepositoryMock.Object, _productRepositoryMock.Object);
 
-            var result = GetViewModel<ProductsListViewModel>(controller.Sales()).Products.ToList();
+            var result = CastHelper.GetViewModel<ProductsListViewModel>(controller.Sales()).Products.ToList();
 
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);
@@ -151,7 +151,7 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var controller = new BooksController(_orderRepositoryMock.Object, _productRepositoryMock.Object);
 
-            var result = GetViewModel<ProductsListViewModel>(controller.Previews()).Products.ToList();
+            var result = CastHelper.GetViewModel<ProductsListViewModel>(controller.Previews()).Products.ToList();
 
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);
@@ -162,7 +162,7 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var controller = new BooksController(_orderRepositoryMock.Object, _productRepositoryMock.Object);
 
-            var result = GetViewModel<ProductsListViewModel>(controller.Sales()).PagingInfo;
+            var result = CastHelper.GetViewModel<ProductsListViewModel>(controller.Sales()).PagingInfo;
 
             Assert.NotNull(result);
             Assert.Equal(1, result.CurrentPage);
@@ -175,17 +175,12 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var controller = new BooksController(_orderRepositoryMock.Object, _productRepositoryMock.Object);
 
-            var result = GetViewModel<ProductsListViewModel>(controller.Previews()).PagingInfo;
+            var result = CastHelper.GetViewModel<ProductsListViewModel>(controller.Previews()).PagingInfo;
 
             Assert.NotNull(result);
             Assert.Equal(1, result.CurrentPage);
             Assert.Equal(4, result.ItemsPerPage);
             Assert.Equal(2, result.TotalItems);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
         }
     }
 }

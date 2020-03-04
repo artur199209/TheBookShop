@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
@@ -30,15 +30,10 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var paymentController = new PaymentController(_paymentRepositoryMock.Object);
 
-            var result = GetViewModel<IEnumerable<Payment>>(paymentController.Index()).ToArray();
+            var result = CastHelper.GetViewModel<IEnumerable<Payment>>(paymentController.Index()).ToArray();
 
             Assert.NotNull(result);
             Assert.Equal(3, result.Length);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
         }
     }
 }

@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using TheBookShop.Components;
 using TheBookShop.Models.DataModels;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.ComponentTests
@@ -33,10 +33,8 @@ namespace TheBookShop.Tests.ComponentTests
             _mockSignInManager.Setup(x => x.IsSignedIn(It.IsAny<ClaimsPrincipal>())).Returns(true);
             var loginRegisterViewCompponent = new LoginRegisterViewComponent(_mockSignInManager.Object, _mockUserManager.Object);
 
-            var result = loginRegisterViewCompponent.InvokeAsync().Result;
-
-            var viewName = (result as ViewViewComponentResult)?.ViewName;
-
+            var viewName = CastHelper.GetComponentViewName(loginRegisterViewCompponent.InvokeAsync().Result);
+            
             Assert.Equal("SignedIn", viewName);
         }
 
@@ -46,10 +44,8 @@ namespace TheBookShop.Tests.ComponentTests
             _mockSignInManager.Setup(x => x.IsSignedIn(It.IsAny<ClaimsPrincipal>())).Returns(false);
             var loginRegisterViewCompponent = new LoginRegisterViewComponent(_mockSignInManager.Object, _mockUserManager.Object);
 
-            var result = loginRegisterViewCompponent.InvokeAsync().Result;
-
-            var viewName = (result as ViewViewComponentResult)?.ViewName;
-
+            var viewName = CastHelper.GetComponentViewName(loginRegisterViewCompponent.InvokeAsync().Result);
+            
             Assert.Equal("SignedOut", viewName);
         }
 
@@ -63,8 +59,7 @@ namespace TheBookShop.Tests.ComponentTests
 
             var loginRegisterViewCompponent = new LoginRegisterViewComponent(_mockSignInManager.Object, _mockUserManager.Object);
 
-            var result = loginRegisterViewCompponent.InvokeAsync().Result;
-            var userData = (result as ViewViewComponentResult)?.ViewData.Model as AppUser;
+            var userData = CastHelper.GetViewComponentModel<AppUser>(loginRegisterViewCompponent.InvokeAsync().Result);
 
             Assert.NotNull(userData);
             Assert.Equal("test", userData.UserName);

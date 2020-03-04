@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Controllers;
 using TheBookShop.Models.DataModels;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.ControllerTests
@@ -43,7 +43,7 @@ namespace TheBookShop.Tests.ControllerTests
                 _passwordValidatorMock.Object, _passwordHasherMock.Object);
             userController.ModelState.AddModelError("error", "error");
 
-            var result = GetViewModel<LoginModel>(userController.Login(It.IsAny<LoginModel>()).Result);
+            var result = CastHelper.GetViewModel<LoginModel>(userController.Login(It.IsAny<LoginModel>()).Result);
 
             _signInManagerMock.Verify(m => m.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), false, false), Times.Never);
             Assert.Null(result);
@@ -55,7 +55,7 @@ namespace TheBookShop.Tests.ControllerTests
             _userManagerMock.Setup(x => x.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync((AppUser)null);
             var userController = new UserController(_userManagerMock.Object, _signInManagerMock.Object,
                 _passwordValidatorMock.Object, _passwordHasherMock.Object);
-            var result = GetActionName(userController.Login(new LoginModel()).Result);
+            var result = CastHelper.GetActionName(userController.Login(new LoginModel()).Result);
             _signInManagerMock.Verify(m => m.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), false, false), Times.Never);
 
             Assert.Null(result);
@@ -71,7 +71,7 @@ namespace TheBookShop.Tests.ControllerTests
             var userController = new UserController(_userManagerMock.Object, _signInManagerMock.Object,
                 _passwordValidatorMock.Object, _passwordHasherMock.Object);
 
-            var result = GetActionName(userController.Login(new LoginModel()).Result);
+            var result = CastHelper.GetActionName(userController.Login(new LoginModel()).Result);
 
             _signInManagerMock.Verify(m => m.PasswordSignInAsync(It.IsAny<AppUser>(), It.IsAny<string>(), false, false));
 
@@ -95,20 +95,9 @@ namespace TheBookShop.Tests.ControllerTests
             var userController = new UserController(_userManagerMock.Object, _signInManagerMock.Object, 
                _passwordValidatorMock.Object, _passwordHasherMock.Object);
 
-            var result = (userController.ChangePassword(_appUser.Id, _appUser.Email, Password).Result);
+            var result = CastHelper.GetActionName(userController.ChangePassword(_appUser.Id, _appUser.Email, Password).Result);
             _userManagerMock.Verify(m => m.UpdateAsync(It.IsAny<AppUser>()));
-            Assert.Equal("List", GetActionName(result));
+            Assert.Equal("List", result);
         }
-
-        private string GetActionName(IActionResult result)
-        {
-            return (result as RedirectToActionResult)?.ActionName;
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
-        }
-
     }
 }

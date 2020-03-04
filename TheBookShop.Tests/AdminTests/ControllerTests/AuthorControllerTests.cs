@@ -6,6 +6,7 @@ using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
@@ -32,7 +33,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Index_Contains_All_Authors()
         {
             AuthorController controller = new AuthorController(_authorRepositoryMock.Object);
-            var results = GetViewModel<AuthorListViewModel>(controller.Index()).Authors.ToArray();
+            var results = CastHelper.GetViewModel<AuthorListViewModel>(controller.Index()).Authors.ToArray();
             
             Assert.Equal(3, results.Length);
             Assert.Equal("Author1", results[0].Name);
@@ -44,9 +45,9 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Can_Edit_Author()
         {
             AuthorController controller = new AuthorController(_authorRepositoryMock.Object);
-            Author p1 = GetViewModel<Author>(controller.Edit(1));
-            Author p2 = GetViewModel<Author>(controller.Edit(2));
-            Author p3 = GetViewModel<Author>(controller.Edit(3));
+            Author p1 = CastHelper.GetViewModel<Author>(controller.Edit(1));
+            Author p2 = CastHelper.GetViewModel<Author>(controller.Edit(2));
+            Author p3 = CastHelper.GetViewModel<Author>(controller.Edit(3));
 
             Assert.Equal(1, p1.AuthorId);
             Assert.Equal(2, p2.AuthorId);
@@ -57,7 +58,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Cannot_Edit_Non_Existing_Author()
         {
             AuthorController controller = new AuthorController(_authorRepositoryMock.Object);
-            Author author = GetViewModel<Author>(controller.Edit(4));
+            Author author = CastHelper.GetViewModel<Author>(controller.Edit(4));
 
             Assert.Null(author);
         }
@@ -104,17 +105,12 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Can_Send_Pagination()
         {
             AuthorController controller = new AuthorController(_authorRepositoryMock.Object);
-            var result = GetViewModel<AuthorListViewModel>(controller.Index()).PagingInfo;
+            var result = CastHelper.GetViewModel<AuthorListViewModel>(controller.Index()).PagingInfo;
 
             Assert.Equal(3, result.TotalItems);
             Assert.Equal(1, result.TotalPages);
             Assert.Equal(1, result.CurrentPage);
             Assert.Equal(4, result.ItemsPerPage);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
         }
     }
 }

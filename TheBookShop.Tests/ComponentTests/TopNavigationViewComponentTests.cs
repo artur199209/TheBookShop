@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
-using Moq;
+﻿using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using TheBookShop.Components;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.ComponentTests
@@ -31,7 +30,7 @@ namespace TheBookShop.Tests.ComponentTests
         [Fact]
         public void Top_Navigation_Panel_Is_Not_Null()
         {
-            var results = GetViewModel<IEnumerable<NavbarItem>>(_topNavigationViewComponent.Invoke()).ToArray();
+            var results = CastHelper.GetViewComponentModel<IEnumerable<NavbarItem>>(_topNavigationViewComponent.Invoke()).ToArray();
 
             Assert.NotNull(_topNavigationViewComponent);
             Assert.NotNull(results);
@@ -40,7 +39,7 @@ namespace TheBookShop.Tests.ComponentTests
         [Fact]
         public void Top_Navigation_Panel_Contains_Parents()
         {
-            var results = GetViewModel<IEnumerable<NavbarItem>>(_topNavigationViewComponent.Invoke()).ToArray();
+            var results = CastHelper.GetViewComponentModel<IEnumerable<NavbarItem>>(_topNavigationViewComponent.Invoke()).ToArray();
             var parents = results.Where(x => x.IsParent);
 
             Assert.NotNull(parents);
@@ -49,15 +48,10 @@ namespace TheBookShop.Tests.ComponentTests
         [Fact]
         public void Top_Navigation_Panel_Contains_Childrens()
         {
-            var results = GetViewModel<IEnumerable<NavbarItem>>(_topNavigationViewComponent.Invoke()).ToArray();
+            var results = CastHelper.GetViewComponentModel<IEnumerable<NavbarItem>>(_topNavigationViewComponent.Invoke()).ToArray();
             var childrens = results.Where(x => x.IsParent);
 
             Assert.NotNull(childrens);
-        }
-
-        private T GetViewModel<T>(IViewComponentResult result) where T : class
-        {
-            return (result as ViewViewComponentResult)?.ViewData.Model as T;
         }
     }
 }

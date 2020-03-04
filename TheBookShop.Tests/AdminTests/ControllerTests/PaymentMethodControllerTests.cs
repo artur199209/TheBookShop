@@ -6,6 +6,7 @@ using Moq;
 using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
@@ -31,7 +32,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var paymentMethodController = new PaymentMethodController(_paymentMethodRepositoryMock.Object);
 
-            var result = GetViewModel<IEnumerable<PaymentMethod>>(paymentMethodController.Index());
+            var result = CastHelper.GetViewModel<IEnumerable<PaymentMethod>>(paymentMethodController.Index());
 
             Assert.NotNull(result);
             Assert.Equal(_paymentMethodRepositoryMock.Object.PaymentMethods.Count(), result.Count());
@@ -86,9 +87,9 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             var paymentMethodController =
                 new PaymentMethodController(_paymentMethodRepositoryMock.Object);
 
-            PaymentMethod p1 = GetViewModel<PaymentMethod>(paymentMethodController.Edit(1));
-            PaymentMethod p2 = GetViewModel<PaymentMethod>(paymentMethodController.Edit(2));
-            PaymentMethod p3 = GetViewModel<PaymentMethod>(paymentMethodController.Edit(3));
+            PaymentMethod p1 = CastHelper.GetViewModel<PaymentMethod>(paymentMethodController.Edit(1));
+            PaymentMethod p2 = CastHelper.GetViewModel<PaymentMethod>(paymentMethodController.Edit(2));
+            PaymentMethod p3 = CastHelper.GetViewModel<PaymentMethod>(paymentMethodController.Edit(3));
 
             Assert.Equal(1, p1.PaymentMethodId);
             Assert.Equal(2, p2.PaymentMethodId);
@@ -119,11 +120,6 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             _paymentMethodRepositoryMock.Verify(x => x.SavePaymentMethod(It.IsAny<PaymentMethod>()), Times.Never);
             Assert.IsType<ViewResult>(result);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
         }
     }
 }

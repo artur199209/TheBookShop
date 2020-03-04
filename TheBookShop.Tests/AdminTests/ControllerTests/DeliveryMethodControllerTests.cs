@@ -7,6 +7,7 @@ using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
@@ -30,7 +31,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             var deliveryMethodController =
                 new DeliveryMethodController(_deliveryMethodRepositoryMock.Object, _paymentMethodRepository.Object);
 
-            var result = GetViewModel<IEnumerable<DeliveryMethod>>(deliveryMethodController.Index());
+            var result = CastHelper.GetViewModel<IEnumerable<DeliveryMethod>>(deliveryMethodController.Index());
 
             Assert.NotNull(result);
             Assert.Equal(_deliveryMethodRepositoryMock.Object.DeliveryMethods.Count(), result.Count());
@@ -80,7 +81,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             var deliveryMethodController =
                 new DeliveryMethodController(_deliveryMethodRepositoryMock.Object, _paymentMethodRepository.Object);
 
-            var result = GetViewModel<DeliveryPaymentViewModel>(deliveryMethodController.Edit(1));
+            var result = CastHelper.GetViewModel<DeliveryPaymentViewModel>(deliveryMethodController.Edit(1));
 
             Assert.NotNull(result);
             Assert.Equal(2, result.NonPaymentMethods.Count);
@@ -130,11 +131,6 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             _deliveryMethodRepositoryMock.Verify(x => x.SaveDeliveryMethod(It.IsAny<DeliveryMethod>()), Times.Never);
             Assert.IsType<ViewResult>(result);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
         }
 
         private void SetUpMocks()

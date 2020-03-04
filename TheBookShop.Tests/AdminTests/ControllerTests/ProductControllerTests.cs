@@ -7,6 +7,7 @@ using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
@@ -46,7 +47,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Index_Contains_All_Products()
         {
             ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object);
-            var results = GetViewModel<ProductsListViewModel>(controller.Index());
+            var results = CastHelper.GetViewModel<ProductsListViewModel>(controller.Index());
             var products = results.Products.ToList();
 
             Assert.Equal(3, results.Products.Count());
@@ -59,9 +60,9 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Can_Edit_Product()
         {
             ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object);
-            Product p1 = GetViewModel<Product>(controller.Edit(1));
-            Product p2 = GetViewModel<Product>(controller.Edit(2));
-            Product p3 = GetViewModel<Product>(controller.Edit(3));
+            Product p1 = CastHelper.GetViewModel<Product>(controller.Edit(1));
+            Product p2 = CastHelper.GetViewModel<Product>(controller.Edit(2));
+            Product p3 = CastHelper.GetViewModel<Product>(controller.Edit(3));
 
             Assert.Equal(1, p1.ProductId);
             Assert.Equal(2, p2.ProductId);
@@ -72,7 +73,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Cannot_Edit_Non_Existing_Product()
         {
             ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object);
-            Product p1 = GetViewModel<Product>(controller.Edit(4));
+            Product p1 = CastHelper.GetViewModel<Product>(controller.Edit(4));
 
             Assert.Null(p1);
         }
@@ -120,7 +121,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         {
             ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object) { PageSize = 3 };
 
-            ProductsListViewModel result = GetViewModel<ProductsListViewModel>(controller.Index());
+            ProductsListViewModel result = CastHelper.GetViewModel<ProductsListViewModel>(controller.Index());
 
             var products = result?.Products.ToArray();
 
@@ -134,7 +135,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         {
             ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object) { PageSize = 3 };
 
-            ProductsListViewModel result = GetViewModel<ProductsListViewModel>(controller.Index());
+            ProductsListViewModel result = CastHelper.GetViewModel<ProductsListViewModel>(controller.Index());
 
             PagingInfo pageInfo = result?.PagingInfo;
 
@@ -148,7 +149,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Can_Display_Opinions()
         {
             ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object) { PageSize = 3 };
-            OpinionsListViewModel result = GetViewModel<OpinionsListViewModel>(controller.Opinion(1));
+            OpinionsListViewModel result = CastHelper.GetViewModel<OpinionsListViewModel>(controller.Opinion(1));
 
             Assert.NotNull(result);
             Assert.NotNull(result.Opinions);
@@ -159,7 +160,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Can_Paginate_Opinions()
         {
             ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object) { PageSize = 3 };
-            OpinionsListViewModel result = GetViewModel<OpinionsListViewModel>(controller.Opinion(1));
+            OpinionsListViewModel result = CastHelper.GetViewModel<OpinionsListViewModel>(controller.Opinion(1));
 
             var opinions = result?.Opinions.ToArray();
 
@@ -173,7 +174,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         {
             ProductController controller = new ProductController(_productRepositoryMock.Object, _authorRepositoryMock.Object, _productCategoryRepositoryMock.Object) { PageSize = 3 };
 
-            OpinionsListViewModel result = GetViewModel<OpinionsListViewModel>(controller.Opinion(1));
+            OpinionsListViewModel result = CastHelper.GetViewModel<OpinionsListViewModel>(controller.Opinion(1));
 
             PagingInfo pageInfo = result?.PagingInfo;
 
@@ -181,11 +182,6 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             Assert.Equal(3, pageInfo?.TotalItems);
             Assert.Equal(1, pageInfo?.TotalPages);
             Assert.Equal(1, pageInfo?.CurrentPage);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Models.DataModels;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
@@ -46,7 +47,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var accountController = new AccountController(_userManagerMock.Object, _userValidatorMock.Object, _passwordValidatorMock.Object, _passwordHasherMock.Object);
             
-            var result = GetViewModel<IEnumerable<AppUser>>(accountController.Index());
+            var result = CastHelper.GetViewModel<IEnumerable<AppUser>>(accountController.Index());
 
             Assert.Equal(4, result.Count());
         }
@@ -63,9 +64,9 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var accountController = new AccountController(_userManagerMock.Object, _userValidatorMock.Object, _passwordValidatorMock.Object, _passwordHasherMock.Object);
 
-            var user1 = GetViewModel<AppUser>(accountController.Edit("1").Result);
-            var user2 = GetViewModel<AppUser>(accountController.Edit("2").Result);
-            var user3 = GetViewModel<AppUser>(accountController.Edit("3").Result);
+            var user1 = CastHelper.GetViewModel<AppUser>(accountController.Edit("1").Result);
+            var user2 = CastHelper.GetViewModel<AppUser>(accountController.Edit("2").Result);
+            var user3 = CastHelper.GetViewModel<AppUser>(accountController.Edit("3").Result);
 
             Assert.Equal("1", user1?.Id);
             Assert.Equal("2", user2?.Id);
@@ -82,7 +83,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var accountController = new AccountController(_userManagerMock.Object, _userValidatorMock.Object, _passwordValidatorMock.Object, _passwordHasherMock.Object);
 
-            var result = GetViewModel<AppUser>(accountController.Edit("3").Result);
+            var result = CastHelper.GetViewModel<AppUser>(accountController.Edit("3").Result);
 
             Assert.Null(result);
         }
@@ -94,9 +95,9 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
                 .ReturnsAsync(IdentityResult.Success);
             var accountController = new AccountController(_userManagerMock.Object, _userValidatorMock.Object, _passwordValidatorMock.Object, _passwordHasherMock.Object);
             
-            var result = accountController.Create(new CreateModel()).Result;
+            var result = CastHelper.GetActionName(accountController.Create(new CreateModel()).Result);
             _userManagerMock.Verify(m => m.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>()));
-            Assert.Equal("Index", GetActionName(result));
+            Assert.Equal("Index", result);
         }
 
         [Fact]
@@ -128,9 +129,9 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
                 _userValidatorMock.Object,
                 _passwordValidatorMock.Object, _passwordHasherMock.Object);
             
-            var result = (accountController.Edit(_appUser.Id, _appUser.Email, Password).Result);
+            var result = CastHelper.GetActionName(accountController.Edit(_appUser.Id, _appUser.Email, Password).Result);
             _userManagerMock.Verify(m => m.UpdateAsync(It.IsAny<AppUser>()));
-            Assert.Equal("Index", GetActionName(result));
+            Assert.Equal("Index", result);
         }
 
         [Fact]
@@ -231,9 +232,9 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             _userManagerMock.Setup(x => x.DeleteAsync(It.IsAny<AppUser>())).ReturnsAsync(IdentityResult.Success);
             var accountController = new AccountController(_userManagerMock.Object, _userValidatorMock.Object, _passwordValidatorMock.Object, _passwordHasherMock.Object);
 
-            var result = accountController.Delete("1234").Result;
+            var result = CastHelper.GetActionName(accountController.Delete("1234").Result);
             _userManagerMock.Verify(m => m.DeleteAsync(It.IsAny<AppUser>()));
-            Assert.Equal("Index", GetActionName(result));
+            Assert.Equal("Index", result);
         }
 
         [Fact]
@@ -241,20 +242,10 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         {
             var accountController = new AccountController(_userManagerMock.Object, _userValidatorMock.Object, _passwordValidatorMock.Object, _passwordHasherMock.Object);
 
-            var result = GetActionName(accountController.Delete("").Result);
+            var result = CastHelper.GetActionName(accountController.Delete("").Result);
 
             Assert.Null(result);
             _userManagerMock.Verify(m => m.DeleteAsync(It.IsAny<AppUser>()), Times.Never);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
-        }
-
-        private string GetActionName(IActionResult result)
-        {
-            return (result as RedirectToActionResult)?.ActionName;
         }
     }
 }

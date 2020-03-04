@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Controllers;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.ControllerTests
@@ -37,7 +37,7 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var controller = new ProductController(_productRepositoryMock.Object) { PageSize = 3 };
 
-            var result = GetViewModel<ProductsListViewModel>(controller.List(null, 2));
+            var result = CastHelper.GetViewModel<ProductsListViewModel>(controller.List(null, 2));
 
             var products = result?.Products.ToArray();
             
@@ -52,7 +52,7 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var controller = new ProductController(_productRepositoryMock.Object) { PageSize = 3 };
 
-            var result = GetViewModel<ProductsListViewModel>(controller.List(null, 2));
+            var result = CastHelper.GetViewModel<ProductsListViewModel>(controller.List(null, 2));
 
             var pageInfo = result?.PagingInfo;
 
@@ -67,7 +67,7 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var productController = new ProductController(_productRepositoryMock.Object) { NewProductsCount = 3 };
 
-            var result = GetViewModel<List<CarouselViewModel>>(productController.Index());
+            var result = CastHelper.GetViewModel<List<CarouselViewModel>>(productController.Index());
 
             var newProducts = result[0].Products.ToList();
             var promotionProducts = result[1].Products.ToList();
@@ -79,11 +79,6 @@ namespace TheBookShop.Tests.ControllerTests
             Assert.Equal(3, newProducts.Count);
             Assert.Equal("NOWOŚCI", newProductsCategory);
             Assert.Equal("PROMOCJE", promotionProductsCategory);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
         }
     }
 }

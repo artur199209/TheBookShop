@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Models.DataModels;
+using TheBookShop.Tests.Helper;
 using Xunit;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -29,7 +29,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             var controller = new AdminController(_userManagerMock.Object, _signInManagerMock.Object);
             controller.ModelState.AddModelError("error", "error");
             
-            var result = GetViewModel<LoginModel>(controller.Login(It.IsAny<LoginModel>()).Result);
+            var result = CastHelper.GetViewModel<LoginModel>(controller.Login(It.IsAny<LoginModel>()).Result);
 
             _signInManagerMock.Verify(m => m.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), false, false), Times.Never);
             Assert.Null(result);
@@ -41,7 +41,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             _userManagerMock.Setup(x => x.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync((AppUser)null);
             var controller = new AdminController(_userManagerMock.Object, _signInManagerMock.Object);
 
-            var result = GetActionName(controller.Login(new LoginModel()).Result);
+            var result = CastHelper.GetActionName(controller.Login(new LoginModel()).Result);
             _signInManagerMock.Verify(m => m.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), false, false), Times.Never);
             
             Assert.Null(result);
@@ -56,21 +56,11 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             var controller = new AdminController(_userManagerMock.Object, _signInManagerMock.Object);
 
-            var result = GetActionName(controller.Login(new LoginModel()).Result);
+            var result = CastHelper.GetActionName(controller.Login(new LoginModel()).Result);
 
             _signInManagerMock.Verify(m => m.PasswordSignInAsync(It.IsAny<AppUser>(), It.IsAny<string>(), false, false));
 
             Assert.Equal("Index", result);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
-        }
-
-        private string GetActionName(IActionResult result)
-        {
-            return (result as RedirectToActionResult)?.ActionName;
         }
     }
 }

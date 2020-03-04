@@ -5,6 +5,7 @@ using Moq;
 using TheBookShop.Controllers;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.ControllerTests
@@ -107,7 +108,7 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var controller = new OrderController(_orderRepositoryMock.Object, _cart);
 
-            var result = GetViewModel<IEnumerable<Order>>(controller.MyOrders("email@email.com"));
+            var result = CastHelper.GetViewModel<IEnumerable<Order>>(controller.MyOrders("email@email.com"));
 
             Assert.Equal(2, result.Count());
         }
@@ -117,7 +118,7 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var controller = new OrderController(_orderRepositoryMock.Object, _cart);
 
-            var result = GetViewModel<Order>(controller.OrderDetails(1));
+            var result = CastHelper.GetViewModel<Order>(controller.OrderDetails(1));
 
             Assert.NotNull(result);
         }
@@ -127,16 +128,11 @@ namespace TheBookShop.Tests.ControllerTests
         {
             var controller = new OrderController(_orderRepositoryMock.Object, _cart);
 
-            var orderDetails = GetViewModel<Order>(controller.OrderDetails(1));
+            var orderDetails = CastHelper.GetViewModel<Order>(controller.OrderDetails(1));
 
             var totalCosts = orderDetails.CalculateTotalCosts();
 
             Assert.Equal(70, totalCosts);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
         }
     }
 }

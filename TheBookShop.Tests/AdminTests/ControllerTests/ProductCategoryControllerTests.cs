@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using TheBookShop.Areas.Admin.Controllers;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Tests.Helper;
 using Xunit;
 
 namespace TheBookShop.Tests.AdminTests.ControllerTests
@@ -36,7 +37,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Index_Contains_All_Product_Categories()
         {
             var productCategoryController = new ProductCategoryController(_productCategoryRepository.Object);
-            var result = GetViewModel<IEnumerable<ProductCategory>>(productCategoryController.Index());
+            var result = CastHelper.GetViewModel<IEnumerable<ProductCategory>>(productCategoryController.Index());
 
             Assert.NotNull(result);
             Assert.Equal(3, result.Count());
@@ -46,9 +47,9 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Can_Edit_Product_Category()
         {
             var controller = new ProductCategoryController(_productCategoryRepository.Object);
-            ProductCategory category1 = GetViewModel<ProductCategory>(controller.Edit(1));
-            ProductCategory category2 = GetViewModel<ProductCategory>(controller.Edit(2));
-            ProductCategory category3 = GetViewModel<ProductCategory>(controller.Edit(3));
+            ProductCategory category1 = CastHelper.GetViewModel<ProductCategory>(controller.Edit(1));
+            ProductCategory category2 = CastHelper.GetViewModel<ProductCategory>(controller.Edit(2));
+            ProductCategory category3 = CastHelper.GetViewModel<ProductCategory>(controller.Edit(3));
 
             Assert.Equal(1, category1.ProductCategoryId);
             Assert.Equal(2, category2.ProductCategoryId);
@@ -59,7 +60,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Cannot_Edit_Non_Existing_Product_Category()
         {
             var controller = new ProductCategoryController(_productCategoryRepository.Object);
-            var category = GetViewModel<ProductCategory>(controller.Edit(4));
+            var category = CastHelper.GetViewModel<ProductCategory>(controller.Edit(4));
 
             Assert.Null(category);
         }
@@ -91,11 +92,6 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             _productCategoryRepository.Verify(m => m.SaveCategory(It.IsAny<ProductCategory>()), Times.Never);
             Assert.IsType<ViewResult>(result);
-        }
-
-        private T GetViewModel<T>(IActionResult result) where T : class
-        {
-            return (result as ViewResult)?.ViewData.Model as T;
         }
     }
 }
