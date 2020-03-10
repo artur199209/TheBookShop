@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Serilog;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Areas.Admin.Infrastructure
@@ -22,6 +23,7 @@ namespace TheBookShop.Areas.Admin.Infrastructure
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            Log.Information($"Start processing {nameof(RoleUsersTagHelper)}...");
             var names= new List<string>();
             var role = await _roleManager.FindByIdAsync(IdentityRole);
 
@@ -37,6 +39,7 @@ namespace TheBookShop.Areas.Admin.Infrastructure
             }
 
             output.Content.SetContent(names.Count == 0 ? "Brak kont" : string.Join(", ", names));
+            Log.Information($"Finished processing {nameof(RoleUsersTagHelper)}...");
         }
     }
 }

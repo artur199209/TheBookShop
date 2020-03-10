@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using Serilog;
 using TheBookShop.Infrastructure;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
@@ -60,6 +61,8 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public IActionResult Opinion(int productId, int page = 1)
         {
+            Log.Information($"Getting opinions for product with Id: {productId}...");
+
             var opinions = _repository.Products.FirstOrDefault(x => x.ProductId == productId)?.Opinions;
 
             return View(new OpinionsListViewModel()
@@ -84,6 +87,8 @@ namespace TheBookShop.Areas.Admin.Controllers
             {
                 if (formValues != null)
                 {
+                    Log.Information("Start creating/editing product...");
+
                     var authorId = Convert.ToInt32(formValues["Author"]);
                     var author = _authorRepository.GetAuthorById(authorId);
 
@@ -123,6 +128,8 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public IActionResult Delete(int productId)
         {
+            Log.Information($"Start deleting product with Id {productId}...");
+
             var deletedProduct = _repository.DeleteProduct(productId);
 
             if (deletedProduct != null)

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 
@@ -19,6 +20,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public IActionResult Index()
         {
+            Log.Information("Getting all payment methods...");
             return View(_paymentMethodRepository.PaymentMethods);
         }
 

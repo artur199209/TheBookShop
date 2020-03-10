@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
+using Serilog;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 
@@ -20,6 +21,7 @@ namespace TheBookShop.Infrastructure
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            Log.Information($"Start processing {nameof(SelectOptionTagHelper)}...");
             output.Content.AppendHtml((await output.GetChildContentAsync(false)).GetContent());
 
             var selected = ModelFor?.Model as Author;
@@ -38,6 +40,7 @@ namespace TheBookShop.Infrastructure
 
             output.Attributes.SetAttribute("Name", ModelFor?.Name);
             output.Attributes.SetAttribute("Id", ModelFor?.Name);
+            Log.Information($"Start processing {nameof(SelectOptionTagHelper)}...");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Areas.Admin.Controllers
@@ -41,6 +42,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Create(CreateModel model)
         {
+            Log.Information("Start creating a new account...");
             if (ModelState.IsValid)
             {
                 AppUser user = new AppUser
@@ -53,6 +55,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
+                    Log.Information($"The account {model.Name} has been created successfully...");
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -65,6 +68,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Edit(string id)
         {
+            Log.Information($"Getting user by Id: {id}...");
             AppUser user = await _userManager.FindByIdAsync(id);
 
             if (user != null)
@@ -80,11 +84,13 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Edit(string id, string email, string password)
         {
+            Log.Information($"Start editing account with email {email}...");
             AppUser user = await _userManager.FindByIdAsync(id);
 
             if (user != null)
             {
                 user.Email = email;
+                Log.Information($"{email} is validating...");
                 IdentityResult validEmail = await _userValidator.ValidateAsync(_userManager, user);
 
                 if (!validEmail.Succeeded)
@@ -96,6 +102,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 
                 if (!string.IsNullOrEmpty(password))
                 {
+                    Log.Information($"{password} is validating...");
                     validPassword = await _passwordValidator.ValidateAsync(_userManager, user, password);
 
                     if (validPassword.Succeeded)
@@ -115,6 +122,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 
                     if (result.Succeeded)
                     {
+                        Log.Information($"The account {email} has been updated successfully...");
                         return RedirectToAction(nameof(Index));
                     }
 
@@ -123,7 +131,7 @@ namespace TheBookShop.Areas.Admin.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Nie znaleziono użytkownika.");
+                ModelState.AddModelError("", "Nie znaleziono użytkownika...");
             }
 
             return View(user);
@@ -134,6 +142,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Delete(string id)
         {
+            Log.Information($"Start deleting the account with Id: {id}...");
             AppUser user = await _userManager.FindByIdAsync(id);
 
             if (user != null)
@@ -142,6 +151,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
+                    Log.Information($"User {user.Email} has been deleted successfully...");
                     return RedirectToAction(nameof(Index));
                 }
 

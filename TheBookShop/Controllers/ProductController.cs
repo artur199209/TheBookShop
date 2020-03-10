@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
 
@@ -67,6 +68,7 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public ViewResult ProductDetails(int productId)
         {
+            Log.Information($"Getting product details with Id: {productId}...");
             var product = _repository.Products.FirstOrDefault(x => x.ProductId == productId);
             return View(product);
         }

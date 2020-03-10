@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 
@@ -34,6 +35,7 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public IActionResult Checkout(Order order)
         {
+            Log.Information($"Starting checkout order...");
             order.Lines = _cart.Lines.ToArray();
 
             if (!_cart.Lines.Any())
@@ -83,6 +85,7 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public IActionResult MyOrders(string email)
         {
+            Log.Information($"Getting orders for user {email}...");
             var myOrders = _orderRepository.Orders.Where(x => x.Customer.Email == email);
 
             return View(myOrders);
@@ -91,6 +94,8 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public IActionResult OrderDetails(int orderId)
         {
+            Log.Information($"Getting order details with Id: {orderId}...");
+
             var order = _orderRepository.Orders.FirstOrDefault(x => x.OrderId == orderId);
 
             if (order != null)

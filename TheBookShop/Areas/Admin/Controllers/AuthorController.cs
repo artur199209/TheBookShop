@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
@@ -54,6 +55,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public IActionResult Edit(Author author)
         {
+            Log.Information($"Start creating/editing author {author.Name} {author.Surname}...");
             if (ModelState.IsValid)
             {
                 _authorRepository.SaveAuthor(author);
@@ -69,6 +71,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public IActionResult Delete(int authorId)
         {
+            Log.Information("Start deleting the author...");
             var deletedAuthor = _authorRepository.DeleteAuthor(authorId);
 
             if (deletedAuthor != null)

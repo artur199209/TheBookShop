@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TheBookShop.Infrastructure;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
@@ -23,6 +24,8 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public IActionResult Bestsellers()
         {
+            Log.Information($"Getting bestsellers books...");
+
             var shippedItems = _orderRepository.Orders.Where(x => x.Status == Order.OrderStatus.Shipped).ToList();
            
             var productsWithQuantity = shippedItems.SelectMany(x => x.Lines)
@@ -35,6 +38,8 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public IActionResult Sales(int page = 1)
         {
+            Log.Information($"Getting sales books...");
+
             var salesProducts = _productRepository.Products
                 .Where(x => x.SalesType == Product.SalesTypeEnums.BookSale)
                 .OrderBy(p => p.ProductId).ToList();
@@ -56,6 +61,8 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public IActionResult Previews(int page = 1)
         {
+            Log.Information($"Getting previews books...");
+
             var previewProducts = _productRepository.Products.Where(x => x.SalesType == Product.SalesTypeEnums.BookPreview)
                 .OrderBy(p => p.ProductId).ToList();
 

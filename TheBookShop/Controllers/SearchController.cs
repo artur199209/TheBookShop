@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Serilog;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
 
@@ -20,6 +21,7 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public ActionResult SearchItems(string searchString, int page = 1)
         {
+            Log.Information($"Start finding items with query {searchString}...");
             if (!string.IsNullOrEmpty(searchString))
             {
                 var products =  _productRepository.Products.Where(x => x.Title.Contains(searchString))

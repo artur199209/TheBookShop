@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using System.Linq;
+using Serilog;
 using TheBookShop.Areas.Admin.Model;
 
 namespace TheBookShop.Areas.Admin.Controllers
@@ -38,6 +39,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public IActionResult Create([Required] string name)
         {
+            Log.Information("Start creating a new delivery method...");
             if (ModelState.IsValid)
             {
                 var deliveryMethod = new DeliveryMethod

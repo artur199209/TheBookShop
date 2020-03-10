@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Controllers
@@ -31,6 +32,7 @@ namespace TheBookShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                Log.Information($"Start registering user {model.Email}...");
                 AppUser user = new AppUser
                 {
                     UserName = model.Name,
@@ -41,6 +43,7 @@ namespace TheBookShop.Controllers
 
                 if (result.Succeeded)
                 {
+                    Log.Information($"{model.Email} has been created successfully...");
                     return RedirectToAction("Index", "Product", new {area = ""});
                 }
 

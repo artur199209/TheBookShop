@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TheBookShop.Models.Repositories;
 
 namespace TheBookShop.Areas.Admin.Controllers
@@ -17,6 +18,8 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public IActionResult Index()
         {
+            Log.Information("Getting all payments...");
+
             return View(_paymentRepository.Payments);
         }
     }

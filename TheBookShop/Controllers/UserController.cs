@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TheBookShop.Models.DataModels;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -42,6 +43,7 @@ namespace TheBookShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                Log.Information($"Finding user by email {model.Email}...");
                 var user = await _userManager.FindByEmailAsync(model.Email);
 
                 if (user != null)
@@ -53,6 +55,7 @@ namespace TheBookShop.Controllers
                     
                     if (result.Succeeded)
                     {
+                        Log.Information($"{model.Email} logged in...");
                         return RedirectToAction("Index", "Product");
                     }
                 }
@@ -88,6 +91,7 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public async Task<IActionResult> ChangePassword(string id, string email, string password)
         {
+            Log.Information($"Finding user {email}...");
             AppUser user = await _userManager.FindByIdAsync(id);
 
             if (user != null)
@@ -96,6 +100,7 @@ namespace TheBookShop.Controllers
 
                 if (!string.IsNullOrEmpty(password))
                 {
+                    Log.Information($"Password is validating...");
                     validPassword = await _passwordValidator.ValidateAsync(_userManager, user, password);
 
                     if (validPassword.Succeeded)

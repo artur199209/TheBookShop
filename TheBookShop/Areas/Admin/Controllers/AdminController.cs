@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TheBookShop.Models.DataModels;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -41,6 +42,8 @@ namespace TheBookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                Log.Information($"Finding user by email: {details.Email}...");
+
                 var user = await _userManager.FindByEmailAsync(details.Email);
 
                 if (user != null)
@@ -52,6 +55,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 
                     if (result.Succeeded)
                     {
+                        Log.Information("Admin logged in successfully...");
                         return RedirectToAction(nameof(Index));
                     }
                 }

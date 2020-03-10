@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Serilog;
 using TheBookShop.Models.ViewModels;
 
 namespace TheBookShop.Infrastructure
@@ -38,6 +39,7 @@ namespace TheBookShop.Infrastructure
         public override void Process(TagHelperContext context,
             TagHelperOutput output)
         {
+            Log.Information($"Start processing {nameof(PageLinkTagHelper)}...");
             IUrlHelper urlHelper = _urlHelperFactory.GetUrlHelper(ViewContext);
             TagBuilder result = new TagBuilder("div");
             for (int i = 1; i <= PageModel.TotalPages; i++)
@@ -55,6 +57,7 @@ namespace TheBookShop.Infrastructure
                 result.InnerHtml.AppendHtml(tag);
             }
             output.Content.AppendHtml(result.InnerHtml);
+            Log.Information($"Finished processing {nameof(PageLinkTagHelper)}...");
         }
     }
 }

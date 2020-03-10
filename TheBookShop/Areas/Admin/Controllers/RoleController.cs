@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models.DataModels;
 
@@ -40,12 +41,16 @@ namespace TheBookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                Log.Information($"Start creating new role with Name {name}...");
+
                 if (!await _roleManager.RoleExistsAsync(name))
                 {
                     IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name));
 
                     if (result.Succeeded)
                     {
+                        Log.Information($"The role {name} has been created succesfully...");
+
                         return RedirectToAction(nameof(Index));
                     }
 
@@ -59,6 +64,8 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Edit(string id)
         {
+            Log.Information($"Finding role by Id: {id}");
+
             IdentityRole role = await _roleManager.FindByIdAsync(id);
 
             var members = new List<AppUser>();
@@ -88,6 +95,8 @@ namespace TheBookShop.Areas.Admin.Controllers
                 IdentityResult result;
                 foreach (string userId in model.IdsToAdd ?? new string [] {})
                 {
+                    Log.Information($"Finding user by Id: {userId}");
+
                     AppUser user = await _userManager.FindByIdAsync(userId);
 
                     if (user != null)
@@ -103,6 +112,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 
                 foreach (string userId in model.IdsToDelete ?? new string[] {})
                 {
+                    Log.Information($"Finding user by Id: {userId}");
                     AppUser user = await _userManager.FindByIdAsync(userId);
 
                     if (user != null)
@@ -111,6 +121,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 
                         if (!result.Succeeded)
                         {
+                            Log.Information($"User {user.Email} has been removed successfully...");
                             AddErrosFromResult(result);
                         }
                     }
@@ -130,6 +141,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Delete(string id)
         {
+            Log.Information($"Finding role by Id: {id}");
             var role = await _roleManager.FindByIdAsync(id);
 
             if (role != null)
@@ -138,6 +150,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
+                    Log.Information($"The role {id} has been removed successfully...");
                     return RedirectToAction(nameof(Index));
                 }
 

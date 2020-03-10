@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Serilog;
 using TheBookShop.Infrastructure;
-using TheBookShop.Models;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
@@ -33,6 +33,8 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public RedirectToActionResult AddToCart(int productId, string returnUrl)
         {
+            Log.Information($"Adding product with id {productId} to cart...");
+
             Product product = _repository.Products.FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)
@@ -47,6 +49,8 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public RedirectToActionResult RemoveFromCart(int productId, string returnUrl)
         {
+            Log.Information($"Deleting product with id {productId} from cart...");
+
             Product product = _repository.Products.FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)
@@ -61,6 +65,8 @@ namespace TheBookShop.Controllers
         [Route("[action]")]
         public RedirectToActionResult DecreaseProductCount(int productId, string returnUrl)
         {
+            Log.Information($"Decreasing product with id {productId} from cart...");
+
             Product product = _repository.Products.FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)
