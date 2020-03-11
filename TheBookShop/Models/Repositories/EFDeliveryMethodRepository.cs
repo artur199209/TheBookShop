@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.Repositories
@@ -23,10 +24,13 @@ namespace TheBookShop.Models.Repositories
             {
                 if (deliveryMethod.DeliveryMethodId == 0)
                 {
+                    Log.Information($"Adding new delivery method: {deliveryMethod.Name}");
                     _applicationDbContext.DeliveryMethods.Add(deliveryMethod);
                 }
                 else
                 {
+                    Log.Information($"Updating existing delivery method: {deliveryMethod.Name}");
+
                     var deliveryMethodEntry = _applicationDbContext.DeliveryMethods.FirstOrDefault(x => x.DeliveryMethodId == deliveryMethod.DeliveryMethodId);
                     
                     if (deliveryMethodEntry != null)
@@ -45,8 +49,10 @@ namespace TheBookShop.Models.Repositories
             }
             catch (Exception e)
             {
+                Log.Error($"Error while adding/updating author...");
+                Log.Error(e.Message);
+                Log.Error(e.StackTrace);
                 Console.WriteLine(e);
-                throw;
             }
         }
     }

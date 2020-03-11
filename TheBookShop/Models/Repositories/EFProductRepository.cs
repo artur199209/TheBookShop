@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.Repositories
 {
     public class EFProductRepository : IProductRepository
     {
-        private ApplicationDbContext context;
+        private readonly ApplicationDbContext context;
 
         public EFProductRepository(ApplicationDbContext ctx)
         {
@@ -24,10 +25,13 @@ namespace TheBookShop.Models.Repositories
             {
                 if (product.ProductId == 0)
                 {
+                    Log.Information("Adding new product...");
                     context.Products.Add(product);
                 }
                 else
                 {
+                    Log.Information($"Updating existing product {product.ProductId}...");
+
                     var productEntry = context.Products.FirstOrDefault(p => p.ProductId == product.ProductId);
 
                     if (productEntry != null)
@@ -49,20 +53,36 @@ namespace TheBookShop.Models.Repositories
 
                 context.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Log.Error($"Error while saving order...");
+                Log.Error(e.Message);
+                Log.Error(e.StackTrace);
+                Console.WriteLine(e);
             }
         }
 
         public Product DeleteProduct(int productId)
         {
-            Product productEntry = context.Products.FirstOrDefault(p => p.ProductId == productId);
+            Product productEntry = null;
 
-            if (productEntry != null)
+            try
             {
-                context.Products.Remove(productEntry);
-                context.SaveChanges();
+                productEntry = context.Products.FirstOrDefault(p => p.ProductId == productId);
+
+                if (productEntry != null)
+                {
+                    Log.Information($"Deleting product {productEntry.ProductId}...");
+                    context.Products.Remove(productEntry);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Error while saving order...");
+                Log.Error(e.Message);
+                Log.Error(e.StackTrace);
+                Console.WriteLine(e);
             }
 
             return productEntry;

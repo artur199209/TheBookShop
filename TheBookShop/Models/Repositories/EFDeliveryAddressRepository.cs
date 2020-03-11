@@ -1,30 +1,35 @@
 ﻿using System;
 using System.Linq;
+using Serilog;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.Repositories
 {
     public class EFDeliveryAddressRepository : IDeliveryAdressRepository
     {
-        private ApplicationDbContext applicationDbContext;
+        private readonly ApplicationDbContext _applicationDbContext;
 
-        public EFDeliveryAddressRepository(ApplicationDbContext _applicationDbContext)
+        public EFDeliveryAddressRepository(ApplicationDbContext applicationDbContext)
         {
-            applicationDbContext = _applicationDbContext;
+            _applicationDbContext = applicationDbContext;
         }
 
-        public IQueryable<DeliveryAddress> DeliveryAddresses => applicationDbContext.DeliveryAddresses;
+        public IQueryable<DeliveryAddress> DeliveryAddresses => _applicationDbContext.DeliveryAddresses;
 
         public void SaveDeliveryAddress(DeliveryAddress deliveryAddress)
         {
             try
             {
-                applicationDbContext.DeliveryAddresses.Add(deliveryAddress);
-                applicationDbContext.SaveChanges();
+                Log.Information("Adding new delivery address...");
+                _applicationDbContext.DeliveryAddresses.Add(deliveryAddress);
+                _applicationDbContext.SaveChanges();
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
-
+                Log.Error($"Error while adding/updating author...");
+                Log.Error(e.Message);
+                Log.Error(e.StackTrace);
+                Console.WriteLine(e);
             }
         }
     }

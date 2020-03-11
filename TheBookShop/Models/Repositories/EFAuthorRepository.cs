@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.Repositories
 {
     public class EFAuthorRepository : IAuthorRepository
     {
-        private ApplicationDbContext _applicationDbContext;
+        private readonly ApplicationDbContext _applicationDbContext;
 
         public EFAuthorRepository(ApplicationDbContext applicationDbContext)
         {
@@ -22,10 +23,13 @@ namespace TheBookShop.Models.Repositories
             {
                 if (author.AuthorId == 0)
                 {
+                    Log.Information("Adding new author...");
                     _applicationDbContext.Authors.Add(author);
                 }
                 else
                 {
+                    Log.Information($"Updating author wit Id: {author.AuthorId}...");
+
                     var authorEntry = _applicationDbContext.Authors.FirstOrDefault(x => x.AuthorId == author.AuthorId);
 
                     if (authorEntry != null)
@@ -40,21 +44,34 @@ namespace TheBookShop.Models.Repositories
             }
             catch (Exception e)
             {
+                Log.Error($"Error while adding/updating author...");
+                Log.Error(e.Message);
+                Log.Error(e.StackTrace);
                 Console.WriteLine(e);
-                throw;
             }
         }
 
         public Author DeleteAuthor(int authorId)
         {
-            var author = _applicationDbContext.Authors.FirstOrDefault(x => x.AuthorId == authorId);
-
-            if (author != null)
+            Author author = null;
+            try
             {
-                _applicationDbContext.Authors.Remove(author);
-                _applicationDbContext.SaveChanges();
-            }
+                author = _applicationDbContext.Authors.FirstOrDefault(x => x.AuthorId == authorId);
 
+                if (author != null)
+                {
+                    _applicationDbContext.Authors.Remove(author);
+                    _applicationDbContext.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Error while deleting author...");
+                Log.Error(e.Message);
+                Log.Error(e.StackTrace);
+                Console.WriteLine(e);
+            }
+            
             return author;
         }
 

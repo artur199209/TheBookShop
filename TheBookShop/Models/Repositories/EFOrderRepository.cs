@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.Repositories
@@ -27,14 +29,25 @@ namespace TheBookShop.Models.Repositories
 
         public void SaveOrder(Order order)
         {
-            _context.AttachRange(order.Lines.Select(l => l.Product));
-            _context.Attach(order.DeliveryPaymentMethod);
-
-            if (order.OrderId == 0)
+            try
             {
-                _context.Orders.Add(order);
+                _context.AttachRange(order.Lines.Select(l => l.Product));
+                _context.Attach(order.DeliveryPaymentMethod);
+
+                if (order.OrderId == 0)
+                {
+                    _context.Orders.Add(order);
+                }
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
+            catch (Exception e)
+            {
+                Log.Error($"Error while saving order...");
+                Log.Error(e.Message);
+                Log.Error(e.StackTrace);
+                Console.WriteLine(e);
+            }
+            
         }
     }
 }

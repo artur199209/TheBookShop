@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Linq;
+using Serilog;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.Repositories
 {
     public class EFCustomerAddressRepository : ICustomerAddressRepository
     {
-        private ApplicationDbContext applicationDbContext;
+        private readonly ApplicationDbContext _applicationDbContext;
 
-        public EFCustomerAddressRepository(ApplicationDbContext _applicationDbContext)
+        public EFCustomerAddressRepository(ApplicationDbContext applicationDbContext)
         {
-            applicationDbContext = _applicationDbContext;
+            _applicationDbContext = applicationDbContext;
         }
 
-        public IQueryable<CustomerAddress> DeliveryAddresses => applicationDbContext.CustomerAddresses;
+        public IQueryable<CustomerAddress> DeliveryAddresses => _applicationDbContext.CustomerAddresses;
 
         public void SaveDeliveryAddress(CustomerAddress customerAddress)
         {
@@ -21,11 +22,13 @@ namespace TheBookShop.Models.Repositories
             {
                 if (customerAddress.CustomerAddressId == 0)
                 {
-                    applicationDbContext.CustomerAddresses.Add(customerAddress);
+                    Log.Information("Adding new customer address...");
+                    _applicationDbContext.CustomerAddresses.Add(customerAddress);
                 }
                 else
                 {
-                    var customerAddressEntry = applicationDbContext.CustomerAddresses
+                    Log.Information("Updating existing customer address...");
+                    var customerAddressEntry = _applicationDbContext.CustomerAddresses
                         .FirstOrDefault(x => x.CustomerAddressId == customerAddress.CustomerAddressId);
 
                     if (customerAddressEntry != null)
@@ -37,11 +40,14 @@ namespace TheBookShop.Models.Repositories
                     }
                 }
 
-                applicationDbContext.SaveChanges();
+                _applicationDbContext.SaveChanges();
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
-
+                Log.Error($"Error while adding/updating author...");
+                Log.Error(e.Message);
+                Log.Error(e.StackTrace);
+                Console.WriteLine(e);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Serilog;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.Repositories
@@ -21,10 +22,13 @@ namespace TheBookShop.Models.Repositories
             {
                 if (paymentMethod.PaymentMethodId == 0)
                 {
+                    Log.Information("Adding new payment method...");
                     _applicationDbContext.PaymentMethods.Add(paymentMethod);
                 }
                 else
                 {
+                    Log.Information("Updating existing payment method...");
+
                     var paymentMethodEntry =
                         _applicationDbContext.PaymentMethods.FirstOrDefault(x =>
                             x.PaymentMethodId == paymentMethod.PaymentMethodId);
@@ -40,8 +44,10 @@ namespace TheBookShop.Models.Repositories
             }
             catch (Exception e)
             {
+                Log.Error($"Error while saving order...");
+                Log.Error(e.Message);
+                Log.Error(e.StackTrace);
                 Console.WriteLine(e);
-                throw;
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using TheBookShop.Models.DataModels;
 
 namespace TheBookShop.Models.Repositories
@@ -23,10 +24,13 @@ namespace TheBookShop.Models.Repositories
             {
                 if (payment.PaymentId == 0)
                 {
+                    Log.Information("Adding new payment...");
                     _applicationDbContext.Payments.Add(payment);
                 }
                 else
                 {
+                    Log.Information($"Updating exisitng payment {payment.PaymentId}...");
+
                     var paymentEntry = _applicationDbContext.Payments
                         .FirstOrDefault(x => x.PaymentId == payment.PaymentId);
 
@@ -40,9 +44,12 @@ namespace TheBookShop.Models.Repositories
 
                 _applicationDbContext.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Log.Error($"Error while saving order...");
+                Log.Error(e.Message);
+                Log.Error(e.StackTrace);
+                Console.WriteLine(e);
             }
         }
     }
