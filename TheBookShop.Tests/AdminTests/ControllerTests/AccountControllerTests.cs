@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Collections.Generic;
 using System.Linq;
 using TheBookShop.Areas.Admin.Controllers;
+using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Tests.Helper;
 using Xunit;
@@ -32,11 +32,7 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             _userValidatorMock = new Mock<IUserValidator<AppUser>>();
             _passwordValidatorMock = new Mock<IPasswordValidator<AppUser>>();
             _passwordHasherMock = new Mock<IPasswordHasher<AppUser>>();
-        }
 
-        [Fact]
-        public void Index_Contains_All_Users()
-        {
             _userManagerMock.Setup(x => x.Users).Returns(new[]
             {
                 new AppUser(),
@@ -44,12 +40,16 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
                 new AppUser(),
                 new AppUser()
             }.AsQueryable());
+        }
 
+        [Fact]
+        public void Index_Contains_All_Users()
+        {
             var accountController = new AccountController(_userManagerMock.Object, _userValidatorMock.Object, _passwordValidatorMock.Object, _passwordHasherMock.Object);
             
-            var result = CastHelper.GetViewModel<IEnumerable<AppUser>>(accountController.Index());
+            var result = CastHelper.GetViewModel<AccountListViewModel>(accountController.Index());
 
-            Assert.Equal(4, result.Count());
+            Assert.Equal(4, result.Accounts.Count());
         }
 
         [Fact]
@@ -246,6 +246,18 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
 
             Assert.Null(result);
             _userManagerMock.Verify(m => m.DeleteAsync(It.IsAny<AppUser>()), Times.Never);
+        }
+
+        [Fact]
+        public void Can_Send_Pagination()
+        {
+            var accountController = new AccountController(_userManagerMock.Object, _userValidatorMock.Object, _passwordValidatorMock.Object, _passwordHasherMock.Object);
+            var result = CastHelper.GetViewModel<AccountListViewModel>(accountController.Index()).PagingInfo;
+
+            Assert.Equal(4, result.TotalItems);
+            Assert.Equal(1, result.TotalPages);
+            Assert.Equal(1, result.CurrentPage);
+            Assert.Equal(4, result.ItemsPerPage);
         }
     }
 }

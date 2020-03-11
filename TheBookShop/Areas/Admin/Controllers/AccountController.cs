@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models.DataModels;
+using TheBookShop.Models.ViewModels;
 
 namespace TheBookShop.Areas.Admin.Controllers
 {
@@ -14,7 +17,8 @@ namespace TheBookShop.Areas.Admin.Controllers
         private readonly IUserValidator<AppUser> _userValidator;
         private readonly IPasswordValidator<AppUser> _passwordValidator;
         private readonly IPasswordHasher<AppUser> _passwordHasher;
-        
+        public int PageSize = 4;
+
         public AccountController(UserManager<AppUser> userManager, IUserValidator<AppUser> userValidator,
             IPasswordValidator<AppUser> passwordValidator, IPasswordHasher<AppUser> passwordHasher)
         {
@@ -26,9 +30,18 @@ namespace TheBookShop.Areas.Admin.Controllers
 
         [Route("")]
         [Route("[action]")]
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            return View(_userManager.Users);
+            return View(new AccountListViewModel
+                {
+                    Accounts = _userManager.Users.Skip((page - 1) * PageSize).Take(PageSize).ToList(),
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = _userManager.Users.Count()
+                    }
+                });
         }
 
         [Route("[action]")]
@@ -162,7 +175,7 @@ namespace TheBookShop.Areas.Admin.Controllers
                 ModelState.AddModelError("", "Nie znaleziono użytkownika.");
             }
 
-            return View(nameof(Index), _userManager.Users);
+            return View(nameof(Index));
         }
 
         private void AddErrorsFromResult(IdentityResult result)

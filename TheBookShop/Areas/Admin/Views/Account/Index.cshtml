@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppUser>
+﻿@model AccountListViewModel
 @{
     ViewData["Title"] = "Wszystkie konta";
 }
@@ -8,13 +8,13 @@
 
 <table class="table table-bordered table-hover table-sm" role="grid">
     <tr><th>ID</th><th>Imię</th><th>Email</th></tr>
-    @if (!Model.Any())
+    @if (!Model.Accounts.Any())
     {
         <tr><td colspan="3" class="text-center">Brak kont użytkowników</td></tr>
     }
     else
     {
-        foreach (AppUser user in Model)
+        foreach (AppUser user in Model.Accounts)
         {
             <tr>
                 <td>@user.Id</td>
@@ -36,5 +36,10 @@
 </table>
 <div class="text-center">
     <a class="btn btn-primary" asp-action="Create">Dodaj użytkownika</a>
+</div>
+
+<div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" class="btn-group float-left m-1">
 </div>
 
