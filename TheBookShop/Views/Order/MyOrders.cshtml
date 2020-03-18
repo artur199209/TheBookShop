@@ -3,37 +3,38 @@
     ViewData["Title"] = "Moje zamówienia";
 }
 
-<div class="text-center">
+<div class="container text-center">
     <h4>Moje zamówienia</h4>
-</div>
 
-<table class="table table-bordered table-hover table-sm" role="grid">
-    <tr>
-        <th>Numer zamówienia</th>
-        <th>Imię</th>
-        <th>Nazwisko</th>
-        <th>Zrealizowane</th>
-        <th>Numer przesyłki</th>
-        <th colspan="2"></th>
-    </tr>
+    <table class="table table-bordered table-hover table-sm" role="grid">
+        <tr>
+            <th>Numer zamówienia</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Zrealizowane</th>
+            <th>Numer przesyłki</th>
+            <th colspan="2"></th>
+        </tr>
 
-    @if (!Model.Any())
-    {
-        <tr><td colspan="7" class="text-center">Brak zamówień</td></tr>
-    }
-    else
-    {
-        foreach (var order in Model)
+        @if (!Model.Any())
         {
-            <tr>
-                <td>@order.OrderGuidId</td>
-                <td>@order.Customer.Name</td>
-                <td>@order.Customer.Surname</td>
-                <td>@order.Shipped</td>
-                <td>@order.TrackingNumber</td>
-                <td><a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId">Szczegóły</a></td>
-            </tr>
+            <tr><td colspan="7" class="text-center">Brak zamówień</td></tr>
         }
-    }
+        else
+        {
+            foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderGuidId</td>
+                    <td>@order.Customer.Name</td>
+                    <td>@order.Customer.Surname</td>
+                    <td>@order.Shipped</td>
+                    <td>@order.TrackingNumber</td>
+                    <td><a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId">Szczegóły</a></td>
+                </tr>
+            }
+        }
 
-</table>
+    </table>
+
+</div>
