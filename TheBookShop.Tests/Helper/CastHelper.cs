@@ -24,5 +24,10 @@ namespace TheBookShop.Tests.Helper
         {
             return (result as RedirectToActionResult)?.ActionName;
         }
+
+        public static string GetViewName(IActionResult result)
+        {
+            return (result as ViewResult)?.ViewName;
+        }
     }
 }

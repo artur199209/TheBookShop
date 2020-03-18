@@ -44,7 +44,7 @@ namespace TheBookShop.Controllers
                 if (result.Succeeded)
                 {
                     Log.Information($"{model.Email} has been created successfully...");
-                    return RedirectToAction("Index", "Product", new {area = ""});
+                    return View("Info");
                 }
 
                 AddErrorsFromResult(result);

@@ -25,10 +25,10 @@ namespace TheBookShop.Tests.ControllerTests
                 .ReturnsAsync(IdentityResult.Success);
             var registerController = new RegisterController(_userManagerMock.Object);
 
-            var actionName = CastHelper.GetActionName(registerController.Register(new CreateModel()).Result);
+            var viewName = CastHelper.GetViewName(registerController.Register(new CreateModel()).Result);
             _userManagerMock.Verify(m => m.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>()));
             
-            Assert.Equal("Index", actionName);
+            Assert.Equal("Info", viewName);
         }
 
         [Fact]
