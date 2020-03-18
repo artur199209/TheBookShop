@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -11,6 +12,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]")]
+    [Authorize(Roles = "Administratorzy")]
     public class RoleController : Controller
     {
         private readonly UserManager<AppUser> _userManager;

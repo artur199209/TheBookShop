@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using TheBookShop.Models.DataModels;
@@ -9,6 +10,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]")]
+    [Authorize(Roles = "Administratorzy")]
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;

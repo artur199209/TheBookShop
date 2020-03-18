@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using TheBookShop.Areas.Admin.Model;
@@ -10,6 +11,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]")]
+    [Authorize(Roles = "Administratorzy")]
     public class AuthorController : Controller
     {
         private readonly IAuthorRepository _authorRepository;

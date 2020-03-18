@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using TheBookShop.Models.Repositories;
 
@@ -6,6 +7,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]")]
+    [Authorize(Roles = "Administratorzy")]
     public class PaymentController : Controller
     {
         private readonly IPaymentRepository _paymentRepository;

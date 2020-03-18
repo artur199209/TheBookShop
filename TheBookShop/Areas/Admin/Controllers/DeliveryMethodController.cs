@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Serilog;
 using TheBookShop.Areas.Admin.Model;
 
@@ -11,6 +12,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]")]
+    [Authorize(Roles = "Administratorzy")]
     public class DeliveryMethodController : Controller
     {
         private readonly IDeliveryMethodRepository _deliveryMethodRepository;

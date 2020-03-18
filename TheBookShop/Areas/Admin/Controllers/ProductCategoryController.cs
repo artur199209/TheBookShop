@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 
@@ -8,6 +9,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]")]
+    [Authorize(Roles = "Administratorzy")]
     public class ProductCategoryController : Controller
     {
         private readonly IProductCategoryRepository _productCategoryRepository;

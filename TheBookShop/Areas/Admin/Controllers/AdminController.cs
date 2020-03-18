@@ -10,6 +10,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("[controller]")]
+    [Authorize(Roles = "Administratorzy")]
     public class AdminController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -38,6 +39,7 @@ namespace TheBookShop.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
+        [Route("[action]")]
         public async Task<IActionResult> Login(LoginModel details)
         {
             if (ModelState.IsValid)

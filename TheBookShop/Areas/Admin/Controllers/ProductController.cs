@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Serilog;
 using TheBookShop.Infrastructure;
 using TheBookShop.Models.DataModels;
@@ -12,6 +13,7 @@ namespace TheBookShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]")]
+    [Authorize(Roles = "Administratorzy")]
     public class ProductController : Controller
     {
         private readonly IProductRepository _repository;

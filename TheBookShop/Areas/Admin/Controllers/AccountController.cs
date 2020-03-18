@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -9,8 +10,10 @@ using TheBookShop.Models.ViewModels;
 
 namespace TheBookShop.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     [Route("Admin/[controller]")]
+    [Authorize(Roles = "Administratorzy")]
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
