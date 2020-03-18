@@ -6,19 +6,14 @@
     }
 </style>
 
-<div class="dropdown">
-    <ul class="navbar-nav mr-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-white"
-               id="dropdown_unternehmen" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                @Model.UserName
-            </a>
-            <div class="dropdown-menu dropdown-custom-width">
-                <a class="dropdown-item" asp-area="" asp-controller="Order" asp-action="MyOrders" asp-route-email="@Model.Email">Zamówienia</a>
-                <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="ChangePassword">Zmień hasło</a>
-                <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj</a>
-            </div>
-        </li>
-    </ul>
+<div class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle text-white"
+       id="dropdown_unternehmen" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        @Model.UserName
+    </a>
+    <div class="dropdown-menu dropdown-custom-width">
+        <a class="dropdown-item" asp-area="" asp-controller="Order" asp-action="MyOrders" asp-route-email="@Model.Email">Zamówienia</a>
+        <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="ChangePassword" asp-route-id="@Model.Id">Zmień hasło</a>
+        <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Logout">Wyloguj</a>
+    </div>
 </div>
