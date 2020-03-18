@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using TheBookShop.Models;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 

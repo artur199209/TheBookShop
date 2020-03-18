@@ -9,6 +9,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 namespace TheBookShop.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly UserManager<AppUser> _userManager;

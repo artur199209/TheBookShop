@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using TheBookShop.Models.DataModels;
@@ -82,6 +83,7 @@ namespace TheBookShop.Controllers
             return View(orderNumber);
         }
 
+        [Authorize]
         [Route("[action]")]
         public IActionResult MyOrders(string email)
         {

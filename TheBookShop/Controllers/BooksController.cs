@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using TheBookShop.Infrastructure;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
 using TheBookShop.Models.ViewModels;
