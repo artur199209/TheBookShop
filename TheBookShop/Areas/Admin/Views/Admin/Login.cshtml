@@ -37,16 +37,16 @@
                 <div class="form-group">
                     <div class="input-group">
                         <input type="password" asp-for="@Model.Password" class="form-control" placeholder="Hasło">
-                        <div class="input-group-addon"><i class="fas fa-key"></i>
+                        <div class="input-group-addon">
+                            <i class="fas fa-key"></i>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
+                <div class="form-group">
+                    <div class="input-group">
                         <div class="custom-checkbox icheck">
-                            <label>
-                                <input type="checkbox"> Zapamiętaj mnie
-                            </label>
+                            <input asp-for="RememberMe" type="checkbox">
+                            <label asp-for="RememberMe"> </label>
                         </div>
                     </div>
                 </div>

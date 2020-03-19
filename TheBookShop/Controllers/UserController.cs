@@ -40,23 +40,23 @@ namespace TheBookShop.Controllers
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         [Route("[action]")]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login(LoginModel loginModel)
         {
             if (ModelState.IsValid)
             {
-                Log.Information($"Finding user by email {model.Email}...");
-                var user = await _userManager.FindByEmailAsync(model.Email);
+                Log.Information($"Finding user by email {loginModel.Email}...");
+                var user = await _userManager.FindByEmailAsync(loginModel.Email);
 
                 if (user != null)
                 {
                     await _signInManager.SignOutAsync();
 
                     SignInResult result =
-                        await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+                        await _signInManager.PasswordSignInAsync(user, loginModel.Password, loginModel.RememberMe, false);
                     
                     if (result.Succeeded)
                     {
-                        Log.Information($"{model.Email} logged in...");
+                        Log.Information($"{loginModel.Email} logged in...");
                         return RedirectToAction("Index", "Product");
                     }
                 }
@@ -64,7 +64,7 @@ namespace TheBookShop.Controllers
                 ModelState.AddModelError(nameof(LoginModel.Email), "Niepoprawny adres email albo hasło!");
             }
 
-            return View(model);
+            return View(loginModel);
         }
 
         [Route("[action]")]
