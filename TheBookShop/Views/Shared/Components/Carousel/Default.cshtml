@@ -39,18 +39,18 @@
                     </div>
                     <div class="carousel-item justify-content-center">
                         <div class="row">
-                            @Html.Partial("ProductSummary", new Product())
-                            @Html.Partial("ProductSummary", new Product())
-                            @Html.Partial("ProductSummary", new Product())
-                            @Html.Partial("ProductSummary", new Product())
+                            @foreach (var item in @Model.Products.Skip(4).Take(4))
+                            {
+                                @Html.Partial("ProductSummary", item)
+                            }
                         </div>
                     </div>
                     <div class="carousel-item justify-content-center">
                         <div class="row">
-                            @Html.Partial("ProductSummary", new Product())
-                            @Html.Partial("ProductSummary", new Product())
-                            @Html.Partial("ProductSummary", new Product())
-                            @Html.Partial("ProductSummary", new Product())
+                            @foreach (var item in @Model.Products.Skip(4).Take(4))
+                            {
+                                @Html.Partial("ProductSummary", item)
+                            }
                         </div>
                     </div>
                 </div>
