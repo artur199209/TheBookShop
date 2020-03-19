@@ -10,5 +10,8 @@ namespace TheBookShop.Models.DataModels
         [Display(Name = "Hasło")]
         [Required]
         public string Password { get; set; }
+
+        [Display(Name = "Zapamiętaj mnie")]
+        public bool RememberMe { get; set; }
     }
 }
