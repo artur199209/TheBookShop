@@ -28,7 +28,15 @@ namespace TheBookShop
                 options.UseSqlServer(Configuration["Data:TheBookShopProducts:ConnectionString"]));
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlServer(Configuration["Data:TheBookShopIdentity:ConnectionString"]));
-            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>()
+            services.AddIdentity<AppUser, IdentityRole>(opts => {
+                    opts.User.RequireUniqueEmail = true;
+                    //opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz";
+                    opts.Password.RequiredLength = 6;
+                    opts.Password.RequireNonAlphanumeric = false;
+                    opts.Password.RequireLowercase = false;
+                    opts.Password.RequireUppercase = false;
+                    opts.Password.RequireDigit = false;
+                }).AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
             services.AddTransient<IProductRepository, EFProductRepository>();
             services.AddScoped<Cart>(p => SessionCart.GetCart(p));
