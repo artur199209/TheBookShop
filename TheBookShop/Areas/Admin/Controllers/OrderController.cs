@@ -3,8 +3,10 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Models.ViewModels;
 
 namespace TheBookShop.Areas.Admin.Controllers
 {
@@ -14,6 +16,7 @@ namespace TheBookShop.Areas.Admin.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
+        public int PageSize = 10;
 
         public OrderController(IOrderRepository orderRepository)
         {
@@ -21,27 +24,60 @@ namespace TheBookShop.Areas.Admin.Controllers
         }
 
         [Route("[action]")]
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             Log.Information("Getting all orders...");
             ViewData["Status"] = "Wszystkie";
-            return View(_orderRepository.Orders);
+
+            return View(new OrderListViewModel
+            {
+                Orders = _orderRepository.Orders.OrderBy(x => x.OrderId).Skip((page - 1) * PageSize).Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = _orderRepository.Orders.Count()
+                }
+
+            });
         }
 
         [Route("[action]")]
-        public IActionResult Completed()
+        public IActionResult Completed(int page = 1)
         {
             Log.Information("Getting completed orders...");
             ViewData["Status"] = "Zakończone";
-            return View(nameof(Index), _orderRepository.Orders.Where(x => x.Status == Order.OrderStatus.Shipped));
+            return View(nameof(Index),
+                new OrderListViewModel
+                {
+                    Orders = _orderRepository.Orders.Where(x => x.Status == Order.OrderStatus.Shipped)
+                        .OrderBy(x => x.OrderId).Skip((page - 1) * PageSize).Take(PageSize),
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = _orderRepository.Orders.Count()
+                    }
+                });
         }
 
         [Route("[action]")]
-        public IActionResult NotCompleted()
+        public IActionResult NotCompleted(int page = 1)
         {
             Log.Information("Getting not completed orders...");
             ViewData["Status"] = "Realizowane";
-            return View(nameof(Index), _orderRepository.Orders.Where(x => x.Status != Order.OrderStatus.Shipped));
+            return View(nameof(Index),
+                new OrderListViewModel
+                {
+                    Orders = _orderRepository.Orders.Where(x => x.Status != Order.OrderStatus.Shipped)
+                        .OrderBy(x => x.OrderId).Skip((page - 1) * PageSize).Take(PageSize),
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = _orderRepository.Orders.Count()
+                    }
+                });
         }
 
         [Route("[action]")]

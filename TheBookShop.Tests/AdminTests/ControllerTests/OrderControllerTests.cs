@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TheBookShop.Areas.Admin.Controllers;
+using TheBookShop.Areas.Admin.Model;
 using TheBookShop.Models.DataModels;
 using TheBookShop.Models.Repositories;
+using TheBookShop.Models.ViewModels;
 using TheBookShop.Tests.Helper;
 using Xunit;
 
@@ -31,30 +32,33 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
         public void Index_Contains_All_Orders()
         {
             var orderController = new OrderController(_orderRepositoryMock.Object);
-            var result = CastHelper.GetViewModel<IEnumerable<Order>>(orderController.Index()).ToArray();
+            var result = CastHelper.GetViewModel<OrderListViewModel>(orderController.Index());
+            var orders = result.Orders.ToList();
 
             Assert.NotNull(result);
-            Assert.Equal(5, result.Length);
+            Assert.Equal(5, orders.Count);
         }
 
         [Fact]
         public void Completed_Contains_Only_Completed_Orders()
         {
             var orderController = new OrderController(_orderRepositoryMock.Object);
-            var result = CastHelper.GetViewModel<IEnumerable<Order>>(orderController.Completed()).ToArray();
+            var result = CastHelper.GetViewModel<OrderListViewModel>(orderController.Completed());
+            var orders = result.Orders.ToList();
 
             Assert.NotNull(result);
-            Assert.Equal(3, result.Length);
+            Assert.Equal(3, orders.Count);
         }
 
         [Fact]
         public void NotCompleted_Contains_Only_Not_Completed_Orders()
         {
             var orderController = new OrderController(_orderRepositoryMock.Object);
-            var result = CastHelper.GetViewModel<IEnumerable<Order>>(orderController.NotCompleted()).ToArray();
+            var result = CastHelper.GetViewModel<OrderListViewModel>(orderController.NotCompleted());
+            var orders = result.Orders.ToList();
 
             Assert.NotNull(result);
-            Assert.Equal(2, result.Length);
+            Assert.Equal(2, orders.Count);
         }
 
         [Fact]
@@ -101,6 +105,36 @@ namespace TheBookShop.Tests.AdminTests.ControllerTests
             orderController.AddTrackingNumber("123456", 1);
 
             _orderRepositoryMock.Verify(m => m.SaveOrder(It.IsAny<Order>()), Times.Never());
+        }
+
+        [Fact]
+        public void Can_Paginate_Orders()
+        {
+            var orderController = new OrderController(_orderRepositoryMock.Object);
+            var result = CastHelper.GetViewModel<OrderListViewModel>(orderController.Index());
+
+            var orders = result?.Orders.ToArray();
+
+            Assert.True(orders?.Length == 5);
+            Assert.Equal(1, orders[0].OrderId);
+            Assert.Equal(2, orders[1].OrderId);
+            Assert.Equal(3, orders[2].OrderId);
+            Assert.Equal(4, orders[3].OrderId);
+            Assert.Equal(5, orders[4].OrderId);
+        }
+
+        [Fact]
+        public void Can_Send_Pagination_For_Orders()
+        {
+            var orderController = new OrderController(_orderRepositoryMock.Object);
+            var result = CastHelper.GetViewModel<OrderListViewModel>(orderController.Index());
+
+            PagingInfo pageInfo = result?.PagingInfo;
+
+            Assert.Equal(10, pageInfo?.ItemsPerPage);
+            Assert.Equal(5, pageInfo?.TotalItems);
+            Assert.Equal(1, pageInfo?.TotalPages);
+            Assert.Equal(1, pageInfo?.CurrentPage);
         }
     }
 }

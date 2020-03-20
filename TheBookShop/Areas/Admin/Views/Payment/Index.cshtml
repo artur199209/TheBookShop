@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Payment>
+﻿@model PaymentListViewModel
 @{
     ViewData["Title"] = "Wszystkie płatności";
 }
@@ -15,13 +15,13 @@
         <th>Data płatności</th>
     </tr>
 
-    @if (!Model.Any())
+    @if (!Model.Payments.Any())
     {
         <tr><td colspan="4" class="text-center">Brak płatności</td></tr>
     }
     else
     {
-        foreach (var payment in Model)
+        foreach (var payment in Model.Payments)
         {
             <tr>
                 <td>@payment.PaymentId</td>
