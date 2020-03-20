@@ -1,9 +1,13 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using TheBookShop.Models;
 using TheBookShop.Models.DataModels;
+using TheBookShop.Models.Repositories;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace TheBookShop.Areas.Admin.Controllers
@@ -16,16 +20,35 @@ namespace TheBookShop.Areas.Admin.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public AdminController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly IOrderRepository _orderRepository;
+
+        public AdminController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IOrderRepository orderRepository = null)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _orderRepository = orderRepository;
         }
 
         [Route("[action]")]
         public IActionResult Index()
         {
-            return View();
+            var shippedItems = _orderRepository.Orders.Where(x => x.Status == Order.OrderStatus.Shipped).ToList();
+            
+            var categoryWithQuantity = shippedItems.SelectMany(x => x.Lines)
+                .GroupBy(x => x.Product.Category,
+                    (key, group) => new DataPoint {Label = key.Name, Y = 100 * group.Sum(x => x.Quantity)/shippedItems.Sum(p => p.Lines.Sum(c => c.Quantity))}).ToList();
+
+            var bestsellersProducts = shippedItems.SelectMany(x => x.Lines)
+                .GroupBy(x => x.Product, (key, group) => new { Product = key, Quantity = group.Sum(x => x.Quantity) })
+                .OrderByDescending(c => c.Quantity).Select(x => new DataPoint
+                {
+                    Label = x.Product.Title,
+                    Y = x.Quantity
+                }).ToList();
+
+            var chartsData = new List<List<DataPoint>> {categoryWithQuantity, bestsellersProducts};
+
+            return View(chartsData);
         }
 
         [Route("")]
