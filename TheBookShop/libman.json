@@ -39,6 +39,11 @@
       "provider": "cdnjs",
       "library": "iCheck@1.0.2",
       "destination": "wwwroot/lib/iCheck/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "canvasjs@1.7.0",
+      "destination": "wwwroot/lib/canvasjs/"
     }
   ]
 }
