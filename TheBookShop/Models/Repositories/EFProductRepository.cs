@@ -17,7 +17,8 @@ namespace TheBookShop.Models.Repositories
 
         public IQueryable<Product> Products => context.Products
             .Include(o => o.Opinions)
-            .Include(a => a.Author);
+            .Include(a => a.Author)
+            .Include(c => c.Category);
 
         public void SaveProduct(Product product)
         {

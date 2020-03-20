@@ -25,6 +25,9 @@ namespace TheBookShop.Models.Repositories
             .ThenInclude(o => o.DeliveryMethod)
             .Include(o => o.Lines)
             .ThenInclude(l => l.Product)
+            .ThenInclude(c => c.Category)
+            .Include(o => o.Lines)
+            .ThenInclude(l => l.Product)
             .ThenInclude(p => p.Author);
 
         public void SaveOrder(Order order)
