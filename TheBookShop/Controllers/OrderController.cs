@@ -70,7 +70,7 @@ namespace TheBookShop.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return View(nameof(Checkout));
+                return Checkout();
             }
 
             return View();
